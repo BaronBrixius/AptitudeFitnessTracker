@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "328131644164",
+    "project_id": "aptitude-fitness-tracker",
+    "storage_bucket": "aptitude-fitness-tracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328131644164:android:da9a65e1d4a720f55a9e51",
+        "android_client_info": {
+          "package_name": "com.example.aptitudefitnesstracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328131644164-gc1gtvb482upc0mri37kd76ivkvrqcac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfN2Bd-zx0pBjZ32ldGDEY4ostKB3JXR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328131644164-gc1gtvb482upc0mri37kd76ivkvrqcac.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
