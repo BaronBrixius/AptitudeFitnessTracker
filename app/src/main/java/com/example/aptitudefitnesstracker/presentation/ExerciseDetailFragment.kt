@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker
+package com.example.aptitudefitnesstracker.presentation
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,15 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.dummy.DummyContent
 
 /**
  * A fragment representing a single Item detail screen.
- * This fragment is either contained in a [ItemListActivity]
- * in two-pane mode (on tablets) or a [ItemDetailActivity]
+ * This fragment is either contained in a [RoutineListActivity]
+ * in two-pane mode (on tablets) or a [ExerciseDetailActivity]
  * on handsets.
  */
-class ItemDetailFragment : Fragment() {
+class ExerciseDetailFragment : Fragment() {
 
     /**
      * The dummy content this fragment is presenting.

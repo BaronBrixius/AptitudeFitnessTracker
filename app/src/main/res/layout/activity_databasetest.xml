@@ -10,7 +10,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.aptitudefitnesstracker.DatabaseTestActivity">
+    tools:context="com.example.aptitudefitnesstracker.presentation.DatabaseTestActivity">
 
     <TextView
         android:id="@+id/txt_user"
@@ -35,21 +35,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/name"
                 android:inputType="textCapWords"
-                android:maxLines="1"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
                 android:maxLines="1"
                 app:layout_constraintTop_toTopOf="parent" />
 

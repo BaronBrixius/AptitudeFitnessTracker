@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker
+package com.example.aptitudefitnesstracker.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.aptitudefitnesstracker.R
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -91,7 +92,7 @@ class SignupActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
-                        startActivity(Intent(this@SignupActivity, ItemListActivity::class.java))
+                        startActivity(Intent(this@SignupActivity, RoutineListActivity::class.java))
                         finish()
                     }
                 })

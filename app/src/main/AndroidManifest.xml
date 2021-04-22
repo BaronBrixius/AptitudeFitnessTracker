@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AptitudeFitnessTracker">
         <activity
-            android:name=".LoginActivity"
+            android:name=".presentation.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
             <intent-filter>
@@ -20,33 +20,33 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignupActivity"
+            android:name=".presentation.SignupActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
         </activity>
         <activity
-            android:name=".DatabaseTestActivity"
+            android:name=".presentation.DatabaseTestActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
         </activity>
         <activity
-            android:name=".AccountActivity"
+            android:name=".presentation.AccountActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
         </activity>
         <activity
-            android:name=".ItemListActivity"
+            android:name=".presentation.RoutineListActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
         </activity>
         <activity
-            android:name=".ItemDetailActivity"
+            android:name=".presentation.ExerciseDetailActivity"
             android:label="@string/title_item_detail"
-            android:parentActivityName=".ItemListActivity"
+            android:parentActivityName=".presentation.RoutineListActivity"
             android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.aptitudefitnesstracker.ItemListActivity" />
+                android:value="com.example.aptitudefitnesstracker.presentation.RoutineListActivity" />
         </activity>
     </application>
 

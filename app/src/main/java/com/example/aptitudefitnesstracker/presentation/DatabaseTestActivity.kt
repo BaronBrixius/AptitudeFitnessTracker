@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker
+package com.example.aptitudefitnesstracker.presentation
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.aptitudefitnesstracker.application.Exercise
+import com.example.aptitudefitnesstracker.R
 import com.google.firebase.database.*
 import com.google.firebase.perf.metrics.AddTrace
 
@@ -15,11 +17,11 @@ import com.google.firebase.perf.metrics.AddTrace
 class DatabaseTestActivity : AppCompatActivity() {
     private var txtDetails: TextView? = null
     private var inputName: EditText? = null
-    private var inputEmail: EditText? = null
     private var btnSave: Button? = null
     private var mFirebaseDatabase: DatabaseReference? = null
     private var mFirebaseInstance: FirebaseDatabase? = null
     private var userId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_databasetest)
@@ -29,7 +31,6 @@ class DatabaseTestActivity : AppCompatActivity() {
 //        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
         txtDetails = findViewById<View>(R.id.txt_user) as TextView
         inputName = findViewById<View>(R.id.name) as EditText
-        inputEmail = findViewById<View>(R.id.email) as EditText
         btnSave = findViewById<View>(R.id.btn_save) as Button
         mFirebaseInstance = FirebaseDatabase.getInstance()
 
@@ -59,13 +60,12 @@ class DatabaseTestActivity : AppCompatActivity() {
         // Save / update the user
         btnSave!!.setOnClickListener {
             val name = inputName!!.text.toString()
-            val email = inputEmail!!.text.toString()
 
             // Check for already existed userId
             if (TextUtils.isEmpty(userId)) {
-                createUser(name, email)
+                createExercise(name)
             } else {
-                updateUser(name, email)
+                updateExercise(name)
             }
         }
         toggleButton()
@@ -83,15 +83,15 @@ class DatabaseTestActivity : AppCompatActivity() {
     /**
      * Creating new user node under 'users'
      */
-    @AddTrace(name = "CreateUser")
-    private fun createUser(name: String, email: String) {
+    @AddTrace(name = "CreateExercise")
+    private fun createExercise(name: String) {
         // TODO
         // In real apps this userId should be fetched
         // by implementing firebase auth
         if (TextUtils.isEmpty(userId)) {
             userId = mFirebaseDatabase!!.push().key
         }
-        val user = User(name, email)
+        val user = Exercise(name)
         mFirebaseDatabase!!.child(userId!!).setValue(user)
         addUserChangeListener()
     }
@@ -103,22 +103,19 @@ class DatabaseTestActivity : AppCompatActivity() {
         // User data change listener
         mFirebaseDatabase!!.child(userId!!).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val user = dataSnapshot.getValue(
-                    User::class.java
-                )
+                val user = dataSnapshot.getValue(Exercise::class.java)
 
                 // Check for null
                 if (user == null) {
                     Log.e(TAG, "User data is null!")
                     return
                 }
-                Log.e(TAG, "User data is changed!" + user.name + ", " + user.email)
+                Log.e(TAG, "User data is changed!" + user.name)
 
                 // Display newly updated name and email
-                txtDetails!!.text = user.name + ", " + user.email
+                txtDetails!!.text = user.name
 
                 // clear edit text
-                inputEmail!!.setText("")
                 inputName!!.setText("")
                 toggleButton()
             }
@@ -131,12 +128,10 @@ class DatabaseTestActivity : AppCompatActivity() {
     }
 
     @AddTrace(name = "UpdateUser")
-    private fun updateUser(name: String, email: String) {
+    private fun updateExercise(name: String) {
         // updating the user via child nodes
         if (!TextUtils.isEmpty(name)) mFirebaseDatabase!!.child(userId!!).child("name")
             .setValue(name)
-        if (!TextUtils.isEmpty(email)) mFirebaseDatabase!!.child(userId!!).child("email")
-            .setValue(email)
     }
 
     companion object {
