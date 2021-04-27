@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.presentation
+package com.example.aptitudefitnesstracker.presentation.Activities
 
 import android.os.Bundle
 import android.text.TextUtils

@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.presentation
+package com.example.aptitudefitnesstracker.presentation.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.presentation
+package com.example.aptitudefitnesstracker.presentation.Activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +15,7 @@ import android.widget.TextView
 import com.example.aptitudefitnesstracker.R
 
 import com.example.aptitudefitnesstracker.dummy.DummyContent
+import com.example.aptitudefitnesstracker.presentation.Fragments.ExerciseDetailFragment
 
 /**
  * An activity representing a list of Pings. This activity

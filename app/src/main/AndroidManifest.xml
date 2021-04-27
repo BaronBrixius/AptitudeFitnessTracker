@@ -10,43 +10,42 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AptitudeFitnessTracker">
         <activity
-            android:name=".presentation.LoginActivity"
+            android:name=".presentation.Activities.LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
+        </activity>
+        <activity
+            android:name=".presentation.Activities.SignupActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
+        </activity>
+        <activity
+            android:name=".presentation.Activities.DatabaseTestActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
+        </activity>
+        <activity
+            android:name=".presentation.Activities.AccountActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
+        </activity>
+        <activity
+            android:name=".presentation.Activities.RoutineListActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.SignupActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
-        </activity>
-        <activity
-            android:name=".presentation.DatabaseTestActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
-        </activity>
-        <activity
-            android:name=".presentation.AccountActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
-        </activity>
-        <activity
-            android:name=".presentation.RoutineListActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
-        </activity>
-        <activity
-            android:name=".presentation.ExerciseDetailActivity"
+            android:name=".presentation.Activities.ExerciseDetailActivity"
             android:label="@string/title_item_detail"
-            android:parentActivityName=".presentation.RoutineListActivity"
+            android:parentActivityName=".presentation.Activities.RoutineListActivity"
             android:theme="@style/Theme.AptitudeFitnessTracker.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.aptitudefitnesstracker.presentation.RoutineListActivity" />
+                android:value="com.example.aptitudefitnesstracker.presentation.Activities.RoutineListActivity" />
         </activity>
     </application>
 
