@@ -103,17 +103,17 @@ class DatabaseTestActivity : AppCompatActivity() {
         // User data change listener
         mFirebaseDatabase!!.child(userId!!).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val user = dataSnapshot.getValue(Exercise::class.java)
+                val exercise = dataSnapshot.getValue(Exercise::class.java)
 
                 // Check for null
-                if (user == null) {
-                    Log.e(TAG, "User data is null!")
+                if (exercise == null) {
+                    Log.e(TAG, "Exercise data is null!")
                     return
                 }
-                Log.e(TAG, "User data is changed!" + user.name)
+                Log.e(TAG, "Exercise data is changed!" + exercise.name)
 
                 // Display newly updated name and email
-                txtDetails!!.text = user.name
+                txtDetails!!.text = exercise.name
 
                 // clear edit text
                 inputName!!.setText("")
@@ -122,7 +122,7 @@ class DatabaseTestActivity : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
-                Log.e(TAG, "Failed to read user", error.toException())
+                Log.e(TAG, "Failed to read exercise", error.toException())
             }
         })
     }
@@ -130,8 +130,8 @@ class DatabaseTestActivity : AppCompatActivity() {
     @AddTrace(name = "UpdateUser")
     private fun updateExercise(name: String) {
         // updating the user via child nodes
-        if (!TextUtils.isEmpty(name)) mFirebaseDatabase!!.child(userId!!).child("name")
-            .setValue(name)
+        if (!TextUtils.isEmpty(name))
+            mFirebaseDatabase!!.child(userId!!).child("name").setValue(name)
     }
 
     companion object {
