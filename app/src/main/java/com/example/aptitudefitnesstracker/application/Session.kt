@@ -1,10 +1,18 @@
 package com.example.aptitudefitnesstracker.application
 
-class Session {
-    //User loggedInUser? = null
-    var routineList:List<Routine>? = null
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import com.example.aptitudefitnesstracker.persistence.RoutineEntity
 
-    fun isLoggedIn():Boolean {
+class Session(private val repository: Repository) {
+    //User loggedInUser? = null
+    val routineList: LiveData<List<RoutineEntity>> = repository.allRoutines.asLiveData()
+
+    suspend fun insert(routine: RoutineEntity) {
+        repository.insert(routine)
+    }
+
+    fun isLoggedIn(): Boolean {
         return false
     }
 }

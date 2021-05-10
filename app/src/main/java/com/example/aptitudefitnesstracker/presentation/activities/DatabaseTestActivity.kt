@@ -7,9 +7,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.R
+import com.example.aptitudefitnesstracker.application.RoutineViewModel
+import com.example.aptitudefitnesstracker.application.RoutineViewModelFactory
+import com.example.aptitudefitnesstracker.application.RoutinesApplication
+import com.example.aptitudefitnesstracker.persistence.RoutineEntity
 import com.google.firebase.database.*
 import com.google.firebase.perf.metrics.AddTrace
 
@@ -83,17 +87,25 @@ class DatabaseTestActivity : AppCompatActivity() {
     /**
      * Creating new user node under 'users'
      */
-    @AddTrace(name = "CreateExercise")
+//    @AddTrace(name = "CreateExercise")
     private fun createExercise(name: String) {
         // TODO
         // In real apps this userId should be fetched
         // by implementing firebase auth
-        if (TextUtils.isEmpty(userId)) {
-            userId = mFirebaseDatabase!!.push().key
+
+        val routineViewModel: RoutineViewModel by viewModels {
+            RoutineViewModelFactory((application as RoutinesApplication).repository)
         }
-        val user = Exercise(name)
-        mFirebaseDatabase!!.child(userId!!).setValue(user)
-        addUserChangeListener()
+
+        routineViewModel.insert(RoutineEntity(name))
+
+
+//        if (TextUtils.isEmpty(userId)) {
+//            userId = mFirebaseDatabase!!.push().key
+//        }
+//        val user = RoutineEntity(name)
+//        mFirebaseDatabase!!.child(userId!!).setValue(user)
+//        addUserChangeListener()
     }
 
     /**
@@ -103,7 +115,7 @@ class DatabaseTestActivity : AppCompatActivity() {
         // User data change listener
         mFirebaseDatabase!!.child(userId!!).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val exercise = dataSnapshot.getValue(Exercise::class.java)
+                val exercise = dataSnapshot.getValue(RoutineEntity::class.java)
 
                 // Check for null
                 if (exercise == null) {

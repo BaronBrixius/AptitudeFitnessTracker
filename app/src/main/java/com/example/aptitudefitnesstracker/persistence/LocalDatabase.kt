@@ -1,12 +1,12 @@
 package com.example.aptitudefitnesstracker.persistence
 
-import com.example.aptitudefitnesstracker.application.Exercise
-import com.example.aptitudefitnesstracker.application.IExerciseDao
-import com.example.aptitudefitnesstracker.application.IRoutineDao
+import com.example.aptitudefitnesstracker.application.RoutineDao
 import com.example.aptitudefitnesstracker.application.ISettingsDao
+import kotlinx.coroutines.flow.Flow
 
-class LocalDatabase : IExerciseDao, IRoutineDao, ISettingsDao {
-    override fun getAllExercises(): List<Exercise> {
+abstract class LocalDatabase : RoutineDao,
+    ISettingsDao {
+    override fun getAllRoutines(): Flow<List<RoutineEntity>> {
         TODO("Not yet implemented")
     }
 }

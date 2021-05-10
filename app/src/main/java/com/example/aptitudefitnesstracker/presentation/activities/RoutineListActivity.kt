@@ -11,9 +11,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import com.example.aptitudefitnesstracker.R
+import com.example.aptitudefitnesstracker.application.RoutineViewModel
+import com.example.aptitudefitnesstracker.application.RoutineViewModelFactory
+import com.example.aptitudefitnesstracker.application.RoutinesApplication
 
 import com.example.aptitudefitnesstracker.dummy.DummyContent
+import com.example.aptitudefitnesstracker.persistence.RoutineEntity
 import com.example.aptitudefitnesstracker.presentation.Fragments.ExerciseDetailFragment
 
 /**
@@ -25,6 +34,9 @@ import com.example.aptitudefitnesstracker.presentation.Fragments.ExerciseDetailF
  * item details side-by-side using two vertical panes.
  */
 class RoutineListActivity : AppCompatActivity() {
+    private val routineViewModel: RoutineViewModel by viewModels {  //todo deleteme idk
+        RoutineViewModelFactory((application as RoutinesApplication).repository)
+    }
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -59,13 +71,20 @@ class RoutineListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, twoPane)
+        val adapter = RoutineRecyclerViewAdapter(this, twoPane)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        routineViewModel.allRoutines.observe(this, Observer { routines ->
+            routines?.let { adapter.submitList(it) }
+        })
     }
 
-    class SimpleItemRecyclerViewAdapter(private val parentActivity: RoutineListActivity,
-                                        private val values: List<DummyContent.DummyItem>,
-                                        private val twoPane: Boolean) :
-            RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
+    class RoutineRecyclerViewAdapter(
+        private val parentActivity: RoutineListActivity,
+        private val twoPane: Boolean
+    ) :
+        ListAdapter<RoutineEntity, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
 
         private val onClickListener: View.OnClickListener
 
@@ -79,9 +98,9 @@ class RoutineListActivity : AppCompatActivity() {
                         }
                     }
                     parentActivity.supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.item_detail_container, fragment)
-                            .commit()
+                        .beginTransaction()
+                        .replace(R.id.item_detail_container, fragment)
+                        .commit()
                 } else {
                     val intent = Intent(v.context, ExerciseDetailActivity::class.java).apply {
                         putExtra(ExerciseDetailFragment.ARG_ITEM_ID, item.id)
@@ -91,28 +110,38 @@ class RoutineListActivity : AppCompatActivity() {
             }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineViewHolder {
             val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_list_content, parent, false)
-            return ViewHolder(view)
+                .inflate(R.layout.item_list_content, parent, false)
+            return RoutineViewHolder(view)
         }
 
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val item = values[position]
-            holder.idView.text = item.id
-            holder.contentView.text = item.content
+        override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
+            val item = getItem(position)
+            holder.bind(item.name)
+        }
 
-            with(holder.itemView) {
-                tag = item
-                setOnClickListener(onClickListener)
+        inner class RoutineViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val idView: TextView = view.findViewById(R.id.id_text)
+            val contentView: TextView =
+                view.findViewById(R.id.content) //no clue what this is, feel free to use it
+
+            fun bind(text: String?) {
+                idView.text = text
             }
         }
 
-        override fun getItemCount() = values.size
+        class RoutineComparator : DiffUtil.ItemCallback<RoutineEntity>() {
+            override fun areItemsTheSame(oldItem: RoutineEntity, newItem: RoutineEntity): Boolean {
+                return oldItem === newItem
+            }
 
-        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val idView: TextView = view.findViewById(R.id.id_text)
-            val contentView: TextView = view.findViewById(R.id.content)
+            override fun areContentsTheSame(
+                oldItem: RoutineEntity,
+                newItem: RoutineEntity
+            ): Boolean {
+                return oldItem.name == newItem.name
+            }
         }
     }
 }
