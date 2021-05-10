@@ -7,7 +7,7 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.presentation.Fragments.ExerciseDetailFragment
+import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
 
 /**
  * An activity representing a single Item detail screen. This

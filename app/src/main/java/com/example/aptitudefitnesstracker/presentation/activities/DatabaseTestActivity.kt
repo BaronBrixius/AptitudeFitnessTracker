@@ -7,9 +7,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.application.RoutinesApplication
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.persistence.RoutineEntity
 import com.google.firebase.database.*
@@ -98,9 +98,15 @@ class DatabaseTestActivity : AppCompatActivity() {
 //        val user = RoutineEntity(name)
 //        mFirebaseDatabase!!.child(userId!!).setValue(user)
 //        addUserChangeListener()
+        val session = application as Session
 
-        val session = Session((application as RoutinesApplication).repository)
-        session.insert(RoutineEntity(name))
+        if (!name.isEmpty()) {
+            session.insert(RoutineEntity(name))
+            Toast.makeText(session, "Routine added", Toast.LENGTH_LONG).show()
+        } else {
+            session.deleteAllRoutines() //todo let's not leave this in for final release eh?
+            Toast.makeText(session, "Deleted all routines", Toast.LENGTH_LONG).show()
+        }
     }
 
     /**

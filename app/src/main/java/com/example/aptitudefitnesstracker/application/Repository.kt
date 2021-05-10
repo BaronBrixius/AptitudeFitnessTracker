@@ -11,4 +11,9 @@ class Repository(private val routineDao: RoutineDao) {
     suspend fun insert(routine: RoutineEntity) {
         routineDao.insert(routine)
     }
+
+    @WorkerThread
+    suspend fun deleteAllRoutines() {
+        routineDao.deleteAllRoutines()
+    }
 }

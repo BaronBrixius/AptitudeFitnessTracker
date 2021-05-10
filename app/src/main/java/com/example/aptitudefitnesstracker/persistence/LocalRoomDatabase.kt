@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 abstract class LocalRoomDatabase : RoomDatabase() {
     abstract fun routineDao(): RoutineDao
 
-    companion object {    //singleton
+    companion object {
         @Volatile
         private var INSTANCE: LocalRoomDatabase? = null
 
@@ -34,8 +34,7 @@ abstract class LocalRoomDatabase : RoomDatabase() {
         }
     }
 
-    private class LocalRoomDatabaseCallback(private val scope: CoroutineScope) :
-        RoomDatabase.Callback() {
+    private class LocalRoomDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
             INSTANCE?.let { database ->
@@ -49,13 +48,12 @@ abstract class LocalRoomDatabase : RoomDatabase() {
             // Delete all content here.
             routineDao.deleteAllRoutines()
 
-            // Add sample words.
+            // sample routine names
             var routine = RoutineEntity("Push")
             routineDao.insert(routine)
             routine = RoutineEntity("Pull!")
             routineDao.insert(routine)
 
-            // TODO: Add your own words!
         }
 
     }
