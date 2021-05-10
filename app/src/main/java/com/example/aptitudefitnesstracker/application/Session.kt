@@ -1,14 +1,14 @@
 package com.example.aptitudefitnesstracker.application
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import com.example.aptitudefitnesstracker.persistence.RoutineEntity
+import kotlinx.coroutines.launch
 
-class Session(private val repository: Repository) {
+class Session(private val repository: Repository) : ViewModel() {
     //User loggedInUser? = null
     val routineList: LiveData<List<RoutineEntity>> = repository.allRoutines.asLiveData()
 
-    suspend fun insert(routine: RoutineEntity) {
+    fun insert(routine: RoutineEntity) = viewModelScope.launch {
         repository.insert(routine)
     }
 

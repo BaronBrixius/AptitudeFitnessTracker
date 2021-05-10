@@ -2,28 +2,25 @@ package com.example.aptitudefitnesstracker.presentation.activities
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.widget.NestedScrollView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
-import androidx.appcompat.widget.Toolbar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.application.RoutineViewModel
-import com.example.aptitudefitnesstracker.application.RoutineViewModelFactory
 import com.example.aptitudefitnesstracker.application.RoutinesApplication
-
+import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.dummy.DummyContent
 import com.example.aptitudefitnesstracker.persistence.RoutineEntity
 import com.example.aptitudefitnesstracker.presentation.Fragments.ExerciseDetailFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * An activity representing a list of Pings. This activity
@@ -34,9 +31,7 @@ import com.example.aptitudefitnesstracker.presentation.Fragments.ExerciseDetailF
  * item details side-by-side using two vertical panes.
  */
 class RoutineListActivity : AppCompatActivity() {
-    private val routineViewModel: RoutineViewModel by viewModels {  //todo deleteme idk
-        RoutineViewModelFactory((application as RoutinesApplication).repository)
-    }
+    private val routineViewModel: Session by lazy { Session((application as RoutinesApplication).repository) }
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -75,7 +70,7 @@ class RoutineListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        routineViewModel.allRoutines.observe(this, Observer { routines ->
+        routineViewModel.routineList.observe(this, Observer { routines ->
             routines?.let { adapter.submitList(it) }
         })
     }

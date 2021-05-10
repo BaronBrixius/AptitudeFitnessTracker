@@ -7,17 +7,16 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.application.RoutineViewModel
-import com.example.aptitudefitnesstracker.application.RoutineViewModelFactory
 import com.example.aptitudefitnesstracker.application.RoutinesApplication
+import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.persistence.RoutineEntity
 import com.google.firebase.database.*
 import com.google.firebase.perf.metrics.AddTrace
 
-
+//todo this was set up as a test for the Firebase Database, currently the Add feature is commented out and
+// replaced with local database Addition stuff, probably should split it
 class DatabaseTestActivity : AppCompatActivity() {
     private var txtDetails: TextView? = null
     private var inputName: EditText? = null
@@ -93,19 +92,15 @@ class DatabaseTestActivity : AppCompatActivity() {
         // In real apps this userId should be fetched
         // by implementing firebase auth
 
-        val routineViewModel: RoutineViewModel by viewModels {
-            RoutineViewModelFactory((application as RoutinesApplication).repository)
-        }
-
-        routineViewModel.insert(RoutineEntity(name))
-
-
 //        if (TextUtils.isEmpty(userId)) {
 //            userId = mFirebaseDatabase!!.push().key
 //        }
 //        val user = RoutineEntity(name)
 //        mFirebaseDatabase!!.child(userId!!).setValue(user)
 //        addUserChangeListener()
+
+        val session = Session((application as RoutinesApplication).repository)
+        session.insert(RoutineEntity(name))
     }
 
     /**
