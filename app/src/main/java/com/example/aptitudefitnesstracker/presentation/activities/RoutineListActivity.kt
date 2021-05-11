@@ -78,7 +78,7 @@ class RoutineListActivity : AppCompatActivity() {
         private val parentActivity: RoutineListActivity,
         private val twoPane: Boolean
     ) :
-        ListAdapter<RoutineEntity, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
+        ListAdapter<RoutineEntity, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) { //todo change this to Routine once RoutineEntity translator is in
 
         private val onClickListener: View.OnClickListener
 

@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class Session() : Application() {
+class Session : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())
 
     // Using by lazy so the database and the repository are only created when they're needed rather than when the application starts
@@ -17,18 +17,31 @@ class Session() : Application() {
     val repository by lazy { Repository(database.routineDao()) }
     val routineList: LiveData<List<RoutineEntity>> by lazy { repository.allRoutines.asLiveData() }
 
-    fun insert(routine: RoutineEntity) = insert(routine, applicationScope)  //todo delete this later, should actually declare a scope once the Session/Presenter are up and running properly
-
-    fun insert(routine: RoutineEntity, scope: CoroutineScope) = scope.launch {
+    fun insert(routine: Routine) = applicationScope.launch { //insertion runs in REPLACE mode so this functions as update as well
+            TODO("Need to implement translator to replace RoutineEntity method.")
+    }
+    fun insert(routine: RoutineEntity) = applicationScope.launch {
         repository.insert(routine)
+    }
+
+    fun delete(routine: Routine) = applicationScope.launch {
+        TODO()
     }
 
     fun deleteAllRoutines() = applicationScope.launch {
         repository.deleteAllRoutines()
     }
 
-    //User loggedInUser? = null
-    fun isLoggedIn(): Boolean {
-        return false
+    fun insert(exercise: Exercise) = applicationScope.launch {
+        TODO()
+    }
+
+    fun delete(exercise: Exercise) = applicationScope.launch {
+        TODO()
+    }
+
+    var loggedInUser : User? = null
+    fun userIsLoggedIn(): Boolean {
+        return loggedInUser != null
     }
 }

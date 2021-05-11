@@ -14,7 +14,7 @@ interface RoutineDao {
     @Query("SELECT * FROM routines ORDER BY name")
     fun getAllRoutines(): Flow<List<RoutineEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(routine: RoutineEntity)
 
     @Query("DELETE FROM routines") //fixme testing for now I suppose, but yikes
