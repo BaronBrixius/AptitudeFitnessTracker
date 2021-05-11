@@ -1,11 +1,11 @@
 package com.example.aptitudefitnesstracker.application
 
-import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import com.example.aptitudefitnesstracker.persistence.LocalRoomDatabase
-import com.example.aptitudefitnesstracker.persistence.RoutineEntity
+import com.example.aptitudefitnesstracker.persistence.Repository
+import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
+import com.example.aptitudefitnesstracker.persistence.local.RoutineEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
@@ -39,6 +39,18 @@ class Session(context: Context)  {
 
     fun delete(exercise: Exercise) = applicationScope.launch {
         TODO()
+    }
+
+    fun share(routine: Routine) = applicationScope.launch {
+        TODO()
+    }
+
+    fun share(exercise: Exercise) = applicationScope.launch {
+        TODO()
+    }
+
+    fun downloadRoutineDatabase(scope: CoroutineScope) = scope.launch {
+        TODO("Firebase hookup")
     }
 
     var loggedInUser : User? = null

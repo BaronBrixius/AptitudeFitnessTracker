@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.persistence
+package com.example.aptitudefitnesstracker.persistence.local
 
 import android.content.Context
 import androidx.room.Database

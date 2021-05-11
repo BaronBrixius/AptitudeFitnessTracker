@@ -1,8 +1,5 @@
 package com.example.aptitudefitnesstracker.application
 
-import com.google.firebase.database.IgnoreExtraProperties
-
-@IgnoreExtraProperties
 class Routine { //not sure this will end up being needed
     var id:Int? = null
     var name: String? = null
