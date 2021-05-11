@@ -1,5 +1,6 @@
 package com.example.aptitudefitnesstracker.presentation.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.widget.NestedScrollView
@@ -56,6 +57,7 @@ class RoutineListActivity : AppCompatActivity() {
         }
 
         setupRecyclerView(findViewById(R.id.item_list))
+//        Companion.context = this.getContext
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
@@ -115,4 +117,10 @@ class RoutineListActivity : AppCompatActivity() {
             val contentView: TextView = view.findViewById(R.id.content)
         }
     }
+
+    companion object {
+        lateinit var context: Context
+    }
+
+
 }
