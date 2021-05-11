@@ -18,6 +18,7 @@ import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.dummy.DummyContent
 import com.example.aptitudefitnesstracker.persistence.RoutineEntity
+import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -30,7 +31,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  * item details side-by-side using two vertical panes.
  */
 class RoutineListActivity : AppCompatActivity() {
-    private val session: Session by lazy { application as Session }
+    private val presenter: Presenter by lazy { application as Presenter }
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -69,7 +70,7 @@ class RoutineListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        session.routineList.observe(this, Observer { routines ->
+        presenter.routineList.observe(this, Observer { routines ->
             routines?.let { adapter.submitList(it) }
         })
     }

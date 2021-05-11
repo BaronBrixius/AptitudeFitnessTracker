@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.persistence.RoutineEntity
+import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.google.firebase.database.*
 import com.google.firebase.perf.metrics.AddTrace
 
@@ -98,14 +99,14 @@ class DatabaseTestActivity : AppCompatActivity() {
 //        val user = RoutineEntity(name)
 //        mFirebaseDatabase!!.child(userId!!).setValue(user)
 //        addUserChangeListener()
-        val session = application as Session
+        val presenter = application as Presenter
 
         if (!name.isEmpty()) {
-            session.insert(RoutineEntity(name))
-            Toast.makeText(session, "Routine added", Toast.LENGTH_LONG).show()
+            presenter.insert(RoutineEntity(name))
+            Toast.makeText(presenter, "Routine added", Toast.LENGTH_LONG).show()
         } else {
-            session.deleteAllRoutines() //todo let's not leave this in for final release eh?
-            Toast.makeText(session, "Deleted all routines", Toast.LENGTH_LONG).show()
+            presenter.deleteAllRoutines() //todo let's not leave this in for final release eh?
+            Toast.makeText(presenter, "Deleted all routines", Toast.LENGTH_LONG).show()
         }
     }
 
