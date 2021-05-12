@@ -10,12 +10,15 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
+import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.perf.metrics.AddTrace
 
 class SignupActivity : AppCompatActivity() {
+    private val presenter: Presenter by lazy { application as Presenter }
+
     private var inputEmail: EditText? = null
     private var inputPassword: EditText? = null
     private var btnSignIn: Button? = null
@@ -36,20 +39,23 @@ class SignupActivity : AppCompatActivity() {
         inputPassword = findViewById(R.id.password)
         progressBar = findViewById(R.id.progressBar)
         btnResetPassword = findViewById(R.id.btn_reset_password)
+
         btnResetPassword!!.setOnClickListener {
-            startActivity(
-                Intent(
-                    this@SignupActivity,
-                    ResetPasswordActivity::class.java
-                )
-            )
+            presenter.resetButtonPressed() //Takes you to AccountActivity
+
         }
-        btnSignIn!!.setOnClickListener { finish() }
+        btnSignIn!!.setOnClickListener {
+            finish()
+        }
+
         btnSignUp!!.setOnClickListener(View.OnClickListener {
             SignUp()
         })
     }
 
+    /*
+    SignUp() needs to be refactored into separate methods in Presenter and Session classes
+     */
     @AddTrace(name = "SignUp")
     private fun SignUp() {
         val email = inputEmail!!.text.toString().trim { it <= ' ' }

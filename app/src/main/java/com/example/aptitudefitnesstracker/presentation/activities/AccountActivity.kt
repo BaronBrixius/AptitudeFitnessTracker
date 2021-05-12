@@ -73,6 +73,7 @@ class AccountActivity : AppCompatActivity() {
         sendEmail!!.visibility = View.GONE
         remove!!.visibility = View.GONE
         progressBar = findViewById(R.id.progressBar)
+
         if (progressBar != null) {
             progressBar!!.visibility = View.GONE
         }

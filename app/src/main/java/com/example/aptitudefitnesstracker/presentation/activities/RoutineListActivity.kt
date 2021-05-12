@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.dummy.DummyContent
 import com.example.aptitudefitnesstracker.persistence.RoutineEntity
 import com.example.aptitudefitnesstracker.presentation.Presenter
@@ -47,11 +47,17 @@ class RoutineListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = title
 
+        //Add new
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
-            val intent = Intent(this@RoutineListActivity, DatabaseTestActivity::class.java)
-            startActivity(intent)
+            presenter.addNewItemButtonPressed()
+
+        }
+
+        //Click "account settings" button to go to account settings (AccountActivity)
+        findViewById<Button>(R.id.AccountSettings).setOnClickListener { view ->
+            presenter.accountSettingButton()
         }
 
         if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {

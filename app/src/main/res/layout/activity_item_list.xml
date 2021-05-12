@@ -19,6 +19,13 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/Theme.AptitudeFitnessTracker.PopupOverlay" />
 
+        <Button
+            android:id="@+id/AccountSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Account Settings"
+            app:backgroundTint="#A026E3" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
@@ -28,6 +35,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include layout="@layout/item_list" />
+
     </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -1,5 +1,6 @@
 package com.example.aptitudefitnesstracker.presentation.activities
 
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -10,10 +11,12 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
+import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.perf.metrics.AddTrace
 
 class LoginActivity : AppCompatActivity() {
+    private val presenter: Presenter by lazy { application as Presenter }
     private var inputEmail: EditText? = null
     private var inputPassword: EditText? = null
     private var auth: FirebaseAuth? = null
@@ -45,68 +48,51 @@ class LoginActivity : AppCompatActivity() {
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance()
+
+
         btnSignup!!.setOnClickListener {
-            startActivity(
-                Intent(
-                    this@LoginActivity,
-                    SignupActivity::class.java
-                )
-            )
+            presenter.signupButtonPressed()
         }
         btnReset!!.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, DatabaseTestActivity::class.java)) //todo delete this dev bypass before release
-//            startActivity(
-//                Intent(
-//                    this@LoginActivity,
-//                    ResetPasswordActivity::class.java
-//                )
-//            )
+            presenter.resetButtonPressed() //Takes you to AccountActivity
+
         }
         btnLogin!!.setOnClickListener(View.OnClickListener {
-            login()
+            if(checkLoginInputs(inputEmail!!,inputPassword!!)){
+                    presenter.loginButtonPressed(inputEmail!!, inputPassword!!)
+                }
         })
     }
 
-    @AddTrace(name = "Login")
-    private fun login() {
+    fun incorrectEmailPopUp() {
+        Toast.makeText(applicationContext, "Enter email address!", Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    fun incorrectPasswordPopUp() {
+        Toast.makeText(applicationContext, "Enter password!", Toast.LENGTH_SHORT).show()
+
+    }
+
+    fun displayLoadingCircle() {
+        progressBar!!.visibility = View.VISIBLE
+    }
+
+    //TODO Should this method be moved to the presenter class?
+    fun checkLoginInputs(inputEmail: EditText, inputPassword: EditText): Boolean {
         val email = inputEmail!!.text.toString()
         val password = inputPassword!!.text.toString()
+
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(applicationContext, "Enter email address!", Toast.LENGTH_SHORT)
-                .show()
-            return
+            incorrectEmailPopUp()
+            return false
         }
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(applicationContext, "Enter password!", Toast.LENGTH_SHORT).show()
-            return
+            incorrectPasswordPopUp()
+            return false
         }
-        progressBar!!.visibility = View.VISIBLE
-
-        //authenticate user
-        auth!!.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(
-                this@LoginActivity
-            ) { task ->
-                // If sign in fails, display a message to the user. If sign in succeeds
-                // the auth state listener will be notified and logic to handle the
-                // signed in user can be handled in the listener.
-                progressBar!!.visibility = View.GONE
-                if (!task.isSuccessful) {
-                    // there was an error
-                    if (password.length < 6) {
-                        inputPassword!!.error = getString(R.string.minimum_password)
-                    } else {
-                        Toast.makeText(
-                            this@LoginActivity,
-                            getString(R.string.auth_failed),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                } else {
-                    val intent = Intent(this@LoginActivity, DatabaseTestActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-            }
+        displayLoadingCircle()
+        return true
     }
+
 }
