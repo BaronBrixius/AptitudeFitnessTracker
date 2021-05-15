@@ -5,15 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.aptitudefitnesstracker.presentation.activities.LoginActivity">
+    tools:context="com.example.aptitudefitnesstracker.presentation.activities.SignupActivity">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:padding="16dp">
 
 
         <ImageView
@@ -30,16 +29,13 @@
 
             <EditText
                 android:id="@+id/email"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginBottom="45dp"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -52,10 +48,8 @@
 
             <EditText
                 android:id="@+id/password"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginBottom="45dp"
                 android:focusableInTouchMode="true"
                 android:hint="@string/hint_password"
@@ -77,9 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/colorAccent"
             android:text="@string/action_sign_in_short"
-            android:textColor="@android:color/black"
             android:textStyle="bold" />
 
         <Button
@@ -89,8 +81,7 @@
             android:layout_marginTop="20dip"
             android:background="@null"
             android:text="@string/btn_forgot_password"
-            android:textAllCaps="false"
-            android:textColor="@color/colorAccent" />
+            android:textAllCaps="false" />
 
         <!-- Link to Login Screen -->
 
@@ -102,7 +93,6 @@
             android:background="@null"
             android:text="@string/btn_link_to_login"
             android:textAllCaps="false"
-            android:textColor="@color/white"
             android:textSize="15dp" />
     </LinearLayout>
 

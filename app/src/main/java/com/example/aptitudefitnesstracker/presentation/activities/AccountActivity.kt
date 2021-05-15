@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
+import com.example.aptitudefitnesstracker.application.ThemeUtils
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -33,6 +34,9 @@ class AccountActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeUtils.setThemeApp(this)
+        ThemeUtils.setAppFont(this)
+        ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_account)
 //        val toolbar: Toolbar = findViewById(R.id.toolbar)
 //        toolbar.title = getString(R.string.app_name)

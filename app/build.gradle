@@ -4,16 +4,17 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.firebase-perf'
     id 'kotlin-kapt'
+    id 'kotlin-android-extensions' // for find and use control of xml file into kotlin
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "com.example.aptitudefitnesstracker"
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -37,6 +38,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    //final BUILD_DATE = new Date().format('dd-MM-yyyy hh-mm')
+    //applicationVariants.all { variant -> variant.outputs.each { output -> output.outputFileName = "Aptitude Fitness Tracker (" + BUILD_DATE + ") - " + "${variant.name}.apk" } }
+
 }
 
 dependencies {
@@ -81,8 +86,11 @@ dependencies {
     // Testing
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
-    androidTestImplementation ("androidx.test.espresso:espresso-core:2.1.0", {
+    androidTestImplementation("androidx.test.espresso:espresso-core:2.1.0", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     androidTestImplementation "androidx.test.ext:junit:1.1.2"
+    
+    //for material dialog
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 }

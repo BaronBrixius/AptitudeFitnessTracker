@@ -12,8 +12,6 @@ import androidx.lifecycle.asLiveData
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.persistence.LocalRoomDatabase
 import com.example.aptitudefitnesstracker.persistence.RoutineEntity
-import com.example.aptitudefitnesstracker.presentation.activities.DatabaseTestActivity
-import com.example.aptitudefitnesstracker.presentation.activities.LoginActivity
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob

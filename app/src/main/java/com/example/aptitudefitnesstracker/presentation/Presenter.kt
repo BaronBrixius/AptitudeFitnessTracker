@@ -76,12 +76,7 @@ class Presenter : Application() {
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
-
-
-
     /*
     SignupActivity
      */
-
-
 }

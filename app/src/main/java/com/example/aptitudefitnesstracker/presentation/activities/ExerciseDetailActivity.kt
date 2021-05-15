@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
+import com.example.aptitudefitnesstracker.application.ThemeUtils
 
 /**
  * An activity representing a single Item detail screen. This
@@ -19,12 +20,14 @@ class ExerciseDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeUtils.setThemeApp(this)
+        ThemeUtils.setAppFont(this)
+        ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_item_detail)
         setSupportActionBar(findViewById(R.id.detail_toolbar))
-
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+                .setAction("Action", null).show()
         }
 
         // Show the Up button in the action bar.
@@ -46,28 +49,29 @@ class ExerciseDetailActivity : AppCompatActivity() {
                 arguments = Bundle().apply {
                     putString(
                         ExerciseDetailFragment.ARG_ITEM_ID,
-                            intent.getStringExtra(ExerciseDetailFragment.ARG_ITEM_ID))
+                        intent.getStringExtra(ExerciseDetailFragment.ARG_ITEM_ID)
+                    )
                 }
             }
 
             supportFragmentManager.beginTransaction()
-                    .add(R.id.item_detail_container, fragment)
-                    .commit()
+                .add(R.id.item_detail_container, fragment)
+                .commit()
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
-            when (item.itemId) {
-                android.R.id.home -> {
-                    // This ID represents the Home or Up button. In the case of this
-                    // activity, the Up button is shown. For
-                    // more details, see the Navigation pattern on Android Design:
-                    //
-                    // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+        when (item.itemId) {
+            android.R.id.home -> {
+                // This ID represents the Home or Up button. In the case of this
+                // activity, the Up button is shown. For
+                // more details, see the Navigation pattern on Android Design:
+                //
+                // http://developer.android.com/design/patterns/navigation.html#up-vs-back
 
-                    navigateUpTo(Intent(this, RoutineListActivity::class.java))
-                    true
-                }
-                else -> super.onOptionsItemSelected(item)
+                navigateUpTo(Intent(this, RoutineListActivity::class.java))
+                true
             }
+            else -> super.onOptionsItemSelected(item)
+        }
 }

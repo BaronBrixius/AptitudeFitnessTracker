@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.presentation.Presenter
+import com.example.aptitudefitnesstracker.application.ThemeUtils
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -29,6 +30,9 @@ class SignupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeUtils.setThemeApp(this)
+        ThemeUtils.setAppFont(this)
+        ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_signup)
 
         //Get Firebase auth instance

@@ -2,11 +2,8 @@ package com.example.aptitudefitnesstracker.presentation.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
+import android.view.*
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.NestedScrollView
@@ -20,7 +17,9 @@ import com.example.aptitudefitnesstracker.dummy.DummyContent
 import com.example.aptitudefitnesstracker.persistence.RoutineEntity
 import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
+import com.example.aptitudefitnesstracker.application.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 
 /**
  * An activity representing a list of Pings. This activity
@@ -41,8 +40,10 @@ class RoutineListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeUtils.setThemeApp(this) // for set theme
+        ThemeUtils.setAppFont(this) // for set font size
+        ThemeUtils.setAppFontFamily(this) // for set font family
         setContentView(R.layout.activity_item_list)
-
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.title = title
@@ -67,7 +68,6 @@ class RoutineListActivity : AppCompatActivity() {
             // activity should be in two-pane mode.
             twoPane = true
         }
-
         setupRecyclerView(findViewById(R.id.item_list))
     }
 
@@ -86,28 +86,23 @@ class RoutineListActivity : AppCompatActivity() {
         private val twoPane: Boolean
     ) :
         ListAdapter<RoutineEntity, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) { //todo change this to Routine once RoutineEntity translator is in
-
-        private val onClickListener: View.OnClickListener
-
-        init {
-            onClickListener = View.OnClickListener { v ->
-                val item = v.tag as DummyContent.DummyItem
-                if (twoPane) {
-                    val fragment = ExerciseDetailFragment().apply {
-                        arguments = Bundle().apply {
-                            putString(ExerciseDetailFragment.ARG_ITEM_ID, item.id)
-                        }
+        private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
+            val item = v.tag as DummyContent.DummyItem
+            if (twoPane) {
+                val fragment = ExerciseDetailFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ExerciseDetailFragment.ARG_ITEM_ID, item.id)
                     }
-                    parentActivity.supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.item_detail_container, fragment)
-                        .commit()
-                } else {
-                    val intent = Intent(v.context, ExerciseDetailActivity::class.java).apply {
-                        putExtra(ExerciseDetailFragment.ARG_ITEM_ID, item.id)
-                    }
-                    v.context.startActivity(intent)
                 }
+                parentActivity.supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.item_detail_container, fragment)
+                    .commit()
+            } else {
+                val intent = Intent(v.context, ExerciseDetailActivity::class.java).apply {
+                    putExtra(ExerciseDetailFragment.ARG_ITEM_ID, item.id)
+                }
+                v.context.startActivity(intent)
             }
         }
 
@@ -119,17 +114,18 @@ class RoutineListActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
             val item = getItem(position)
-            holder.bind("id: " + item.id + " name: " + item.name)
+            //holder.bind("id: " + item.id + " name: " + item.name)
+            holder.idView.text = "id: " + item.id
+            holder.contentView.text = " name: " + item.name
         }
 
         inner class RoutineViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val idView: TextView = view.findViewById(R.id.id_text)
             val contentView: TextView =
                 view.findViewById(R.id.content) //no clue what this is, feel free to use it
-
-            fun bind(text: String?) {
+            /*fun bind(text: String?) {
                 idView.text = text
-            }
+            }*/
         }
 
         class RoutineComparator : DiffUtil.ItemCallback<RoutineEntity>() {
@@ -144,5 +140,30 @@ class RoutineListActivity : AppCompatActivity() {
                 return oldItem.name == newItem.name
             }
         }
+    }
+
+    /* START HERE For create Setting option menu  */
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_setting, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.actionSetting -> {
+                startActivity(Intent(this@RoutineListActivity, SettingActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    /* END HERE For create Setting option menu */
+    /* for destroy all previous activity */
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+        finishAffinity()
     }
 }

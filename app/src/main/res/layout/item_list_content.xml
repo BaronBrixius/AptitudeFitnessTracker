@@ -6,15 +6,17 @@
 
     <TextView
         android:id="@+id/id_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:text="dfdgfg"
+        />
 
     <TextView
         android:id="@+id/content"
-        android:layout_width="wrap_content"
+        android:text="sdfsdf"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+         />
 </LinearLayout>

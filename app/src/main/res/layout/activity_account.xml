@@ -12,20 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="0dp">
-<!--        android:theme="@style/AppTheme.AppBarOverlay"-->
+        <!--        android:theme="@style/AppTheme.AppBarOverlay"-->
 
 
-<!--        <android.support.v7.widget.Toolbar-->
-<!--            android:id="@+id/toolbar"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="?attr/colorPrimaryDark"-->
-<!--            app:layout_constraintBottom_toTopOf="parent"-->
-<!--            app:layout_constraintEnd_toStartOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_scrollFlags="scroll|enterAlways"-->
-<!--            app:popupTheme="@style/AppTheme.PopupOverlay" />-->
+        <!--        <android.support.v7.widget.Toolbar-->
+        <!--            android:id="@+id/toolbar"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:background="?attr/colorPrimaryDark"-->
+        <!--            app:layout_constraintBottom_toTopOf="parent"-->
+        <!--            app:layout_constraintEnd_toStartOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:layout_scrollFlags="scroll|enterAlways"-->
+        <!--            app:popupTheme="@style/AppTheme.PopupOverlay" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -33,10 +33,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <EditText
@@ -81,35 +81,26 @@
         <!--            android:imeActionId="@+id/login"-->
         <Button
             android:id="@+id/changeEmail"
-            style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/colorPrimaryDark"
             android:text="@string/btn_change"
-            android:textColor="@android:color/white"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/changePass"
-            style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/colorPrimaryDark"
             android:text="@string/btn_change"
-            android:textColor="@android:color/white"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/send"
-            style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/colorPrimaryDark"
             android:text="@string/btn_send"
-            android:textColor="@android:color/white"
             android:textStyle="bold" />
 
         <ProgressBar
@@ -120,18 +111,14 @@
 
         <Button
             android:id="@+id/remove"
-            style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/colorPrimaryDark"
             android:text="@string/btn_remove"
-            android:textColor="@android:color/white"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/change_email_button"
-            style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -140,7 +127,6 @@
 
         <Button
             android:id="@+id/change_password_button"
-            style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -149,7 +135,6 @@
 
         <Button
             android:id="@+id/sending_pass_reset_button"
-            style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -158,7 +143,6 @@
 
         <Button
             android:id="@+id/remove_user_button"
-            style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -167,13 +151,10 @@
 
         <Button
             android:id="@+id/sign_out"
-            style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/colorPrimary"
             android:text="@string/btn_sign_out"
-            android:textColor="@android:color/white"
             android:textStyle="bold" />
 
     </LinearLayout>

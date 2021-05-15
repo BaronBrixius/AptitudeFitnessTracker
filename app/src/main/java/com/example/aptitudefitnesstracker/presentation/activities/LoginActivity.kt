@@ -1,6 +1,5 @@
 package com.example.aptitudefitnesstracker.presentation.activities
 
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -12,8 +11,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.presentation.Presenter
+import com.example.aptitudefitnesstracker.application.ThemeUtils
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.perf.metrics.AddTrace
 
 class LoginActivity : AppCompatActivity() {
     private val presenter: Presenter by lazy { application as Presenter }
@@ -27,7 +26,9 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        ThemeUtils.setThemeApp(this) // for set theme
+        ThemeUtils.setAppFont(this) // for set font size
+        ThemeUtils.setAppFontFamily(this) // for set font family
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance()
 //        if (auth!!.currentUser != null) {
@@ -54,13 +55,16 @@ class LoginActivity : AppCompatActivity() {
             presenter.signupButtonPressed()
         }
         btnReset!!.setOnClickListener {
-            presenter.resetButtonPressed() //Takes you to AccountActivity
+            // presenter.resetButtonPressed() //Takes you to AccountActivity
+            var intent = Intent(this, SignupActivity::class.java)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
 
         }
         btnLogin!!.setOnClickListener(View.OnClickListener {
-            if(checkLoginInputs(inputEmail!!,inputPassword!!)){
-                    presenter.loginButtonPressed(inputEmail!!, inputPassword!!)
-                }
+            if (checkLoginInputs(inputEmail!!, inputPassword!!)) {
+                presenter.loginButtonPressed(inputEmail!!, inputPassword!!)
+            }
         })
     }
 
