@@ -10,8 +10,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.persistence.local.RoutineEntity
+import com.example.aptitudefitnesstracker.persistence.RoutineEntity
 import com.example.aptitudefitnesstracker.presentation.Presenter
+import com.example.aptitudefitnesstracker.application.ThemeUtils
 import com.google.firebase.database.*
 import com.google.firebase.perf.metrics.AddTrace
 
@@ -23,8 +24,10 @@ class DatabaseTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeUtils.setThemeApp(this)
+        ThemeUtils.setAppFont(this)
+        ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_databasetest)
-
         // Displaying toolbar icon
 //        supportActionBar!!.setDisplayShowHomeEnabled(true)
 //        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
