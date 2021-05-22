@@ -256,13 +256,13 @@ class AccountActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        auth!!.addAuthStateListener(authListener)
+        auth!!.addAuthStateListener(authListener!!)
     }
 
     override fun onStop() {
         super.onStop()
         if (authListener != null) {
-            auth!!.removeAuthStateListener(authListener)
+            auth!!.removeAuthStateListener(authListener!!)
         }
     }
 }

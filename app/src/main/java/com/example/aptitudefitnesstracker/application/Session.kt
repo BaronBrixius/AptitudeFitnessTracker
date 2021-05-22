@@ -1,17 +1,12 @@
 package com.example.aptitudefitnesstracker.application
 
-import android.app.Application
 import android.content.Context
-import android.content.Intent
-import android.text.TextUtils
-import android.view.View
 import android.widget.EditText
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.persistence.LocalRoomDatabase
-import com.example.aptitudefitnesstracker.persistence.RoutineEntity
+import com.example.aptitudefitnesstracker.persistence.Repository
+import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
+import com.example.aptitudefitnesstracker.persistence.local.RoutineEntity
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -63,7 +58,6 @@ class Session(context: Context) {
         TODO("Firebase hookup")
     }
 
-    var loggedInUser : User? = null
     var loggedInUser: User? = null
     fun userIsLoggedIn(): Boolean {
         return loggedInUser != null

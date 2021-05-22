@@ -2,7 +2,6 @@ package com.example.aptitudefitnesstracker.presentation.activities
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -10,11 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.persistence.RoutineEntity
+import com.example.aptitudefitnesstracker.persistence.local.RoutineEntity
 import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.example.aptitudefitnesstracker.application.ThemeUtils
-import com.google.firebase.database.*
-import com.google.firebase.perf.metrics.AddTrace
 
 class DatabaseTestActivity : AppCompatActivity() {
     private var txtDetails: TextView? = null

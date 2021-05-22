@@ -3,13 +3,13 @@ package com.example.aptitudefitnesstracker.presentation
 import android.app.Application
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.text.TextUtils
-import android.view.View
 import android.widget.EditText
-import android.widget.Toast
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.persistence.RoutineEntity
-import com.example.aptitudefitnesstracker.presentation.activities.*
+import com.example.aptitudefitnesstracker.persistence.local.RoutineEntity
+import com.example.aptitudefitnesstracker.presentation.activities.AccountActivity
+import com.example.aptitudefitnesstracker.presentation.activities.DatabaseTestActivity
+import com.example.aptitudefitnesstracker.presentation.activities.RoutineListActivity
+import com.example.aptitudefitnesstracker.presentation.activities.SignupActivity
 
 //singleton class to manage GUI stuff and link to application data
 class Presenter : Application() {
@@ -57,10 +57,10 @@ class Presenter : Application() {
      */
     fun loginButtonPressed(inputEmail: EditText, inputPassword: EditText) {
 
-            if (session.authenticateLogin(inputEmail!!, inputPassword!!)) {
-                var intent = Intent(this, RoutineListActivity::class.java)
-                intent.setFlags(FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
+        if (session.authenticateLogin(inputEmail!!, inputPassword!!)) {
+            var intent = Intent(this, RoutineListActivity::class.java)
+            intent.setFlags(FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
 
         }
     }

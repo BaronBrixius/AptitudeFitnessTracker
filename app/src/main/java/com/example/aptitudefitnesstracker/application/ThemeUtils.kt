@@ -50,7 +50,7 @@ object ThemeUtils {
      * @param context   - current context
      * @param themeName - name of theme to save
      */
-    fun saveTheme(context: Context?, themeName: String?) {
+    fun saveTheme(context: Context?, themeName: String) {
         Log.e("SAVE_THEME", themeName)
         val mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = mSharedPreferences.edit()
@@ -106,7 +106,7 @@ object ThemeUtils {
      * @param context  - current context
      * @param fontName - name of font to save
      */
-    fun saveFontSize(context: Context?, fontName: String?) {
+    fun saveFontSize(context: Context?, fontName: String) {
         Log.e("SAVE_FONT", fontName)
         val mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = mSharedPreferences.edit()
@@ -160,7 +160,7 @@ object ThemeUtils {
      * @param context    - current context
      * @param fontFamily - name of font to save
      */
-    fun saveFontFamily(context: Context?, fontFamily: String?) {
+    fun saveFontFamily(context: Context?, fontFamily: String) {
         Log.e("SAVE_FONT", fontFamily)
         val mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = mSharedPreferences.edit()
