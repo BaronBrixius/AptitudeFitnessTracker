@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.widget.EditText
+import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.persistence.local.RoutineEntity
 import com.example.aptitudefitnesstracker.presentation.activities.AccountActivity
 import com.example.aptitudefitnesstracker.presentation.activities.DatabaseTestActivity
 import com.example.aptitudefitnesstracker.presentation.activities.RoutineListActivity
@@ -26,8 +26,8 @@ class Presenter : Application() {
     /*
     RoutineListActivity
      */
-    fun insert(routineEntity: RoutineEntity) {
-        session.insert(routineEntity)
+    fun insert(routine: Routine) {
+        session.insertRoutine(routine)
     }
 
     fun deleteAllRoutines() {

@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
+import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.ThemeUtils
 import com.example.aptitudefitnesstracker.dummy.DummyContent
-import com.example.aptitudefitnesstracker.persistence.local.RoutineEntity
 import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -85,7 +85,7 @@ class RoutineListActivity : AppCompatActivity() {
         private val parentActivity: RoutineListActivity,
         private val twoPane: Boolean
     ) :
-        ListAdapter<RoutineEntity, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) { //todo change this to Routine once RoutineEntity translator is in
+        ListAdapter<Routine, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
             val item = v.tag as DummyContent.DummyItem
             if (twoPane) {
@@ -115,7 +115,7 @@ class RoutineListActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
             val item = getItem(position)
             //holder.bind("id: " + item.id + " name: " + item.name)
-            holder.idView.text = "id: " + item.id
+            holder.idView.text = "id: " + item.id    //fixme placeholder stuff for database testing
             holder.contentView.text = " name: " + item.name
         }
 
@@ -128,14 +128,14 @@ class RoutineListActivity : AppCompatActivity() {
             }*/
         }
 
-        class RoutineComparator : DiffUtil.ItemCallback<RoutineEntity>() {
-            override fun areItemsTheSame(oldItem: RoutineEntity, newItem: RoutineEntity): Boolean {
+        class RoutineComparator : DiffUtil.ItemCallback<Routine>() {
+            override fun areItemsTheSame(oldItem: Routine, newItem: Routine): Boolean {
                 return oldItem === newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: RoutineEntity,
-                newItem: RoutineEntity
+                oldItem: Routine,
+                newItem: Routine
             ): Boolean {
                 return oldItem.name == newItem.name
             }

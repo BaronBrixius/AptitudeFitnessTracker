@@ -1,19 +1,13 @@
-package com.example.aptitudefitnesstracker.persistence
+package com.example.aptitudefitnesstracker.application
 
-import android.text.TextUtils
-import android.util.Log
 import androidx.annotation.WorkerThread
-import com.example.aptitudefitnesstracker.application.RoutineDao
-import com.example.aptitudefitnesstracker.persistence.local.RoutineEntity
-import com.example.aptitudefitnesstracker.presentation.activities.DatabaseTestActivity
-import com.google.firebase.database.*
 import kotlinx.coroutines.flow.Flow
 
 class Repository(private val routineDao: RoutineDao) {
-    val allRoutines: Flow<List<RoutineEntity>> = routineDao.getAllRoutines()
+    val allRoutines: Flow<List<Routine>> = routineDao.getAllRoutines()
 
     @WorkerThread
-    suspend fun insert(routine: RoutineEntity) {
+    suspend fun insert(routine: Routine) {
         routineDao.insert(routine)
     }
 

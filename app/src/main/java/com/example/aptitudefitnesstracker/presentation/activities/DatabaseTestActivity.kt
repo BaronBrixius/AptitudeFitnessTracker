@@ -9,9 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.persistence.local.RoutineEntity
-import com.example.aptitudefitnesstracker.presentation.Presenter
+import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.ThemeUtils
+import com.example.aptitudefitnesstracker.presentation.Presenter
 
 class DatabaseTestActivity : AppCompatActivity() {
     private var txtDetails: TextView? = null
@@ -63,7 +63,7 @@ class DatabaseTestActivity : AppCompatActivity() {
         val presenter = application as Presenter
 
         if (!name.isEmpty()) {
-            presenter.insert(RoutineEntity(name))
+            presenter.insert(Routine(name))
             Toast.makeText(presenter, "Routine added", Toast.LENGTH_LONG).show()
         } else {
             presenter.deleteAllRoutines() //todo let's not leave this in for final release eh?

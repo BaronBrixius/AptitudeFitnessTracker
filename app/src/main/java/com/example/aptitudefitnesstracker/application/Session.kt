@@ -4,9 +4,7 @@ import android.content.Context
 import android.widget.EditText
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import com.example.aptitudefitnesstracker.persistence.Repository
 import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
-import com.example.aptitudefitnesstracker.persistence.local.RoutineEntity
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -18,15 +16,9 @@ class Session(context: Context) {
     // Using by lazy so the database and the repository are only created when they're needed rather than when the application starts
     val database by lazy { LocalRoomDatabase.getDatabase(context, applicationScope) }
     val repository by lazy { Repository(database.routineDao()) }
-    val routineList: LiveData<List<RoutineEntity>> by lazy { repository.allRoutines.asLiveData() }
+    val routineList: LiveData<List<Routine>> by lazy { repository.allRoutines.asLiveData() }
 
-
-    fun insert(routine: Routine) =
-        applicationScope.launch { //insertion runs in REPLACE mode so this functions as update as well
-            TODO("Need to implement translator to replace RoutineEntity method.")
-        }
-
-    fun insert(routine: RoutineEntity) = applicationScope.launch {
+    fun insertRoutine(routine: Routine) = applicationScope.launch {
         repository.insert(routine)
     }
 
@@ -70,8 +62,8 @@ class Session(context: Context) {
 
     @AddTrace(name = "authenticateLogin")
     fun authenticateLogin(inputEmail: EditText, inputPassword: EditText): Boolean {
-        val email = inputEmail!!.text.toString()
-        val password = inputPassword!!.text.toString()
+        val email = inputEmail.text.toString()
+        val password = inputPassword.text.toString()
 
         return true
 //

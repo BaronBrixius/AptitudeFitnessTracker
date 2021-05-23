@@ -1,19 +1,19 @@
 package com.example.aptitudefitnesstracker.application
 
-class Routine { //not sure this will end up being needed
-    var id:Int = 0
-    var name: String = ""
-    var tags:List<String>? = null
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-    // Default constructor required for calls to
-    // DataSnapshot.getValue(User.class)
-    constructor() {}
-    constructor(name: String?) {
-        if (name != null) {
-            this.name = name
-        }
-    }
-
-    constructor(id: Int, name: String)
-    constructor(id: Int, name: String, tags: List<String>)
+@Entity(tableName = "routines")
+data class Routine(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    val id: Int,
+    @ColumnInfo(name = "name")
+    var name: String,
+    @ColumnInfo(name = "tags", defaultValue = "")
+    var tags: List<String>
+) {
+    constructor(name: String) : this(0,name,ArrayList())
+    constructor(name: String, tags: List<String>) : this(0, name, tags)
 }

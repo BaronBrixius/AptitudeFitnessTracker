@@ -20,6 +20,18 @@ android {
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                //export database schema during "build"
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+
+    //finds database schemas for Tests
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
 
     buildTypes {
@@ -61,9 +73,8 @@ dependencies {
 
     // Room components
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.room:room-ktx:2.3.0"
-    kapt "androidx.room:room-compiler:2.3.0"
-    androidTestImplementation "androidx.room:room-testing:2.3.0"
+    implementation "androidx.room:room-ktx:2.4.0-alpha02"
+    kapt "androidx.room:room-compiler:2.4.0-alpha02"
 
     // Lifecycle components
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
@@ -88,5 +99,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     androidTestImplementation "androidx.test.ext:junit:1.1.2"
-
+    androidTestImplementation "androidx.room:room-testing:2.4.0-alpha02"
 }

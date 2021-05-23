@@ -1,16 +1,24 @@
 package com.example.aptitudefitnesstracker.persistence.local
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.aptitudefitnesstracker.application.Routine
 
 import com.example.aptitudefitnesstracker.application.RoutineDao
+import com.example.aptitudefitnesstracker.persistence.Converters
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [RoutineEntity::class], version = 1, exportSchema = false)
+@Database(
+    version = 2,
+    entities = [Routine::class],
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+    ]
+)
+@TypeConverters(Converters::class)
 abstract class LocalRoomDatabase : RoomDatabase() {
     abstract fun routineDao(): RoutineDao
 
@@ -45,15 +53,10 @@ abstract class LocalRoomDatabase : RoomDatabase() {
         }
 
         suspend fun populateDatabase(routineDao: RoutineDao) {
-            // Delete all content here.
+            // test routines
             routineDao.deleteAllRoutines()
-
-            // sample routine names
-            var routine = RoutineEntity("Push")
-            routineDao.insert(routine)
-            routine = RoutineEntity("Pull!")
-            routineDao.insert(routine)
-
+            routineDao.insert(Routine("Push"))
+            routineDao.insert(Routine("Pull!"))
         }
 
     }
