@@ -63,6 +63,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     implementation "androidx.activity:activity-ktx:1.2.3"
+
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:27.0.0')
     implementation "com.google.firebase:firebase-auth:21.0.1"

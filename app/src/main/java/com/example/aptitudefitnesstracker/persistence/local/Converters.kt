@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.persistence
+package com.example.aptitudefitnesstracker.persistence.local
 
 import androidx.room.TypeConverter
 

@@ -6,7 +6,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.aptitudefitnesstracker.application.Routine
 
 import com.example.aptitudefitnesstracker.application.RoutineDao
-import com.example.aptitudefitnesstracker.persistence.Converters
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -15,7 +14,7 @@ import kotlinx.coroutines.launch
     entities = [Routine::class],
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2)
+        AutoMigration(from = 1, to = 2),
     ]
 )
 @TypeConverters(Converters::class)

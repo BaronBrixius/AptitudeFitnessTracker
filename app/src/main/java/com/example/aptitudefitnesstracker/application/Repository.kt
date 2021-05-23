@@ -1,19 +1,32 @@
 package com.example.aptitudefitnesstracker.application
 
 import androidx.annotation.WorkerThread
-import kotlinx.coroutines.flow.Flow
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.google.firebase.database.*
 
-class Repository(private val routineDao: RoutineDao) {
-    val allRoutines: Flow<List<Routine>> = routineDao.getAllRoutines()
+class Repository(private val localRoutineDao: RoutineDao, private val firebaseRoutineDao: RoutineDao) {
+    val localRoutines: LiveData<List<Routine>> = localRoutineDao.getAllRoutines()
+    val remoteRoutines: LiveData<List<Routine>> = firebaseRoutineDao.getAllRoutines()   //todo move to getters
+
+    @WorkerThread
+    suspend fun share(routine: Routine) {
+        firebaseRoutineDao.insert(routine)
+    }
+
+    @WorkerThread
+    suspend fun downloadRoutines(): LiveData<List<Routine>> {
+        return firebaseRoutineDao.getAllRoutines()
+    }
 
     @WorkerThread
     suspend fun insert(routine: Routine) {
-        routineDao.insert(routine)
+        localRoutineDao.insert(routine)
     }
 
     @WorkerThread
     suspend fun deleteAllRoutines() {
-        routineDao.deleteAllRoutines()
+        localRoutineDao.deleteAllRoutines()
     }
 
 //    private var mFirebaseDatabase: DatabaseReference? = null
