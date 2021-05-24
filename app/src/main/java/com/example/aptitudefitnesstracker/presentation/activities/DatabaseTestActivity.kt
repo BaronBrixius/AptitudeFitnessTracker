@@ -62,7 +62,7 @@ class DatabaseTestActivity : AppCompatActivity() {
     private fun createExercise(name: String) {
         val presenter = application as Presenter
 
-        if (!name.isEmpty()) {
+        if (name.isNotEmpty()) {
             presenter.insert(Routine(name))
             Toast.makeText(presenter, "Routine added", Toast.LENGTH_LONG).show()
         } else {

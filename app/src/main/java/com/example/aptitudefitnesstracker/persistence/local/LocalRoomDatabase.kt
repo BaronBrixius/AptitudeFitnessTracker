@@ -3,23 +3,23 @@ package com.example.aptitudefitnesstracker.persistence.local
 import android.content.Context
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.aptitudefitnesstracker.application.Exercise
+import com.example.aptitudefitnesstracker.application.ILocalDao
 import com.example.aptitudefitnesstracker.application.Routine
-
-import com.example.aptitudefitnesstracker.application.RoutineDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    version = 2,
-    entities = [Routine::class],
+    version = 1,
+    entities = [Routine::class, Exercise::class],
     exportSchema = true,
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2),
-    ]
+//    autoMigrations = [
+//        AutoMigration(from = 1, to = 2)
+//    ]
 )
 @TypeConverters(Converters::class)
 abstract class LocalRoomDatabase : RoomDatabase() {
-    abstract fun routineDao(): RoutineDao
+    abstract fun iDao(): ILocalDao
 
     companion object {
         @Volatile
@@ -33,6 +33,7 @@ abstract class LocalRoomDatabase : RoomDatabase() {
                     "routine"
                 )
                     .addCallback(LocalRoomDatabaseCallback(scope))
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 // return instance
@@ -46,12 +47,12 @@ abstract class LocalRoomDatabase : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    populateDatabase(database.routineDao())
+                    populateDatabase(database.iDao())
                 }
             }
         }
 
-        suspend fun populateDatabase(routineDao: RoutineDao) {
+        suspend fun populateDatabase(routineDao: ILocalDao) {
             // test routines
             routineDao.deleteAllRoutines()
             routineDao.insert(Routine("Push"))
@@ -59,4 +60,9 @@ abstract class LocalRoomDatabase : RoomDatabase() {
         }
 
     }
+
+    // Migration Specs
+
+//    @RenameColumn(tableName = "routines", fromColumnName = "id", toColumnName = "routineId")
+//    class AutoMigrationSpec2To3 : AutoMigrationSpec
 }

@@ -2,7 +2,7 @@ package com.example.aptitudefitnesstracker.application
 
 import android.content.Context
 import android.widget.EditText
-import com.example.aptitudefitnesstracker.persistence.firebase.RemoteDatabase
+import com.example.aptitudefitnesstracker.persistence.firebase.RemoteFirebaseDatabase
 import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.CoroutineScope
@@ -15,13 +15,17 @@ class Session(context: Context) {
     // Using by lazy so the database/repository are only created when they're needed rather than when the application starts
     val repository by lazy {
         Repository(
-            LocalRoomDatabase.getDatabase(context, applicationScope).routineDao(),
-            RemoteDatabase()
+            LocalRoomDatabase.getDatabase(context, applicationScope).iDao(),
+            RemoteFirebaseDatabase()
         )
     }
 
+    fun addExerciseToRoutine(exercise: Exercise, routine: Routine) {
+        //todo
+    }
+
     fun insertRoutine(routine: Routine) = applicationScope.launch {
-        repository.insert(routine)
+        repository.insertRoutine(routine)
     }
 
     fun delete(routine: Routine) = applicationScope.launch {

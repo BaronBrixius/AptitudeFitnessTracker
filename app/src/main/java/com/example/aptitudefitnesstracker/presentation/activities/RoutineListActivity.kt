@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.application.Routine
+import com.example.aptitudefitnesstracker.application.RoutineWithExercises
 import com.example.aptitudefitnesstracker.application.ThemeUtils
 import com.example.aptitudefitnesstracker.dummy.DummyContent
 import com.example.aptitudefitnesstracker.presentation.Presenter
@@ -85,7 +85,7 @@ class RoutineListActivity : AppCompatActivity() {
         private val parentActivity: RoutineListActivity,
         private val twoPane: Boolean
     ) :
-        ListAdapter<Routine, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
+        ListAdapter<RoutineWithExercises, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
             val item = v.tag as DummyContent.DummyItem
             if (twoPane) {
@@ -115,8 +115,8 @@ class RoutineListActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
             val item = getItem(position)
             //holder.bind("id: " + item.id + " name: " + item.name)
-            holder.idView.text = "id: " + item.id    //fixme placeholder stuff for database testing
-            holder.contentView.text = " name: " + item.name
+            holder.idView.text = "id: " + item.routine.id    //fixme placeholder stuff for database testing
+            holder.contentView.text = " name: " + item.routine.name + " exercises: " + item.exercises.size
         }
 
         inner class RoutineViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -128,16 +128,16 @@ class RoutineListActivity : AppCompatActivity() {
             }*/
         }
 
-        class RoutineComparator : DiffUtil.ItemCallback<Routine>() {
-            override fun areItemsTheSame(oldItem: Routine, newItem: Routine): Boolean {
+        class RoutineComparator : DiffUtil.ItemCallback<RoutineWithExercises>() {
+            override fun areItemsTheSame(oldItem: RoutineWithExercises, newItem: RoutineWithExercises): Boolean {
                 return oldItem === newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: Routine,
-                newItem: Routine
+                oldItem: RoutineWithExercises,
+                newItem: RoutineWithExercises
             ): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.routine.name == newItem.routine.name //todo?
             }
         }
     }

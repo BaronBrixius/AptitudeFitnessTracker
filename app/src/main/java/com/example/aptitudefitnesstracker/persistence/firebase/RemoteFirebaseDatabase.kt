@@ -2,11 +2,13 @@ package com.example.aptitudefitnesstracker.persistence.firebase
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Routine
-import com.example.aptitudefitnesstracker.application.RoutineDao
+import com.example.aptitudefitnesstracker.application.ILocalDao
+import com.example.aptitudefitnesstracker.application.IRemoteDao
 import com.google.firebase.database.*
 
-class RemoteDatabase : RoutineDao {
+class RemoteFirebaseDatabase : IRemoteDao {
     private lateinit var mFirebaseDatabase: DatabaseReference
     val remoteRoutines: MutableLiveData<List<Routine>> = MutableLiveData()
 
@@ -39,8 +41,6 @@ class RemoteDatabase : RoutineDao {
     }
 
     override suspend fun insert(routine: Routine) {
-//     TODO
-//     In real apps this userId should be fetched by implementing firebase auth
         mFirebaseDatabase =
             FirebaseDatabase.getInstance("https://aptitude-fitness-tracker-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("routines")
@@ -48,7 +48,11 @@ class RemoteDatabase : RoutineDao {
         mFirebaseDatabase.child(firebaseID!!).setValue(routine)
     }
 
-    override suspend fun deleteAllRoutines() {
+    override fun getAllExercises(): LiveData<List<Exercise>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun insert(exercise: Exercise) {
         TODO("Not yet implemented")
     }
 }
