@@ -7,13 +7,16 @@ class Converters {
         @TypeConverter
         @JvmStatic
         fun toCommaSeparatedString(list: List<String>): String {
-            return list.joinToString(separator = ", ")
+            return list.joinToString(", ")
         }
 
         @TypeConverter
         @JvmStatic
-        fun toList(string: String): List<String> {
-            return string.split(", ")
+        fun toList(string: String?): List<String> {
+            if (string != null) {
+                return string.split(", ")
+            }
+            return ArrayList()
         }
     }
 }
