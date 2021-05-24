@@ -17,7 +17,7 @@ class Presenter : Application() {
 
     val session: Session by lazy { Session(this) }
     var settings: Settings? = null
-    val routineList by lazy { session.localRoutines }
+    val routineList by lazy { session.repository.localRoutines }
 
     init {
 

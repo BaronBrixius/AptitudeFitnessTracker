@@ -2,9 +2,6 @@ package com.example.aptitudefitnesstracker.application
 
 import android.content.Context
 import android.widget.EditText
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import com.example.aptitudefitnesstracker.persistence.firebase.RemoteDatabase
 import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
 import com.google.firebase.perf.metrics.AddTrace
@@ -15,11 +12,13 @@ import kotlinx.coroutines.launch
 class Session(context: Context) {
     private val applicationScope = CoroutineScope(SupervisorJob())
 
-    // Using by lazy so the database and the repository are only created when they're needed rather than when the application starts
-    val database by lazy { LocalRoomDatabase.getDatabase(context, applicationScope) }
-    val repository by lazy { Repository(database.routineDao(), RemoteDatabase()) }
-    val localRoutines: LiveData<List<Routine>> by lazy { repository.remoteRoutines } //fixme make these use getters instead
-    val remoteRoutines: LiveData<List<Routine>> by lazy { repository.remoteRoutines }
+    // Using by lazy so the database/repository are only created when they're needed rather than when the application starts
+    val repository by lazy {
+        Repository(
+            LocalRoomDatabase.getDatabase(context, applicationScope).routineDao(),
+            RemoteDatabase()
+        )
+    }
 
     fun insertRoutine(routine: Routine) = applicationScope.launch {
         repository.insert(routine)
@@ -48,7 +47,6 @@ class Session(context: Context) {
     fun share(exercise: Exercise) = applicationScope.launch {
         TODO()
     }
-
 
     var loggedInUser: User? = null
     fun userIsLoggedIn(): Boolean {
