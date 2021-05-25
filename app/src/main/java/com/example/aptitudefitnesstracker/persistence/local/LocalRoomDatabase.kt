@@ -55,8 +55,8 @@ abstract class LocalRoomDatabase : RoomDatabase() {
         suspend fun populateDatabase(localDao: ILocalDao) {
             // test routines
             localDao.deleteAllRoutines()
-            localDao.insert(Routine("Push"))
-            localDao.insert(Routine("Pull!"))
+            localDao.insertRoutine(Routine("Push"))
+            localDao.insertRoutine(Routine("Pull!"))
         }
 
     }

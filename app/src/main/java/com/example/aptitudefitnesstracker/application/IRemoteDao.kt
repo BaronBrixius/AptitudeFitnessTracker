@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 
 interface IRemoteDao {
     fun getAllRoutines(): LiveData<List<Routine>>
-    suspend fun insert(routine: Routine)
+    suspend fun insertRoutine(routine: Routine)
     fun getAllExercises(): LiveData<List<Exercise>>
-    suspend fun insert(exercise: Exercise)
+    suspend fun insertExercise(exercise: Exercise)
 }

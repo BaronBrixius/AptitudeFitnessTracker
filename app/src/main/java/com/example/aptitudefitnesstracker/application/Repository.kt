@@ -12,7 +12,6 @@ class Repository(private val localDao: ILocalDao, private val remoteDao: IRemote
             }
         }
     }
-    val remoteRoutines: LiveData<List<Routine>> by lazy { remoteDao.getAllRoutines() }
 
     private fun addExercisesToRoutine(routine: Routine): Routine {
         routine.exercises = localDao.getExercisesInRoutine(routine.id)
@@ -20,14 +19,8 @@ class Repository(private val localDao: ILocalDao, private val remoteDao: IRemote
     }
 
     @WorkerThread
-    suspend fun shareRoutine(routine: Routine) {
-        remoteDao.insert(routine)
-    }
-
-    @WorkerThread
     suspend fun insertRoutine(routine: Routine) {
-//        localDao.insert(routine)
-        localDao.insert(Exercise(0,1,routine.name,ArrayList()))
+        localDao.insertRoutine(routine)
     }
 
     @WorkerThread
@@ -38,5 +31,25 @@ class Repository(private val localDao: ILocalDao, private val remoteDao: IRemote
     @WorkerThread
     suspend fun deleteAllRoutines() {
         localDao.deleteAllRoutines()
+    }
+
+    @WorkerThread
+    fun downloadRemoteRoutines(): LiveData<List<Routine>> {
+        return remoteDao.getAllRoutines()
+    }
+
+    @WorkerThread
+    suspend fun shareRoutine(routine: Routine) {
+        remoteDao.insertRoutine(routine)
+    }
+
+    @WorkerThread
+    fun downloadRemoteExercises(): LiveData<List<Exercise>> {
+        return remoteDao.getAllExercises()
+    }
+
+    @WorkerThread
+    suspend fun shareExercise(exercise: Exercise) {
+        remoteDao.insertExercise(exercise)
     }
 }
