@@ -6,7 +6,6 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.widget.EditText
 import androidx.lifecycle.LiveData
 import com.example.aptitudefitnesstracker.application.Routine
-import com.example.aptitudefitnesstracker.application.RoutineWithExercises
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.activities.AccountActivity
 import com.example.aptitudefitnesstracker.presentation.activities.DatabaseTestActivity
@@ -15,11 +14,9 @@ import com.example.aptitudefitnesstracker.presentation.activities.SignupActivity
 
 //singleton class to manage GUI stuff and link to application data
 class Presenter : Application() {
-
-
     val session: Session by lazy { Session(this) }
     var settings: Settings? = null
-    val routineList: LiveData<List<RoutineWithExercises>> by lazy { session.repository.localRoutines }
+    val routineList: LiveData<List<Routine>> by lazy { session.repository.localRoutines }
 
     init {
 

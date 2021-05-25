@@ -5,8 +5,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 
 class Repository(private val localDao: ILocalDao, private val remoteDao: IRemoteDao) {
-    val localRoutines: LiveData<List<RoutineWithExercises>> by lazy { localDao.getRoutinesWithExercises() }
+    val localRoutines: LiveData<List<Routine>> by lazy {
+        localDao.getAllRoutines().map {
+            it.map { routine ->
+                addExercisesToRoutine(routine)
+            }
+        }
+    }
     val remoteRoutines: LiveData<List<Routine>> by lazy { remoteDao.getAllRoutines() }
+
+    private fun addExercisesToRoutine(routine: Routine): Routine {
+        routine.exercises = localDao.getExercisesInRoutine(routine.id)
+        return routine
+    }
 
     @WorkerThread
     suspend fun shareRoutine(routine: Routine) {
@@ -15,7 +26,8 @@ class Repository(private val localDao: ILocalDao, private val remoteDao: IRemote
 
     @WorkerThread
     suspend fun insertRoutine(routine: Routine) {
-        localDao.insert(routine)
+//        localDao.insert(routine)
+        localDao.insert(Exercise(0,1,routine.name,ArrayList()))
     }
 
     @WorkerThread

@@ -2,14 +2,53 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "741873d0344f3e55f2d75b72a513ddfa",
+    "identityHash": "9fea31e783ecf27d28d9e5f597f03392",
     "entities": [
       {
         "tableName": "routines",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`routineId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `tags` TEXT NOT NULL DEFAULT '')",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `tags` TEXT NOT NULL DEFAULT '')",
         "fields": [
           {
             "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tags",
+            "columnName": "tags",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "exercises",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `routineId` INTEGER NOT NULL, `name` TEXT NOT NULL, `tags` TEXT NOT NULL DEFAULT '', FOREIGN KEY(`routineId`) REFERENCES `routines`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "routineId",
             "columnName": "routineId",
             "affinity": "INTEGER",
             "notNull": true
@@ -30,51 +69,39 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "routineId"
+            "id"
           ],
           "autoGenerate": true
         },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "Exercise",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`exerciseId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `tags` TEXT NOT NULL DEFAULT '')",
-        "fields": [
+        "indices": [
           {
-            "fieldPath": "id",
-            "columnName": "exerciseId",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "tags",
-            "columnName": "tags",
-            "affinity": "TEXT",
-            "notNull": true,
-            "defaultValue": "''"
+            "name": "index_exercises_routineId",
+            "unique": false,
+            "columnNames": [
+              "routineId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_exercises_routineId` ON `${TABLE_NAME}` (`routineId`)"
           }
         ],
-        "primaryKey": {
-          "columnNames": [
-            "exerciseId"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "routines",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "routineId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '741873d0344f3e55f2d75b72a513ddfa')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9fea31e783ecf27d28d9e5f597f03392')"
     ]
   }
 }

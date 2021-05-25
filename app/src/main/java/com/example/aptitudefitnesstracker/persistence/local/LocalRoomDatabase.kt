@@ -33,7 +33,7 @@ abstract class LocalRoomDatabase : RoomDatabase() {
                     "routine"
                 )
                     .addCallback(LocalRoomDatabaseCallback(scope))
-                    .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration()   //fixme no destructive once we're running
                     .build()
                 INSTANCE = instance
                 // return instance
@@ -52,11 +52,11 @@ abstract class LocalRoomDatabase : RoomDatabase() {
             }
         }
 
-        suspend fun populateDatabase(routineDao: ILocalDao) {
+        suspend fun populateDatabase(localDao: ILocalDao) {
             // test routines
-            routineDao.deleteAllRoutines()
-            routineDao.insert(Routine("Push"))
-            routineDao.insert(Routine("Pull!"))
+            localDao.deleteAllRoutines()
+            localDao.insert(Routine("Push"))
+            localDao.insert(Routine("Pull!"))
         }
 
     }
