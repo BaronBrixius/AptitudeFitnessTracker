@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.presentation.Presenter
-import com.example.aptitudefitnesstracker.application.ThemeUtils
+import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {

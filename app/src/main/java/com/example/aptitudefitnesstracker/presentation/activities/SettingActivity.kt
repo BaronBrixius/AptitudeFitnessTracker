@@ -10,8 +10,8 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.application.DialogUtils
-import com.example.aptitudefitnesstracker.application.ThemeUtils
+import com.example.aptitudefitnesstracker.presentation.DialogUtils
+import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import kotlinx.android.synthetic.main.activity_setting.*
 
 class SettingActivity : AppCompatActivity() {

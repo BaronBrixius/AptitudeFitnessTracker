@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
-import com.example.aptitudefitnesstracker.application.ThemeUtils
+import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 
 /**
  * An activity representing a single Item detail screen. This

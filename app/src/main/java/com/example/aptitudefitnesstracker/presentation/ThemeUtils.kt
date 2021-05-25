@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.application
+package com.example.aptitudefitnesstracker.presentation
 
 import android.content.Context
 import android.preference.PreferenceManager

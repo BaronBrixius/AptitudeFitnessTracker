@@ -19,7 +19,7 @@ data class Routine(
     var name: String,
     @ColumnInfo(name = "tags", defaultValue = "")
     var tags: List<String>,
-    @Ignore
+    @Ignore @Exclude    //convenience reference, don't want to persist it in either database like this
     var exercises: LiveData<List<Exercise>>
 ) {
     constructor() : this(0, "", ArrayList(), MutableLiveData<List<Exercise>>())

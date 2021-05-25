@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.application
+package com.example.aptitudefitnesstracker.presentation
 
 object Constants {
     /* Constants which is used for Change Theme */

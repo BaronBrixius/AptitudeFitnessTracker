@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.application
+package com.example.aptitudefitnesstracker.presentation
 
 import android.R
 import android.app.Activity
