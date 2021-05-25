@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.widget.EditText
-import androidx.lifecycle.LiveData
 import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.activities.AccountActivity
@@ -99,6 +98,12 @@ class Presenter : Application() {
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
+
+    fun routineSelected(routine: Routine){
+        //take you to exerciseListActivity
+        //Pass Exercise list
+    }
+
     /*
     SignupActivity
      */

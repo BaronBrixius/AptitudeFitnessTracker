@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Routine
-import com.example.aptitudefitnesstracker.presentation.ThemeUtils
+import com.example.aptitudefitnesstracker.application.ThemeUtils
 import com.example.aptitudefitnesstracker.dummy.DummyContent
 import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
@@ -29,7 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-class RoutineListActivity : AppCompatActivity() {
+class ExerciseListActivity : AppCompatActivity() {
     private val presenter: Presenter by lazy { application as Presenter }
 
     /**
@@ -72,7 +72,7 @@ class RoutineListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        val adapter = RoutineRecyclerViewAdapter(this, twoPane, presenter)
+        val adapter = ExerciseRecyclerViewAdapter(this, twoPane)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -81,20 +81,23 @@ class RoutineListActivity : AppCompatActivity() {
         })
     }
 
-    class RoutineRecyclerViewAdapter(
-        private val parentActivity: RoutineListActivity,
-        private val twoPane: Boolean, val presenter: Presenter
+    class ExerciseRecyclerViewAdapter(
+        private val parentActivity: ExerciseListActivity,
+        private val twoPane: Boolean
     ) :
-        ListAdapter<Routine, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
-
+        ListAdapter<Routine, ExerciseRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
-            val item = v.tag as Routine
+            val item = v.tag as DummyContent.DummyItem
             if (twoPane) {
-
-                presenter.routineSelected(item)
-                Toast.makeText(v.context, "Routine clicked", Toast.LENGTH_SHORT).show()
-
-
+                val fragment = ExerciseDetailFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ExerciseDetailFragment.ARG_ITEM_ID, item.id)
+                    }
+                }
+                parentActivity.supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.item_detail_container, fragment)
+                    .commit()
             } else {
                 val intent = Intent(v.context, ExerciseDetailActivity::class.java).apply {
                     putExtra(ExerciseDetailFragment.ARG_ITEM_ID, item.id)
@@ -110,15 +113,10 @@ class RoutineListActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
-            val routine = getItem(position)
+            val item = getItem(position)
             //holder.bind("id: " + item.id + " name: " + item.name)
-            holder.idView.text = "id: " + routine.id    //fixme placeholder stuff for database testing
-            holder.contentView.text = " name: " + routine.name
-
-            with(holder.itemView) {
-                tag = routine
-                setOnClickListener(onClickListener)
-            }
+            holder.idView.text = "id: " + item.id    //fixme placeholder stuff for database testing
+            holder.contentView.text = " name: " + item.name
         }
 
         inner class RoutineViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -139,7 +137,7 @@ class RoutineListActivity : AppCompatActivity() {
                 oldItem: Routine,
                 newItem: Routine
             ): Boolean {
-                return oldItem.name == newItem.name //todo?
+                return oldItem.name == newItem.name
             }
         }
     }
@@ -154,7 +152,7 @@ class RoutineListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.actionSetting -> {
-                startActivity(Intent(this@RoutineListActivity, SettingActivity::class.java))
+                startActivity(Intent(this@ExerciseListActivity, SettingActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
