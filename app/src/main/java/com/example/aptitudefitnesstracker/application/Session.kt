@@ -1,9 +1,11 @@
 package com.example.aptitudefitnesstracker.application
 
 import android.content.Context
-import android.widget.EditText
 import com.example.aptitudefitnesstracker.persistence.firebase.RemoteFirebaseDatabase
 import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -11,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class Session(context: Context) {
     private val applicationScope = CoroutineScope(SupervisorJob())
+    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     // Using by lazy so the database/repository are only created when they're needed rather than when the application starts
     val repository by lazy {
@@ -63,39 +66,9 @@ class Session(context: Context) {
      */
 
     @AddTrace(name = "authenticateLogin")
-    fun authenticateLogin(inputEmail: EditText, inputPassword: EditText): Boolean {
-        val email = inputEmail.text.toString()
-        val password = inputPassword.text.toString()
-
-        return true
-//
-//        //authenticate user
-//        auth!!.signInWithEmailAndPassword(email, password)
-//            .addOnCompleteListener(
-//                this@LoginActivity
-//            ) { task ->
-//                // If sign in fails, display a message to the user. If sign in succeeds
-//                // the auth state listener will be notified and logic to handle the
-//                // signed in user can be handled in the listener.
-//                progressBar!!.visibility = View.GONE
-//                if (!task.isSuccessful) {
-//                    // there was an error
-//                    if (password.length < 6) {
-//                        inputPassword!!.error = getString(R.string.minimum_password)
-//                    } else {
-//                        Toast.makeText(
-//                            this@LoginActivity,
-//                            getString(R.string.auth_failed),
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                    }
-//                } else {
-//                    val intent = Intent(this@LoginActivity, DatabaseTestActivity::class.java)
-//                    startActivity(intent)
-//                    finish()
-//                }
-//            }
+    fun authenticateLogin(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
+        //authenticate user
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
     }
-
-
 }
+
