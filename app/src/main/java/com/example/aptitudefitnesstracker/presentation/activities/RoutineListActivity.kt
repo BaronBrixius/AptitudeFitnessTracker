@@ -72,7 +72,7 @@ class RoutineListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        val adapter = RoutineRecyclerViewAdapter(this, twoPane)
+        val adapter = RoutineRecyclerViewAdapter(this, twoPane, presenter)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -83,21 +83,18 @@ class RoutineListActivity : AppCompatActivity() {
 
     class RoutineRecyclerViewAdapter(
         private val parentActivity: RoutineListActivity,
-        private val twoPane: Boolean
+        private val twoPane: Boolean, val presenter: Presenter
     ) :
         ListAdapter<Routine, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
+
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyContent.DummyItem
+            val item = v.tag as Routine
             if (twoPane) {
-                val fragment = ExerciseDetailFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ExerciseDetailFragment.ARG_ITEM_ID, item.id)
-                    }
-                }
-                parentActivity.supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.item_detail_container, fragment)
-                    .commit()
+
+                presenter.routineSelected(item)
+                Toast.makeText(v.context, "Routine clicked", Toast.LENGTH_SHORT).show()
+
+
             } else {
                 val intent = Intent(v.context, ExerciseDetailActivity::class.java).apply {
                     putExtra(ExerciseDetailFragment.ARG_ITEM_ID, item.id)
@@ -117,6 +114,11 @@ class RoutineListActivity : AppCompatActivity() {
             //holder.bind("id: " + item.id + " name: " + item.name)
             holder.idView.text = "id: " + routine.id    //fixme placeholder stuff for database testing
             holder.contentView.text = " name: " + routine.name
+
+            with(holder.itemView) {
+                tag = routine
+                setOnClickListener(onClickListener)
+            }
         }
 
         inner class RoutineViewHolder(view: View) : RecyclerView.ViewHolder(view) {
