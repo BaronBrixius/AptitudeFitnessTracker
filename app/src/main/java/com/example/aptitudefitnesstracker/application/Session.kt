@@ -21,7 +21,11 @@ class Session(context: Context) {
     }
 
     fun addExerciseToRoutine(exercise: Exercise, routine: Routine) {
-        //todo
+        repository.addExerciseToRoutine(exercise, routine)
+    }
+
+    fun removeExerciseFromRoutine(exercise: Exercise, routine: Routine) {
+        repository.addExerciseToRoutine(exercise, routine)
     }
 
     fun insertRoutine(routine: Routine) = applicationScope.launch {
@@ -29,7 +33,7 @@ class Session(context: Context) {
     }
 
     fun delete(routine: Routine) = applicationScope.launch {
-        TODO()
+        repository.deleteRoutine(routine)
     }
 
     fun deleteAllRoutines() = applicationScope.launch {
@@ -37,19 +41,48 @@ class Session(context: Context) {
     }
 
     fun insert(exercise: Exercise) = applicationScope.launch {
-        TODO()
+        repository.insertExercise(exercise)
     }
 
     fun delete(exercise: Exercise) = applicationScope.launch {
-        TODO()
+        repository.deleteExercise(exercise)
     }
 
-    fun share(routine: Routine) = applicationScope.launch {
-        TODO()
+    fun addDetailToExercise(exercise: Exercise, name: String, value: String) = applicationScope.launch {
+        val detail = Detail(name, value)
+        repository.insertDetail(exercise, detail)
     }
 
-    fun share(exercise: Exercise) = applicationScope.launch {
-        TODO()
+    fun addDetailToExercise(exercise: Exercise, name: String, value: Int) = applicationScope.launch {
+        val detail = Detail(name, value)
+        repository.insertDetail(exercise, detail)
+    }
+
+    fun updateExerciseDetail(detail: Detail, newValue: String) = applicationScope.launch {
+        detail.updateValue(newValue)
+    }
+
+    fun updateExerciseDetail(detail: Detail, newValue: Int) = applicationScope.launch {
+        detail.updateValue(newValue)
+    }
+
+    //Removed scope for Boolean return, had to add suspend to call repository.shareRoutine(routine)
+    suspend fun share(routine: Routine): Boolean {
+        return if (userIsLoggedIn()) {
+            repository.shareRoutine(routine)
+            true
+        } else {
+            false
+        }
+    }
+
+    suspend fun share(exercise: Exercise): Boolean {
+        return if (userIsLoggedIn()) {
+            repository.shareExercise(exercise)
+            true
+        } else {
+            false
+        }
     }
 
     var loggedInUser: User? = null

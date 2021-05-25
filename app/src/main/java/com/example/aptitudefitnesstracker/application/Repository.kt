@@ -39,4 +39,31 @@ class Repository(private val localDao: ILocalDao, private val remoteDao: IRemote
     suspend fun deleteAllRoutines() {
         localDao.deleteAllRoutines()
     }
+
+
+    //These methods were added for the session class to be able to call them
+    fun deleteExercise(exercise: Exercise) {
+        TODO()
+    }
+
+    fun deleteRoutine(routine: Routine) {
+        TODO()
+    }
+
+    fun addExerciseToRoutine(exercise: Exercise, routine: Routine) {
+        TODO()
+    }
+
+    fun insertExercise(exercise: Exercise) {
+        TODO()
+    }
+
+    fun shareExercise(exercise: Exercise) {
+        TODO()
+    }
+
+    fun insertDetail(exercise: Exercise, detail: Detail) {
+        TODO()
+    }
+
 }
