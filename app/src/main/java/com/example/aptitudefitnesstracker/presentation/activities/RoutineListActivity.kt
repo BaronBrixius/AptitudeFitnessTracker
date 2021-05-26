@@ -59,7 +59,7 @@ class RoutineListActivity : AppCompatActivity() {
     }
 
     fun toggleDownloadMode() {
-        presenter.session.firebaseMode = !presenter.session.firebaseMode
+        session.firebaseMode = !session.firebaseMode
         setupRecyclerView()
     }
 
@@ -69,7 +69,8 @@ class RoutineListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val routineList: LiveData<List<Routine>> = if (presenter.session.firebaseMode) presenter.session.repository.downloadRemoteRoutines() else presenter.routineList
+        val routineList: LiveData<List<Routine>> =
+            if (session.firebaseMode) session.repository.downloadRemoteRoutines() else session.repository.localRoutines
         routineList.observe(this, { routines ->
             routines?.let { adapter.submitList(it) }
         })
@@ -83,7 +84,7 @@ class RoutineListActivity : AppCompatActivity() {
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
             val item = v.tag as Routine
 
-            parentActivity.presenter.session.activeRoutine = item
+            parentActivity.session.activeRoutine = item
             val intent = Intent(v.context, ExerciseListActivity::class.java)
             v.context.startActivity(intent)
         }
@@ -208,6 +209,7 @@ class RoutineListActivity : AppCompatActivity() {
 
         }
     }
+
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
             this,
