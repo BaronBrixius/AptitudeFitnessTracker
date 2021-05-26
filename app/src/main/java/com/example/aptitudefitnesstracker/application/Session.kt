@@ -1,6 +1,8 @@
 package com.example.aptitudefitnesstracker.application
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.example.aptitudefitnesstracker.persistence.firebase.RemoteFirebaseDatabase
 import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
 import com.google.android.gms.tasks.Task
@@ -14,51 +16,57 @@ import kotlinx.coroutines.launch
 class Session(context: Context) {
     private val applicationScope = CoroutineScope(SupervisorJob())
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val localDao by lazy { LocalRoomDatabase.getDatabase(context, applicationScope).iDao() }
+    val remoteDao by lazy { RemoteFirebaseDatabase() }
+    var loggedInUser: User? = null
 
-    // Using by lazy so the database/repository are only created when they're needed rather than when the application starts
-    val repository by lazy {
-        Repository(
-            LocalRoomDatabase.getDatabase(context, applicationScope).iDao(),
-            RemoteFirebaseDatabase()
-        )
+    fun addExerciseToRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
+        TODO()
     }
 
-    fun addExerciseToRoutine(exercise: Exercise, routine: Routine) {
-        repository.addExerciseToRoutine(exercise, routine)
-    }
-
-    fun removeExerciseFromRoutine(exercise: Exercise, routine: Routine) {
-        repository.addExerciseToRoutine(exercise, routine)
+    fun removeExerciseFromRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
+        TODO()
     }
 
     fun insertRoutine(routine: Routine) = applicationScope.launch {
-        repository.insertRoutine(routine)
+        localDao.insertRoutine(routine)
     }
 
     fun delete(routine: Routine) = applicationScope.launch {
-        repository.deleteRoutine(routine)
+        localDao.delete(routine)
     }
 
     fun deleteAllRoutines() = applicationScope.launch {
-        repository.deleteAllRoutines()
+        localDao.deleteAllRoutines()
     }
 
     fun insertExercise(exercise: Exercise) = applicationScope.launch {
-        repository.insertExercise(exercise)
+        TODO()
+        //localDao.insertExercise(exercise)
     }
 
     fun deleteExercise(exercise: Exercise) = applicationScope.launch {
-        repository.deleteExercise(exercise)
+        TODO()
+        //localDao.deleteExercise(exercise)
     }
 
     fun deleteAllExercises() = applicationScope.launch {
-//        repository.deleteAllRoutines()
+        TODO()
+        //localDao.deleteAllExercises()
+    }
+
+    fun downloadRemoteRoutines(): LiveData<List<Routine>> {
+        return remoteDao.getAllRoutines()
+    }
+
+    fun downloadRemoteExercises(): LiveData<List<Exercise>> {
+        return remoteDao.getAllExercises()
     }
 
     //Removed scope for Boolean return, had to add suspend to call repository.shareRoutine(routine)
     suspend fun share(routine: Routine): Boolean {
         return if (userIsLoggedIn()) {
-            repository.shareRoutine(routine)
+            remoteDao.insertRoutine(routine)
             true
         } else {
             false
@@ -67,14 +75,13 @@ class Session(context: Context) {
 
     suspend fun share(exercise: Exercise): Boolean {
         return if (userIsLoggedIn()) {
-            repository.shareExercise(exercise)
+            remoteDao.insertExercise(exercise)
             true
         } else {
             false
         }
     }
 
-    var loggedInUser: User? = null
     fun userIsLoggedIn(): Boolean {
         return loggedInUser != null
     }
