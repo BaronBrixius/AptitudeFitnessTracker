@@ -1,14 +1,12 @@
 package com.example.aptitudefitnesstracker.application
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.aptitudefitnesstracker.persistence.firebase.RemoteFirebaseDatabase
 import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -16,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class Session : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())
+
     //private var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val localDao by lazy { LocalRoomDatabase.getDatabase(this, applicationScope).iDao() }
     val remoteDao by lazy { RemoteFirebaseDatabase() }
@@ -118,7 +117,11 @@ class Session : Application() {
      */
 
     @AddTrace(name = "authenticateLogin")
-    fun authenticateLogin(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
+    fun authenticateLogin(
+        email: String,
+        password: String,
+        onCompleteListener: (Task<AuthResult>) -> Unit
+    ) {
         //authenticate user
         //auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
     }

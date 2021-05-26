@@ -15,10 +15,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
-import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
-import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_exercise_list.*
 
@@ -91,14 +89,14 @@ class ExerciseListActivity : AppCompatActivity() {
         }
         downloadExerciseButton.setOnClickListener {
             Toast.makeText(this, "downloadExerciseButton", Toast.LENGTH_SHORT).show()
-        //TODO Implement
+            //TODO Implement
         }
 
         setupRecyclerView()
     }
 
     fun toggleDownloadMode() {
-        presenter.session.firebaseMode = !presenter.session.firebaseMode
+        session.firebaseMode = !session.firebaseMode
         setupRecyclerView()
     }
 
@@ -108,7 +106,8 @@ class ExerciseListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val routineList: LiveData<List<Exercise>>? = if (presenter.session.firebaseMode) presenter.session.repository.downloadRemoteExercises() else presenter.session.activeRoutine?.exercises
+        val routineList: LiveData<List<Exercise>>? =
+            if (session.firebaseMode) session.repository.downloadRemoteExercises() else session.activeRoutine?.exercises
         routineList!!.observe(this, { routines ->
             routines?.let { adapter.submitList(it) }
         })
@@ -121,9 +120,9 @@ class ExerciseListActivity : AppCompatActivity() {
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
             val exercise = v.tag as Exercise
 
-                parentActivity.presenter.session.activeExercise = exercise
-                val intent = Intent(v.context, ExerciseDetailActivity::class.java)
-                v.context.startActivity(intent)
+            parentActivity.session.activeExercise = exercise
+            val intent = Intent(v.context, ExerciseDetailActivity::class.java)
+            v.context.startActivity(intent)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
@@ -135,7 +134,8 @@ class ExerciseListActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
             val exercise = getItem(position)
             //holder.bind("id: " + item.id + " name: " + item.name)
-            holder.idView.text = "id: " + exercise.id    //fixme placeholder stuff for database testing
+            holder.idView.text =
+                "id: " + exercise.id    //fixme placeholder stuff for database testing
             holder.contentView.text = " name: " + exercise.name
 
             with(holder.itemView) {
@@ -243,6 +243,7 @@ class ExerciseListActivity : AppCompatActivity() {
 
         }
     }
+
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
