@@ -31,8 +31,8 @@ data class Exercise(
 ) {
     constructor() : this(0, 0,"", ArrayList(),LinkedHashMap(),"")
 
-//    @Ignore
-//    constructor(name: String) : this(0, 0, name, ArrayList())
+    @Ignore
+    constructor(name: String) : this(0, 0, name, ArrayList(), LinkedHashMap(), "")
 //
 //    @Ignore
 //    constructor(name: String, tags: List<String>, exercises: List<Exercise>) : this(0, 0, name, tags)

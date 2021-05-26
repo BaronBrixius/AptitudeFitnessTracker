@@ -123,7 +123,9 @@ class Presenter : Application() {
         startActivity(intent)
     }
 
-
+    fun addNewItemButtonPressed() {
+        TODO("Not yet implemented")
+    }
 
 
     /**

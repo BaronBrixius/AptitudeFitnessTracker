@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Routine
-import com.example.aptitudefitnesstracker.application.ThemeUtils
 import com.example.aptitudefitnesstracker.dummy.DummyContent
 import com.example.aptitudefitnesstracker.presentation.Presenter
+import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -145,14 +145,14 @@ class ExerciseListActivity : AppCompatActivity() {
     /* START HERE For create Setting option menu  */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_setting, menu)
+        inflater.inflate(R.menu.menu_settings, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.actionSetting -> {
-                startActivity(Intent(this@ExerciseListActivity, SettingActivity::class.java))
+                startActivity(Intent(this@ExerciseListActivity, SettingsActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
