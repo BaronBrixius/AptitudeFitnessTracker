@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.aptitudefitnesstracker.R
 import com.google.android.material.appbar.CollapsingToolbarLayout
@@ -22,7 +21,8 @@ class ExerciseDetailFragment : Fragment() {
 
         arguments?.let {
             if (it.containsKey(ARG_ITEM_ID)) {
-                activity?.findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout)?.title = "Item Detail ;D"
+                activity?.findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout)?.title =
+                    "Item Detail ;D"
             }
         }
     }
