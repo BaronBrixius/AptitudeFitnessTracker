@@ -20,16 +20,20 @@ data class Exercise(
     val id: Int,
     @ColumnInfo(name = "routineId", index = true)
     val routineId: Int,
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = "name", defaultValue = "")
     var name: String,
     @ColumnInfo(name = "tags", defaultValue = "")
-    var tags: List<String>
+    var tags: List<String>,
+    @ColumnInfo(name = "details", defaultValue = "")
+    var details: LinkedHashMap<String, Double>,
+    @ColumnInfo(name = "notes", defaultValue = "")
+    var notes: String
 ) {
-    constructor() : this(0, 0,"", ArrayList())
+    constructor() : this(0, 0,"", ArrayList(),LinkedHashMap(),"")
 
-    @Ignore
-    constructor(name: String) : this(0, 0, name, ArrayList())
-
-    @Ignore
-    constructor(name: String, tags: List<String>, exercises: List<Exercise>) : this(0, 0, name, tags)
+//    @Ignore
+//    constructor(name: String) : this(0, 0, name, ArrayList())
+//
+//    @Ignore
+//    constructor(name: String, tags: List<String>, exercises: List<Exercise>) : this(0, 0, name, tags)
 }
