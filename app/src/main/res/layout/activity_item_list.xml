@@ -19,31 +19,76 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/Theme.AptitudeFitnessTracker.PopupOverlay" />
 
-        <Button
-            android:id="@+id/AccountSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Account Settings" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
-        android:layout_marginTop="110sp"
+        android:layout_marginTop="70sp"
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/item_list" />
+        <include
+            layout="@layout/item_list"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
 
     </FrameLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/newExerciseFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:maxImageSize="50dp"
-        app:srcCompat="@drawable/plus" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/newRoutineFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="27dp"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:maxImageSize="50dp"
+            app:srcCompat="@drawable/ic_baseline_add_24"
+            tools:visibility="visible" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/newExerciseFromRoutineButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/newRoutineFAB"
+            app:layout_constraintEnd_toEndOf="@+id/newRoutineFAB"
+            app:srcCompat="@drawable/ic_baseline_create_new_folder_24" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/downloadExerciseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/newExerciseFromRoutineButton"
+            app:layout_constraintEnd_toEndOf="@+id/newExerciseFromRoutineButton"
+            app:srcCompat="@drawable/ic_baseline_cloud_download_24" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/newExerciseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/downloadExerciseButton"
+            app:layout_constraintEnd_toEndOf="@+id/downloadExerciseButton"
+            app:srcCompat="@drawable/ic_baseline_fiber_new_24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

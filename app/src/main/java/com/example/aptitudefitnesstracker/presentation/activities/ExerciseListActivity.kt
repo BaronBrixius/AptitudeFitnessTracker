@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
+import com.example.aptitudefitnesstracker.application.Routine
+import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -70,7 +72,7 @@ class ExerciseListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_item_list)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toolbar.title = title
+        toolbar.title = "Exercises"
 
         findViewById<FloatingActionButton>(R.id.newExerciseFAB).setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -178,8 +180,12 @@ class ExerciseListActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.actionSetting -> {
+            R.id.actionAppSettings -> {
                 startActivity(Intent(this@ExerciseListActivity, SettingsActivity::class.java))
+                true
+            }
+            R.id.AccountSettingsItem -> {
+                startActivity(Intent(this@ExerciseListActivity, AccountActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -195,11 +201,10 @@ class ExerciseListActivity : AppCompatActivity() {
 //    }
 
     private fun newExerciseFABClicked() {
-        toggleDownloadMode()
-//        setVisibility(clicked)
-//        setAnimation(clicked)
-//        clicked = !clicked
-//        setClickable(clicked)
+        setVisibility(clicked)
+        setAnimation(clicked)
+        clicked = !clicked
+        setClickable(clicked)
     }
 
     private fun setVisibility(clicked: Boolean) {
