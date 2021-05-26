@@ -47,7 +47,7 @@ class RoutineListActivity : AppCompatActivity() {
         toolbar.title = title
 
         //Add new
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
+        findViewById<FloatingActionButton>(R.id.newExerciseFAB).setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
             presenter.addNewRoutineButtonPressed()
