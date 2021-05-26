@@ -104,7 +104,10 @@ class ExerciseListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val routineList: LiveData<List<Exercise>>? =
-            if (session.firebaseMode) session.downloadRemoteExercises() else session.activeRoutine?.exercises
+            if (session.firebaseMode)
+                session.downloadRemoteExercises()
+            else
+                session.activeRoutine?.exercises
         routineList!!.observe(this, { routines ->
             routines?.let { adapter.submitList(it) }
         })

@@ -50,7 +50,21 @@ class RoutineListActivity : AppCompatActivity() {
         findViewById<FloatingActionButton>(R.id.newRoutineFAB).setOnClickListener { view ->
             newRoutineFABClicked()
         }
+
+        findViewById<FloatingActionButton>(R.id.downloadExerciseButton).setOnClickListener { view ->
+            downloadButtonClicked()
+        }
+
         setupRecyclerView()
+    }
+
+    private fun downloadButtonClicked() {
+        if (session.userIsLoggedIn()) {
+            toggleDownloadMode()
+        }
+        else {
+            startActivity(Intent(this@RoutineListActivity, LoginActivity::class.java))
+        }
     }
 
     fun toggleDownloadMode() {
@@ -65,7 +79,10 @@ class RoutineListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val routineList: LiveData<List<Routine>> =
-            if (session.firebaseMode) session.downloadRemoteRoutines() else session.getLocalRoutines()
+            if (session.firebaseMode)
+                session.downloadRemoteRoutines()
+            else
+                session.getLocalRoutines()
         routineList.observe(this, { routines ->
             routines?.let { adapter.submitList(it) }
         })

@@ -8,6 +8,7 @@ import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -15,9 +16,14 @@ import kotlinx.coroutines.launch
 
 class Session : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())
+    private val auth by lazy {
+        val auth = FirebaseAuth.getInstance()
+        auth.addAuthStateListener { loggedInUser = auth.currentUser }
+        auth
+    }
     private val localDao by lazy { LocalRoomDatabase.getDatabase(this, applicationScope).iDao() }
     private val remoteDao by lazy { RemoteFirebaseDatabase() }
-    var loggedInUser: User? = null
+    var loggedInUser: FirebaseUser? = null
     var firebaseMode: Boolean = false
     var activeRoutine: Routine? = null
     var activeExercise: Exercise? = null
@@ -104,13 +110,13 @@ class Session : Application() {
         return loggedInUser != null
     }
 
-    /*
-    authenticateLogin()  still needs to be refactored into presenter and session classes.
-     */
-
     @AddTrace(name = "authenticateLogin")
     fun authenticateLogin(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
-        val auth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
+    }
+
+    fun signOut() {
+        auth.signOut()
+        firebaseMode = false
     }
 }
