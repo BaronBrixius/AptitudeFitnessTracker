@@ -17,7 +17,6 @@ import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
-import com.example.aptitudefitnesstracker.dummy.DummyContent
 import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -174,8 +173,12 @@ class ExerciseListActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.actionSetting -> {
+            R.id.actionAppSettings -> {
                 startActivity(Intent(this@ExerciseListActivity, SettingsActivity::class.java))
+                true
+            }
+            R.id.AccountSettingsItem -> {
+                startActivity(Intent(this@ExerciseListActivity, AccountActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

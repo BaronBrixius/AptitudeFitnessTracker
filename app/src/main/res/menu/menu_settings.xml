@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/actionSetting"
+        android:id="@+id/actionAppSettings"
         android:orderInCategory="100"
-        android:title="settings"
+        android:title="App Settings"
         app:showAsAction="collapseActionView" />
+    <item android:title="Account Settings"
+        android:id="@+id/AccountSettingsItem"/>
 
 </menu>

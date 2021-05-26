@@ -3,6 +3,8 @@ package com.example.aptitudefitnesstracker.presentation.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -17,6 +19,11 @@ import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.activity_exercise_list.*
+import kotlinx.android.synthetic.main.activity_exercise_list.downloadExerciseButton
+import kotlinx.android.synthetic.main.activity_exercise_list.newExerciseButton
+import kotlinx.android.synthetic.main.activity_exercise_list.newExerciseFromRoutineButton
+import kotlinx.android.synthetic.main.activity_item_list.*
 
 
 /**
@@ -47,16 +54,12 @@ class RoutineListActivity : AppCompatActivity() {
         toolbar.title = title
 
         //Add new
-        findViewById<FloatingActionButton>(R.id.newExerciseFAB).setOnClickListener { view ->
+        findViewById<FloatingActionButton>(R.id.newRoutineFAB).setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
-            presenter.addNewRoutineButtonPressed()
+//            presenter.addNewRoutineButtonPressed()
 
-        }
-
-        //Click "account settings" button to go to account settings (AccountActivity)
-        findViewById<Button>(R.id.AccountSettings).setOnClickListener { view ->
-            presenter.accountSettingButton()
+            newRoutineFABClicked()
         }
 
         if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
@@ -147,8 +150,12 @@ class RoutineListActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.actionSetting -> {
+            R.id.actionAppSettings -> {
                 startActivity(Intent(this@RoutineListActivity, SettingsActivity::class.java))
+                true
+            }
+            R.id.AccountSettingsItem -> {
+                startActivity(Intent(this@RoutineListActivity, AccountActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -162,4 +169,78 @@ class RoutineListActivity : AppCompatActivity() {
 //        finish()
 //        finishAffinity()
 //    }
+
+    private fun newRoutineFABClicked() {
+        setVisibility(clicked)
+        setAnimation(clicked)
+        clicked = !clicked
+        setClickable(clicked)
+    }
+
+    private fun setVisibility(clicked: Boolean) {
+        if (!clicked) {
+            newExerciseButton.visibility = View.VISIBLE
+            newExerciseFromRoutineButton.visibility = View.VISIBLE
+            downloadExerciseButton.visibility = View.VISIBLE
+        } else {
+            newExerciseButton.visibility = View.INVISIBLE
+            newExerciseFromRoutineButton.visibility = View.INVISIBLE
+            downloadExerciseButton.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun setAnimation(clicked: Boolean) {
+        if (!clicked) {
+            newExerciseButton.startAnimation(fromBott)
+            newExerciseFromRoutineButton.startAnimation(fromBott)
+            downloadExerciseButton.startAnimation(fromBott)
+            newRoutineFAB.startAnimation(rotateOpen)
+        } else {
+            newExerciseButton.startAnimation(toBott)
+            newExerciseFromRoutineButton.startAnimation(toBott)
+            downloadExerciseButton.startAnimation(toBott)
+            newRoutineFAB.startAnimation(rotateClose)
+        }
+    }
+
+    private fun setClickable(clicked: Boolean) {
+        if (!clicked) {
+            newExerciseButton.isClickable = false
+            newExerciseFromRoutineButton.isClickable = false
+            downloadExerciseButton.isClickable = false
+
+
+        } else {
+            newExerciseButton.isClickable = true
+            newExerciseFromRoutineButton.isClickable = true
+            downloadExerciseButton.isClickable = true
+
+        }
+    }
+    private val rotateOpen: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.rotate_open_anim
+        )
+    }
+    private val rotateClose: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.rotate_close_anim
+        )
+    }
+    private val fromBott: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.from_bott_anim
+        )
+    }
+    private val toBott: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.to_bott_anim
+        )
+    }
+    private var clicked = false
+
 }
