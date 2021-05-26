@@ -15,7 +15,7 @@ import com.google.firebase.auth.AuthResult
 //singleton class to manage GUI stuff and link to application data
 class Presenter : Application() {
     val session: Session by lazy { Session(this) }
-    val routineList: LiveData<List<Routine>> by lazy { session.repository.localRoutines }
+    val routineList: LiveData<List<Routine>> by lazy { session.getLocalRoutines() }
 
     /**
     RoutineListActivity

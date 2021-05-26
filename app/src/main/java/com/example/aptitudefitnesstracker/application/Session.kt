@@ -20,6 +20,19 @@ class Session(context: Context) {
     val remoteDao by lazy { RemoteFirebaseDatabase() }
     var loggedInUser: User? = null
 
+    fun getLocalRoutines(): LiveData<List<Routine>> {
+        return localDao.getAllRoutines().map {
+            it.map { routine ->
+                addExercisesToRoutine(routine)
+            }
+        }
+    }
+
+    private fun addExercisesToRoutine(routine: Routine): Routine {
+        routine.exercises = localDao.getExercisesInRoutine(routine.id)
+        return routine
+    }
+
     fun addExerciseToRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
         TODO()
     }
