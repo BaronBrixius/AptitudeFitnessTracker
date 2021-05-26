@@ -19,7 +19,7 @@ data class Exercise(
     @Exclude    //local id isn't needed for Firebase shares
     val id: Int,
     @ColumnInfo(name = "routineId", index = true)
-    val routineId: Int,
+    var routineId: Int,
     @ColumnInfo(name = "name", defaultValue = "")
     var name: String,
     @ColumnInfo(name = "tags", defaultValue = "")

@@ -54,12 +54,10 @@ abstract class LocalRoomDatabase : RoomDatabase() {
 
         suspend fun populateDatabase(localDao: ILocalDao) {
             // test routines
-            localDao.deleteAllRoutines()
             localDao.insertRoutine(Routine("Push"))
             localDao.insertRoutine(Routine("Pull!"))
             localDao.insertExercise(Exercise(0, 1, "Exercise", ArrayList(), LinkedHashMap(), ""))
         }
-
     }
 
     // Migration Specs
