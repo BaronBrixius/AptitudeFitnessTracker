@@ -6,7 +6,6 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Routine
-import com.example.aptitudefitnesstracker.application.ThemeUtils
+import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.example.aptitudefitnesstracker.dummy.DummyContent
 import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
@@ -43,31 +42,20 @@ class ExerciseListActivity : AppCompatActivity() {
         ThemeUtils.setThemeApp(this) // for set theme
         ThemeUtils.setAppFont(this) // for set font size
         ThemeUtils.setAppFontFamily(this) // for set font family
-        setContentView(R.layout.activity_item_list)
+        setContentView(R.layout.activity_exercise_list)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toolbar.title = title
+        toolbar.title = "Exercises"
 
         //Add new
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
-            presenter.addNewItemButtonPressed()
+            presenter.addNewExerciseButtonPressed()
 
         }
 
-        //Click "account settings" button to go to account settings (AccountActivity)
-        findViewById<Button>(R.id.AccountSettings).setOnClickListener { view ->
-            presenter.accountSettingButton()
-        }
 
-        if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            twoPane = true
-        }
         setupRecyclerView(findViewById(R.id.item_list))
     }
 
@@ -145,14 +133,14 @@ class ExerciseListActivity : AppCompatActivity() {
     /* START HERE For create Setting option menu  */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_setting, menu)
+        inflater.inflate(R.menu.menu_settings, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.actionSetting -> {
-                startActivity(Intent(this@ExerciseListActivity, SettingActivity::class.java))
+                startActivity(Intent(this@ExerciseListActivity, SettingsActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -161,9 +149,9 @@ class ExerciseListActivity : AppCompatActivity() {
 
     /* END HERE For create Setting option menu */
     /* for destroy all previous activity */
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
-        finishAffinity()
-    }
+//    override fun onBackPressed() {
+//        super.onBackPressed()
+//        finish()
+//        finishAffinity()
+//    }
 }

@@ -15,9 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
-import com.example.aptitudefitnesstracker.dummy.DummyContent
 import com.example.aptitudefitnesstracker.presentation.Presenter
-import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -52,7 +50,7 @@ class RoutineListActivity : AppCompatActivity() {
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
-            presenter.addNewItemButtonPressed()
+            presenter.addNewRoutineButtonPressed()
 
         }
 
@@ -89,18 +87,11 @@ class RoutineListActivity : AppCompatActivity() {
 
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
             val item = v.tag as Routine
-            if (twoPane) {
 
-                presenter.routineSelected(item)
-                Toast.makeText(v.context, "Routine clicked", Toast.LENGTH_SHORT).show()
+            //presenter.addNewExerciseButtonPressed()
+            val intent = Intent(v.context, ExerciseListActivity::class.java)
+            v.context.startActivity(intent)
 
-
-            } else {
-                val intent = Intent(v.context, ExerciseDetailActivity::class.java).apply {
-                    putExtra(ExerciseDetailFragment.ARG_ITEM_ID, item.id)
-                }
-                v.context.startActivity(intent)
-            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineViewHolder {
@@ -112,7 +103,8 @@ class RoutineListActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
             val routine = getItem(position)
             //holder.bind("id: " + item.id + " name: " + item.name)
-            holder.idView.text = "id: " + routine.id    //fixme placeholder stuff for database testing
+            holder.idView.text =
+                "id: " + routine.id    //fixme placeholder stuff for database testing
             holder.contentView.text = " name: " + routine.name
 
             with(holder.itemView) {
@@ -125,9 +117,11 @@ class RoutineListActivity : AppCompatActivity() {
             val idView: TextView = view.findViewById(R.id.id_text)
             val contentView: TextView =
                 view.findViewById(R.id.content) //no clue what this is, feel free to use it
+
             /*fun bind(text: String?) {
                 idView.text = text
             }*/
+
         }
 
         class RoutineComparator : DiffUtil.ItemCallback<Routine>() {
@@ -147,14 +141,14 @@ class RoutineListActivity : AppCompatActivity() {
     /* START HERE For create Setting option menu  */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_setting, menu)
+        inflater.inflate(R.menu.menu_settings, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.actionSetting -> {
-                startActivity(Intent(this@RoutineListActivity, SettingActivity::class.java))
+                startActivity(Intent(this@RoutineListActivity, SettingsActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -163,9 +157,9 @@ class RoutineListActivity : AppCompatActivity() {
 
     /* END HERE For create Setting option menu */
     /* for destroy all previous activity */
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
-        finishAffinity()
-    }
+//    override fun onBackPressed() {
+//        super.onBackPressed()
+//        finish()
+//        finishAffinity()
+//    }
 }

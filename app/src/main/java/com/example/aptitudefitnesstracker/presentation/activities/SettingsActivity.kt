@@ -12,9 +12,9 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.presentation.DialogUtils
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
-import kotlinx.android.synthetic.main.activity_setting.*
+import kotlinx.android.synthetic.main.activity_settings.*
 
-class SettingActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
 
     /*Set context of the current class*/
     private var mActivity: Activity? = null
@@ -24,7 +24,7 @@ class SettingActivity : AppCompatActivity() {
         ThemeUtils.setThemeApp(this)
         ThemeUtils.setAppFont(this)
         ThemeUtils.setAppFontFamily(this)
-        setContentView(R.layout.activity_setting)
+        setContentView(R.layout.activity_settings)
         mActivity = this as Activity
 
         setSupportActionBar(toolbar)
@@ -48,7 +48,7 @@ class SettingActivity : AppCompatActivity() {
     private fun setTheme() {
         val builder: MaterialDialog.Builder =
             DialogUtils.createCustomDialogWithoutContent(
-                this@SettingActivity,
+                this@SettingsActivity,
                 R.string.theme_edit
             )
         val materialDialog: MaterialDialog = builder.customView(R.layout.dialog_theme_default, true)
@@ -58,7 +58,7 @@ class SettingActivity : AppCompatActivity() {
                 val selectedId = radioGroup.checkedRadioButtonId
                 val radioButton = view.findViewById<RadioButton>(selectedId)
                 val themeName = radioButton.text.toString()
-                ThemeUtils.saveTheme(this@SettingActivity, themeName)
+                ThemeUtils.saveTheme(this@SettingsActivity, themeName)
                 mActivity!!.recreate()
             }
             .build()
@@ -66,7 +66,7 @@ class SettingActivity : AppCompatActivity() {
             materialDialog.customView!!.findViewById(R.id.radio_group_themes)
         val rb = radioGroup
             .getChildAt(
-                ThemeUtils.getSelectedThemePosition(this@SettingActivity)
+                ThemeUtils.getSelectedThemePosition(this@SettingsActivity)
             ) as RadioButton
         rb.isChecked = true
         materialDialog.show()
@@ -78,7 +78,7 @@ class SettingActivity : AppCompatActivity() {
     private fun setAppFont() {
         val builder: MaterialDialog.Builder =
             DialogUtils.createCustomDialogWithoutContent(
-                this@SettingActivity,
+                this@SettingsActivity,
                 R.string.font_edit
             )
         val materialDialog: MaterialDialog = builder.customView(R.layout.dialog_font_size, true)
@@ -89,7 +89,7 @@ class SettingActivity : AppCompatActivity() {
                 val radioFontButton = view.findViewById<RadioButton>(selectedFontId)
                 val fontName = radioFontButton.text.toString()
                 Log.e("PLPLP", fontName)
-                ThemeUtils.saveFontSize(this@SettingActivity, fontName)
+                ThemeUtils.saveFontSize(this@SettingsActivity, fontName)
                 mActivity!!.recreate()
             }
             .build()
@@ -97,7 +97,7 @@ class SettingActivity : AppCompatActivity() {
             materialDialog.customView!!.findViewById(R.id.radio_group_font)
         val rbutton = radioGroupFont
             .getChildAt(
-                ThemeUtils.getSelectedFontPosition(this@SettingActivity)
+                ThemeUtils.getSelectedFontPosition(this@SettingsActivity)
             ) as RadioButton
         rbutton.isChecked = true
         materialDialog.show()
@@ -109,7 +109,7 @@ class SettingActivity : AppCompatActivity() {
     private fun setFontFamily() {
         val builder: MaterialDialog.Builder =
             DialogUtils.createCustomDialogWithoutContent(
-                this@SettingActivity,
+                this@SettingsActivity,
                 R.string.edit_font_family
             )
         val materialDialog: MaterialDialog = builder.customView(R.layout.dialog_font_family, true)
@@ -120,7 +120,7 @@ class SettingActivity : AppCompatActivity() {
                 val radioFontButton = view.findViewById<RadioButton>(selectedFontId)
                 val fontFamilyName = radioFontButton.text.toString()
                 Log.e("PLPLP", fontFamilyName)
-                ThemeUtils.saveFontFamily(this@SettingActivity, fontFamilyName)
+                ThemeUtils.saveFontFamily(this@SettingsActivity, fontFamilyName)
                 mActivity!!.recreate()
             }
             .build()
@@ -128,7 +128,7 @@ class SettingActivity : AppCompatActivity() {
             materialDialog.customView!!.findViewById(R.id.radio_group_fontFamily)
         val rbutton = radioGroupFont
             .getChildAt(
-                ThemeUtils.getSelectedFontFamilyPosition(this@SettingActivity)
+                ThemeUtils.getSelectedFontFamilyPosition(this@SettingsActivity)
             ) as RadioButton
         rbutton.isChecked = true
         materialDialog.show()
@@ -136,7 +136,7 @@ class SettingActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(this@SettingActivity, RoutineListActivity::class.java))
+        startActivity(Intent(this@SettingsActivity, RoutineListActivity::class.java))
         finish()
     }
 }

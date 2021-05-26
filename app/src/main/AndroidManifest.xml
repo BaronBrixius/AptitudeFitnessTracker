@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeWhite">
         <activity
-            android:name=".presentation.activities.SettingActivity"
+            android:name=".presentation.activities.SettingsActivity"
             android:label="@string/app_name" />
         <!-- <activity android:name=".presentation.activities.ResetPasswordActivity"></activity> -->
         <activity
@@ -35,8 +35,15 @@
         <activity
             android:name=".presentation.activities.AccountActivity"
             android:label="@string/app_name" />
+
         <activity
             android:name=".presentation.activities.RoutineListActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".presentation.activities.ExerciseListActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".presentation.activities.AddExerciseActivity"
             android:label="@string/app_name" />
         <activity
             android:name=".presentation.activities.ExerciseDetailActivity"

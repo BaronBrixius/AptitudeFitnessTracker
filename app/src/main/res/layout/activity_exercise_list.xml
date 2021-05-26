@@ -19,12 +19,6 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/Theme.AptitudeFitnessTracker.PopupOverlay" />
 
-        <Button
-            android:id="@+id/AccountSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Account Settings" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
@@ -33,7 +27,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/item_list" />
+        <include
+            layout="@layout/item_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 
@@ -44,6 +41,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:maxImageSize="50dp"
-        app:srcCompat="@drawable/plus" />
+        app:srcCompat="@drawable/plus"
+        tools:visibility="visible" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
