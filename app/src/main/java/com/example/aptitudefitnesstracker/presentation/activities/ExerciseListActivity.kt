@@ -3,6 +3,8 @@ package com.example.aptitudefitnesstracker.presentation.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -12,12 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
+import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.example.aptitudefitnesstracker.dummy.DummyContent
 import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.activity_exercise_list.*
 
 
 /**
@@ -36,6 +40,31 @@ class ExerciseListActivity : AppCompatActivity() {
      * device.
      */
     private var twoPane: Boolean = false
+    private val rotateOpen: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.rotate_open_anim
+        )
+    }
+    private val rotateClose: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.rotate_close_anim
+        )
+    }
+    private val fromBott: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.from_bott_anim
+        )
+    }
+    private val toBott: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.to_bott_anim
+        )
+    }
+    private var clicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,18 +77,33 @@ class ExerciseListActivity : AppCompatActivity() {
         toolbar.title = "Exercises"
 
         //Add new
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
+        findViewById<FloatingActionButton>(R.id.newExerciseFAB).setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
-            presenter.addNewExerciseButtonPressed()
+//            presenter.addNewExerciseButtonPressed()
+            newExerciseFABClicked()
 
+        }
+
+        newExerciseButton.setOnClickListener {
+            Toast.makeText(this, "New Exercise Button", Toast.LENGTH_SHORT).show()
+            //TODO Implement
+        }
+        newExerciseFromRoutineButton.setOnClickListener {
+            Toast.makeText(this, "newExerciseFromRoutineButton", Toast.LENGTH_SHORT).show()
+            //TODO Implement
+        }
+        downloadExerciseButton.setOnClickListener {
+            Toast.makeText(this, "downloadExerciseButton", Toast.LENGTH_SHORT).show()
+        //TODO Implement
         }
 
 
         setupRecyclerView(findViewById(R.id.item_list))
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView) {
+
+    fun setupRecyclerView(recyclerView: RecyclerView) {
         val adapter = ExerciseRecyclerViewAdapter(this, twoPane)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -69,29 +113,20 @@ class ExerciseListActivity : AppCompatActivity() {
         })
     }
 
+
     class ExerciseRecyclerViewAdapter(
         private val parentActivity: ExerciseListActivity,
         private val twoPane: Boolean
     ) :
         ListAdapter<Routine, ExerciseRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyContent.DummyItem
-            if (twoPane) {
-                val fragment = ExerciseDetailFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ExerciseDetailFragment.ARG_ITEM_ID, item.id)
-                    }
-                }
-                parentActivity.supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.item_detail_container, fragment)
-                    .commit()
-            } else {
+            val exercise = v.tag as Exercise
+
                 val intent = Intent(v.context, ExerciseDetailActivity::class.java).apply {
-                    putExtra(ExerciseDetailFragment.ARG_ITEM_ID, item.id)
+                    putExtra(ExerciseDetailFragment.ARG_ITEM_ID, exercise.id)
                 }
                 v.context.startActivity(intent)
-            }
+
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineViewHolder {
@@ -154,4 +189,52 @@ class ExerciseListActivity : AppCompatActivity() {
 //        finish()
 //        finishAffinity()
 //    }
+
+    private fun newExerciseFABClicked() {
+        setVisibility(clicked)
+        setAnimation(clicked)
+        clicked = !clicked
+        setClickable(clicked)
+    }
+
+    private fun setVisibility(clicked: Boolean) {
+        if (!clicked) {
+            newExerciseButton.visibility = View.VISIBLE
+            newExerciseFromRoutineButton.visibility = View.VISIBLE
+            downloadExerciseButton.visibility = View.VISIBLE
+        } else {
+            newExerciseButton.visibility = View.INVISIBLE
+            newExerciseFromRoutineButton.visibility = View.INVISIBLE
+            downloadExerciseButton.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun setAnimation(clicked: Boolean) {
+        if (!clicked) {
+            newExerciseButton.startAnimation(fromBott)
+            newExerciseFromRoutineButton.startAnimation(fromBott)
+            downloadExerciseButton.startAnimation(fromBott)
+            newExerciseFAB.startAnimation(rotateOpen)
+        } else {
+            newExerciseButton.startAnimation(toBott)
+            newExerciseFromRoutineButton.startAnimation(toBott)
+            downloadExerciseButton.startAnimation(toBott)
+            newExerciseFAB.startAnimation(rotateClose)
+        }
+    }
+
+    private fun setClickable(clicked: Boolean) {
+        if (!clicked) {
+            newExerciseButton.isClickable = false
+            newExerciseFromRoutineButton.isClickable = false
+            downloadExerciseButton.isClickable = false
+
+
+        } else {
+            newExerciseButton.isClickable = true
+            newExerciseFromRoutineButton.isClickable = true
+            downloadExerciseButton.isClickable = true
+
+        }
+    }
 }
