@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Routine
-import com.example.aptitudefitnesstracker.presentation.Presenter
+import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.activity_exercise_list.*
  * item details side-by-side using two vertical panes.
  */
 class ExerciseListActivity : AppCompatActivity() {
-    private val presenter: Presenter by lazy { application as Presenter }
+    private val session: Session by lazy { application as Session }
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -82,7 +82,8 @@ class ExerciseListActivity : AppCompatActivity() {
 //                    .setAction("Action", null).show()
 //            presenter.addNewExerciseButtonPressed()
             newExerciseFABClicked()
-            presenter.addNewItemButtonPressed()
+            TODO("Implement addNewItemButtonPressed")
+            //presenter.addNewItemButtonPressed()
 
         }
 
@@ -101,7 +102,12 @@ class ExerciseListActivity : AppCompatActivity() {
 
         //Click "account settings" button to go to account settings (AccountActivity)
         findViewById<Button>(R.id.AccountSettings).setOnClickListener { view ->
-            presenter.accountSettingButton()
+            val intent = Intent(
+                this,
+                AccountActivity::class.java
+            ) //TODO replace "DatabaseTestActivity" with appropriate class later
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
 
         if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
@@ -120,7 +126,7 @@ class ExerciseListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        presenter.routineList.observe(this, Observer { routines ->
+        session.getLocalRoutines().observe(this, Observer { routines ->
             routines?.let { adapter.submitList(it) }
         })
     }

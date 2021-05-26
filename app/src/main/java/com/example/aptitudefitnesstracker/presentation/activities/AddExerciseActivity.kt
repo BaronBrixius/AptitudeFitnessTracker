@@ -3,18 +3,14 @@ package com.example.aptitudefitnesstracker.presentation.activities
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
-import com.example.aptitudefitnesstracker.application.Routine
+import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
-import com.example.aptitudefitnesstracker.presentation.Presenter
 import kotlinx.android.synthetic.main.activity_add_exercise.*
 
 class AddExerciseActivity : AppCompatActivity() {
@@ -22,9 +18,7 @@ class AddExerciseActivity : AppCompatActivity() {
     private var inputName: EditText? = null
     private var btnSave: Button? = null
     private var userId: String? = null
-
-
-
+    private val session: Session by lazy { application as Session }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,14 +61,12 @@ class AddExerciseActivity : AppCompatActivity() {
      * Creating new user node under 'users'
      */
     private fun createExercise(name: String) {
-        val presenter = application as Presenter
-
         if (name.isNotEmpty()) {
-            presenter.createExercise(Exercise(name))
-            Toast.makeText(presenter, "Exercise added", Toast.LENGTH_LONG).show()
+            session.insertExercise(Exercise(name))
+            Toast.makeText(this, "Exercise added", Toast.LENGTH_LONG).show()
         } else {
-            presenter.deleteAllRoutines() //todo let's not leave this in for final release eh?
-            Toast.makeText(presenter, "Deleted all routines", Toast.LENGTH_LONG).show()
+            session.deleteAllRoutines() //todo let's not leave this in for final release eh?
+            Toast.makeText(this, "Deleted all routines", Toast.LENGTH_LONG).show()
         }
     }
 

@@ -10,10 +10,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Routine
+import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
-import com.example.aptitudefitnesstracker.presentation.Presenter
+
 
 class DatabaseTestActivity : AppCompatActivity() {
+    private val session: Session by lazy { application as Session }
     private var txtDetails: TextView? = null
     private var inputName: EditText? = null
     private var btnSave: Button? = null
@@ -60,14 +62,12 @@ class DatabaseTestActivity : AppCompatActivity() {
      * Creating new user node under 'users'
      */
     private fun createRoutine(name: String) {
-        val presenter = application as Presenter
-
         if (name.isNotEmpty()) {
-            presenter.createRoutine(Routine(name))
-            Toast.makeText(presenter, "Routine added", Toast.LENGTH_LONG).show()
+            session.insertRoutine(Routine(name))
+            Toast.makeText(this, "Routine added", Toast.LENGTH_LONG).show()
         } else {
-            presenter.deleteAllRoutines() //todo let's not leave this in for final release eh?
-            Toast.makeText(presenter, "Deleted all routines", Toast.LENGTH_LONG).show()
+            session.deleteAllRoutines() //todo let's not leave this in for final release eh?
+            Toast.makeText(this, "Deleted all routines", Toast.LENGTH_LONG).show()
         }
     }
 

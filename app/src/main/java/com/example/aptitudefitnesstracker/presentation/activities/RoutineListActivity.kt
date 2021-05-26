@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Routine
+import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
-import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -28,7 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  * item details side-by-side using two vertical panes.
  */
 class RoutineListActivity : AppCompatActivity() {
-    private val presenter: Presenter by lazy { application as Presenter }
+    private val session: Session by lazy { application as Session }
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -50,13 +50,23 @@ class RoutineListActivity : AppCompatActivity() {
         findViewById<FloatingActionButton>(R.id.newExerciseFAB).setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
-            presenter.addNewRoutineButtonPressed()
+            val intent = Intent(
+                this,
+                DatabaseTestActivity::class.java
+            ) //TODO replace "DatabaseTestActivity" with appropriate class later
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
 
         }
 
         //Click "account settings" button to go to account settings (AccountActivity)
         findViewById<Button>(R.id.AccountSettings).setOnClickListener { view ->
-            presenter.accountSettingButton()
+            val intent = Intent(
+                this,
+                AccountActivity::class.java
+            ) //TODO replace "DatabaseTestActivity" with appropriate class later
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
 
         if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
@@ -70,18 +80,18 @@ class RoutineListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        val adapter = RoutineRecyclerViewAdapter(this, twoPane, presenter)
+        val adapter = RoutineRecyclerViewAdapter(this, twoPane)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        presenter.routineList.observe(this, Observer { routines ->
+        session.getLocalRoutines().observe(this, Observer { routines ->
             routines?.let { adapter.submitList(it) }
         })
     }
 
     class RoutineRecyclerViewAdapter(
         private val parentActivity: RoutineListActivity,
-        private val twoPane: Boolean, val presenter: Presenter
+        private val twoPane: Boolean
     ) :
         ListAdapter<Routine, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
 

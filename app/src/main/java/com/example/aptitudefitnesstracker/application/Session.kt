@@ -1,5 +1,6 @@
 package com.example.aptitudefitnesstracker.application
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
@@ -13,10 +14,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class Session(context: Context) {
+class Session : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())
-    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val localDao by lazy { LocalRoomDatabase.getDatabase(context, applicationScope).iDao() }
+    //private var auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val localDao by lazy { LocalRoomDatabase.getDatabase(this, applicationScope).iDao() }
     val remoteDao by lazy { RemoteFirebaseDatabase() }
     var loggedInUser: User? = null
 
@@ -107,6 +108,6 @@ class Session(context: Context) {
     @AddTrace(name = "authenticateLogin")
     fun authenticateLogin(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
         //authenticate user
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
+        //auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
     }
 }
