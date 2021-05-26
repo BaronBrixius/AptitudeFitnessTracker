@@ -69,7 +69,7 @@ class ExerciseListActivity : AppCompatActivity() {
         ThemeUtils.setThemeApp(this) // for set theme
         ThemeUtils.setAppFont(this) // for set font size
         ThemeUtils.setAppFontFamily(this) // for set font family
-        setContentView(R.layout.activity_item_list)
+        setContentView(R.layout.activity_exercise_list)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.title = "Exercises"
@@ -80,6 +80,8 @@ class ExerciseListActivity : AppCompatActivity() {
 //            presenter.addNewExerciseButtonPressed()
             newExerciseFABClicked()
         }
+
+
 
         newExerciseButton.setOnClickListener {
             Toast.makeText(this, "New Exercise Button", Toast.LENGTH_SHORT).show()
