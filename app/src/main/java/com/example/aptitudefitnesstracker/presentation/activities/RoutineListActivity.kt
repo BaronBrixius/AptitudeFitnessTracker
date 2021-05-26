@@ -6,8 +6,7 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.widget.NestedScrollView
-import androidx.lifecycle.Observer
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -30,12 +29,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class RoutineListActivity : AppCompatActivity() {
     private val presenter: Presenter by lazy { application as Presenter }
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
-    private var twoPane: Boolean = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtils.setThemeApp(this) // for set theme
@@ -51,7 +44,6 @@ class RoutineListActivity : AppCompatActivity() {
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
             presenter.addNewRoutineButtonPressed()
-
         }
 
         //Click "account settings" button to go to account settings (AccountActivity)
@@ -59,39 +51,37 @@ class RoutineListActivity : AppCompatActivity() {
             presenter.accountSettingButton()
         }
 
-        if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            twoPane = true
-        }
-        setupRecyclerView(findViewById(R.id.item_list))
+        setupRecyclerView()
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView) {
-        val adapter = RoutineRecyclerViewAdapter(this, twoPane, presenter)
+    fun toggleDownloadMode() {
+        presenter.session.firebaseMode = !presenter.session.firebaseMode
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerView() {
+        val recyclerView: RecyclerView = findViewById(R.id.item_list)
+        val adapter = RoutineRecyclerViewAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        presenter.routineList.observe(this, Observer { routines ->
+        val routineList: LiveData<List<Routine>> = if (presenter.session.firebaseMode) presenter.session.repository.downloadRemoteRoutines() else presenter.routineList
+        routineList.observe(this, { routines ->
             routines?.let { adapter.submitList(it) }
         })
     }
 
     class RoutineRecyclerViewAdapter(
-        private val parentActivity: RoutineListActivity,
-        private val twoPane: Boolean, val presenter: Presenter
+        private val parentActivity: RoutineListActivity
     ) :
         ListAdapter<Routine, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
 
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
             val item = v.tag as Routine
 
-            //presenter.addNewExerciseButtonPressed()
+            parentActivity.presenter.session.activeRoutine = item
             val intent = Intent(v.context, ExerciseListActivity::class.java)
             v.context.startActivity(intent)
-
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineViewHolder {

@@ -8,18 +8,15 @@ import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.widget.NestedScrollView
-import androidx.lifecycle.Observer
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
-import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
-import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_exercise_list.*
 
@@ -39,7 +36,6 @@ class ExerciseListActivity : AppCompatActivity() {
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
-    private var twoPane: Boolean = false
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
             this,
@@ -76,14 +72,11 @@ class ExerciseListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = title
 
-        //Add new
         findViewById<FloatingActionButton>(R.id.newExerciseFAB).setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
 //            presenter.addNewExerciseButtonPressed()
             newExerciseFABClicked()
-            presenter.addNewItemButtonPressed()
-
         }
 
         newExerciseButton.setOnClickListener {
@@ -103,58 +96,57 @@ class ExerciseListActivity : AppCompatActivity() {
         findViewById<Button>(R.id.AccountSettings).setOnClickListener { view ->
             presenter.accountSettingButton()
         }
-
-        if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            twoPane = true
-        }
-        setupRecyclerView(findViewById(R.id.item_list))
+        setupRecyclerView()
     }
 
+    fun toggleDownloadMode() {
+        presenter.session.firebaseMode = !presenter.session.firebaseMode
+        setupRecyclerView()
+    }
 
-    fun setupRecyclerView(recyclerView: RecyclerView) {
-        val adapter = ExerciseRecyclerViewAdapter(this, twoPane)
+    fun setupRecyclerView() {
+        val recyclerView: RecyclerView = findViewById(R.id.item_list)
+        val adapter = ExerciseRecyclerViewAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        presenter.routineList.observe(this, Observer { routines ->
+        val routineList: LiveData<List<Exercise>>? = if (presenter.session.firebaseMode) presenter.session.repository.downloadRemoteExercises() else presenter.session.activeRoutine?.exercises
+        routineList!!.observe(this, { routines ->
             routines?.let { adapter.submitList(it) }
         })
     }
 
-
     class ExerciseRecyclerViewAdapter(
-        private val parentActivity: ExerciseListActivity,
-        private val twoPane: Boolean
+        private val parentActivity: ExerciseListActivity
     ) :
-        ListAdapter<Routine, ExerciseRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
+        ListAdapter<Exercise, ExerciseRecyclerViewAdapter.ExerciseViewHolder>(ExerciseComparator()) {
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
             val exercise = v.tag as Exercise
 
-                val intent = Intent(v.context, ExerciseDetailActivity::class.java).apply {
-                    putExtra(ExerciseDetailFragment.ARG_ITEM_ID, exercise.id)
-                }
+                parentActivity.presenter.session.activeExercise = exercise
+                val intent = Intent(v.context, ExerciseDetailActivity::class.java)
                 v.context.startActivity(intent)
-
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_list_content, parent, false)
-            return RoutineViewHolder(view)
+            return ExerciseViewHolder(view)
         }
 
-        override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
-            val item = getItem(position)
+        override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
+            val exercise = getItem(position)
             //holder.bind("id: " + item.id + " name: " + item.name)
-            holder.idView.text = "id: " + item.id    //fixme placeholder stuff for database testing
-            holder.contentView.text = " name: " + item.name
+            holder.idView.text = "id: " + exercise.id    //fixme placeholder stuff for database testing
+            holder.contentView.text = " name: " + exercise.name
+
+            with(holder.itemView) {
+                tag = exercise
+                setOnClickListener(onClickListener)
+            }
         }
 
-        inner class RoutineViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        inner class ExerciseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val idView: TextView = view.findViewById(R.id.id_text)
             val contentView: TextView =
                 view.findViewById(R.id.content) //no clue what this is, feel free to use it
@@ -163,14 +155,14 @@ class ExerciseListActivity : AppCompatActivity() {
             }*/
         }
 
-        class RoutineComparator : DiffUtil.ItemCallback<Routine>() {
-            override fun areItemsTheSame(oldItem: Routine, newItem: Routine): Boolean {
+        class ExerciseComparator : DiffUtil.ItemCallback<Exercise>() {
+            override fun areItemsTheSame(oldItem: Exercise, newItem: Exercise): Boolean {
                 return oldItem === newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: Routine,
-                newItem: Routine
+                oldItem: Exercise,
+                newItem: Exercise
             ): Boolean {
                 return oldItem.name == newItem.name
             }
@@ -203,10 +195,11 @@ class ExerciseListActivity : AppCompatActivity() {
 //    }
 
     private fun newExerciseFABClicked() {
-        setVisibility(clicked)
-        setAnimation(clicked)
-        clicked = !clicked
-        setClickable(clicked)
+        toggleDownloadMode()
+//        setVisibility(clicked)
+//        setAnimation(clicked)
+//        clicked = !clicked
+//        setClickable(clicked)
     }
 
     private fun setVisibility(clicked: Boolean) {

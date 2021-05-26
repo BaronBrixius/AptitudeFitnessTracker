@@ -17,6 +17,7 @@ class Presenter : Application() {
     val session: Session by lazy { Session(this) }
     val routineList: LiveData<List<Routine>> by lazy { session.repository.localRoutines }
 
+
     /**
     RoutineListActivity
      **/

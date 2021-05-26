@@ -15,6 +15,10 @@ class Session(context: Context) {
     private val applicationScope = CoroutineScope(SupervisorJob())
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
 
+    var firebaseMode: Boolean = false
+    var activeRoutine: Routine? = null
+    var activeExercise: Exercise? = null
+
     // Using by lazy so the database/repository are only created when they're needed rather than when the application starts
     val repository by lazy {
         Repository(
