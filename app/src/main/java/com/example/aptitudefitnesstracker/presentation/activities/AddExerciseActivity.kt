@@ -16,7 +16,7 @@ import com.example.aptitudefitnesstracker.presentation.Presenter
 import kotlinx.android.synthetic.main.activity_add_exercise.*
 
 class AddExerciseActivity : AppCompatActivity() {
-    private var txtDetails: TextView? = null
+    private var inputDetails: EditText? = null
     private var inputName: EditText? = null
     private var btnSave: Button? = null
     private var userId: String? = null
@@ -30,8 +30,8 @@ class AddExerciseActivity : AppCompatActivity() {
         // Displaying toolbar icon
 //        supportActionBar!!.setDisplayShowHomeEnabled(true)
 //        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
-        txtDetails = findViewById<View>(R.id.txt_user) as TextView
         inputName = findViewById<View>(R.id.name) as EditText
+        inputDetails = findViewById<View>(R.id.Detail) as EditText
         btnSave = findViewById<View>(R.id.btn_save) as Button
         toolbar.title = "Add Exercise"
 
