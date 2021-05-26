@@ -21,24 +21,16 @@ class LoginActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
     private var inputEmail: EditText? = null
     private var inputPassword: EditText? = null
-    private var auth: FirebaseAuth? = null
     private var progressBar: ProgressBar? = null
     private var btnSignup: Button? = null
     private var btnLogin: Button? = null
     private var btnReset: Button? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtils.setThemeApp(this) // for set theme
         ThemeUtils.setAppFont(this) // for set font size
         ThemeUtils.setAppFontFamily(this) // for set font family
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance()
-//        if (auth!!.currentUser != null) {
-//            startActivity(Intent(this@LoginActivity, AccountActivity::class.java))
-//            finish()
-//        }
 
         // set the view now
         setContentView(R.layout.activity_login)
@@ -51,40 +43,34 @@ class LoginActivity : AppCompatActivity() {
         btnLogin = findViewById<View>(R.id.btn_login) as Button
         btnReset = findViewById<View>(R.id.btn_reset_password) as Button
 
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance()
-
-
         btnSignup!!.setOnClickListener {
             var intent = Intent(this, SignupActivity::class.java)
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
+
         btnReset!!.setOnClickListener {
-            // presenter.resetButtonPressed() //Takes you to AccountActivity
-            var intent = Intent(this, SignupActivity::class.java)
+            var intent = Intent(this, AccountActivity::class.java)
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
-
         }
-        btnLogin!!.setOnClickListener(View.OnClickListener {
 
+        btnLogin!!.setOnClickListener {
             val email = inputEmail!!.text.toString()
             val password = inputPassword!!.text.toString()
 
             if (checkLoginInputs(email, password)) {
                 val listener: ((Task<AuthResult>) -> Unit) =
-                    { task -> //todo may want the activity to come up with its own callback?
+                    { task ->
                         if (task.isSuccessful) {
                             val intent = Intent(this, RoutineListActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                             startActivity(intent)
                         }
                     }
-
                 session.authenticateLogin(email, password, listener)
             }
-        })
+        }
     }
 
     fun incorrectEmailPopUp() {
@@ -101,7 +87,6 @@ class LoginActivity : AppCompatActivity() {
         progressBar!!.visibility = View.VISIBLE
     }
 
-    //TODO Should this method be moved to the presenter class?
     fun checkLoginInputs(email: String, password: String): Boolean {
         //val email = inputEmail!!.text.toString()
         //val password = inputPassword!!.text.toString()

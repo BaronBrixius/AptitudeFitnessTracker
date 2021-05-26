@@ -73,13 +73,8 @@ class ExerciseListActivity : AppCompatActivity() {
         toolbar.title = "Exercises"
 
         findViewById<FloatingActionButton>(R.id.newExerciseFAB).setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
-//            presenter.addNewExerciseButtonPressed()
             newExerciseFABClicked()
         }
-
-
 
         newExerciseButton.setOnClickListener {
             Toast.makeText(this, "New Exercise Button", Toast.LENGTH_SHORT).show()
@@ -109,7 +104,7 @@ class ExerciseListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val routineList: LiveData<List<Exercise>>? =
-            if (session.firebaseMode) session.repository.downloadRemoteExercises() else session.activeRoutine?.exercises
+            if (session.firebaseMode) session.downloadRemoteExercises() else session.activeRoutine?.exercises
         routineList!!.observe(this, { routines ->
             routines?.let { adapter.submitList(it) }
         })

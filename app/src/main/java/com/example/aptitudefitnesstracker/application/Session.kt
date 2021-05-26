@@ -7,6 +7,7 @@ import com.example.aptitudefitnesstracker.persistence.firebase.RemoteFirebaseDat
 import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -14,11 +15,12 @@ import kotlinx.coroutines.launch
 
 class Session : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())
-
-    //private var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val localDao by lazy { LocalRoomDatabase.getDatabase(this, applicationScope).iDao() }
-    val remoteDao by lazy { RemoteFirebaseDatabase() }
+    private val remoteDao by lazy { RemoteFirebaseDatabase() }
     var loggedInUser: User? = null
+    var firebaseMode: Boolean = false
+    var activeRoutine: Routine? = null
+    var activeExercise: Exercise? = null
 
     fun getLocalRoutines(): LiveData<List<Routine>> {
         return localDao.getAllRoutines().map {
@@ -28,21 +30,13 @@ class Session : Application() {
         }
     }
 
-    var firebaseMode: Boolean = false
-    var activeRoutine: Routine? = null
-    var activeExercise: Exercise? = null
-
-    // Using by lazy so the database/repository are only created when they're needed rather than when the application starts
-    val repository by lazy {
-        Repository(
-            LocalRoomDatabase.getDatabase(this, applicationScope).iDao(),
-            RemoteFirebaseDatabase()
-        )
-    }
-
     private fun addExercisesToRoutine(routine: Routine): Routine {
         routine.exercises = localDao.getExercisesInRoutine(routine.id)
         return routine
+    }
+
+    fun updateRoutine(routine: Routine) = applicationScope.launch {
+        localDao.update(routine)
     }
 
     fun addExerciseToRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
@@ -70,9 +64,9 @@ class Session : Application() {
         //localDao.insertExercise(exercise)
     }
 
-    fun deleteExercise(exercise: Exercise) = applicationScope.launch {
+    fun delete(exercise: Exercise) = applicationScope.launch {
         TODO()
-        //localDao.deleteExercise(exercise)
+        //localDao.delete(exercise)
     }
 
     fun deleteAllExercises() = applicationScope.launch {
@@ -88,7 +82,6 @@ class Session : Application() {
         return remoteDao.getAllExercises()
     }
 
-    //Removed scope for Boolean return, had to add suspend to call repository.shareRoutine(routine)
     suspend fun share(routine: Routine): Boolean {
         return if (userIsLoggedIn()) {
             remoteDao.insertRoutine(routine)
@@ -111,18 +104,13 @@ class Session : Application() {
         return loggedInUser != null
     }
 
-
     /*
     authenticateLogin()  still needs to be refactored into presenter and session classes.
      */
 
     @AddTrace(name = "authenticateLogin")
-    fun authenticateLogin(
-        email: String,
-        password: String,
-        onCompleteListener: (Task<AuthResult>) -> Unit
-    ) {
-        //authenticate user
-        //auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
+    fun authenticateLogin(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
+        val auth = FirebaseAuth.getInstance()
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
     }
 }
