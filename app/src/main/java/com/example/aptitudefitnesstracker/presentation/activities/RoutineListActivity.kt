@@ -154,14 +154,6 @@ class RoutineListActivity : AppCompatActivity() {
         }
     }
 
-    /* END HERE For create Setting option menu */
-    /* for destroy all previous activity */
-//    override fun onBackPressed() {
-//        super.onBackPressed()
-//        finish()
-//        finishAffinity()
-//    }
-
     private fun newRoutineFABClicked() {
         setVisibility(clicked)
         setAnimation(clicked)

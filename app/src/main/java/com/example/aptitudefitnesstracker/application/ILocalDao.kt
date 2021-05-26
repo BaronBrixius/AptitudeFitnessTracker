@@ -18,7 +18,7 @@ interface ILocalDao {
     suspend fun insertRoutine(routine: Routine)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRoutine(exercise: Exercise)
+    suspend fun insertExercise(exercise: Exercise)
 
     @Query("DELETE FROM routines") //fixme testing for now I suppose, but yikes
     suspend fun deleteAllRoutines()
