@@ -5,12 +5,10 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.widget.EditText
 import androidx.lifecycle.LiveData
+import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.presentation.activities.AccountActivity
-import com.example.aptitudefitnesstracker.presentation.activities.DatabaseTestActivity
-import com.example.aptitudefitnesstracker.presentation.activities.RoutineListActivity
-import com.example.aptitudefitnesstracker.presentation.activities.SignupActivity
+import com.example.aptitudefitnesstracker.presentation.activities.*
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 
@@ -19,10 +17,10 @@ class Presenter : Application() {
     val session: Session by lazy { Session(this) }
     val routineList: LiveData<List<Routine>> by lazy { session.repository.localRoutines }
 
-    /*
+    /**
     RoutineListActivity
-     */
-    fun insert(routine: Routine) {
+     **/
+    fun createRoutine(routine: Routine) {
         session.insertRoutine(routine)
     }
 
@@ -30,7 +28,7 @@ class Presenter : Application() {
         session.deleteAllRoutines()
     }
 
-    fun addNewItemButtonPressed() { //temp for testing
+    fun addNewRoutineButtonPressed() { //temp for testing
         val intent = Intent(
             this,
             DatabaseTestActivity::class.java
@@ -48,9 +46,34 @@ class Presenter : Application() {
         startActivity(intent)
     }
 
-    /*
+    fun routineSelected(routine: Routine){
+        //take you to exerciseListActivity
+        //Pass Exercise list
+    }
+
+    /**
+    ExerciseListActivity
+     **/
+    fun addNewExerciseButtonPressed() {
+        val intent = Intent(
+            this,
+            AddExerciseActivity::class.java
+        ) //TODO replace "DatabaseTestActivity" with appropriate class later
+        intent.flags = FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+    }
+
+    fun createExercise(exercise: Exercise) {
+        session.insertExercise(exercise)
+    }
+
+    fun deleteAllExercices() {
+        session.deleteAllExercises()
+    }
+
+    /**
     LoginActivity
-     */
+     **/
     fun loginButtonPressed(inputEmail: EditText, inputPassword: EditText) {
         val email = inputEmail.text.toString()
         val password = inputPassword.text.toString()
@@ -100,12 +123,10 @@ class Presenter : Application() {
         startActivity(intent)
     }
 
-    fun routineSelected(routine: Routine){
-        //take you to exerciseListActivity
-        //Pass Exercise list
-    }
 
-    /*
+
+
+    /**
     SignupActivity
-     */
+     **/
 }

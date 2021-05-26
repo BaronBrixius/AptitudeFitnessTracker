@@ -43,12 +43,16 @@ class Session(context: Context) {
         repository.deleteAllRoutines()
     }
 
-    fun insert(exercise: Exercise) = applicationScope.launch {
+    fun insertExercise(exercise: Exercise) = applicationScope.launch {
         repository.insertExercise(exercise)
     }
 
-    fun delete(exercise: Exercise) = applicationScope.launch {
+    fun deleteExercise(exercise: Exercise) = applicationScope.launch {
         repository.deleteExercise(exercise)
+    }
+
+    fun deleteAllExercises() = applicationScope.launch {
+//        repository.deleteAllRoutines()
     }
 
     //Removed scope for Boolean return, had to add suspend to call repository.shareRoutine(routine)

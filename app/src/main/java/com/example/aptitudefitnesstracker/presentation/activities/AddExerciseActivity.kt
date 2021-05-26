@@ -9,11 +9,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
+import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.example.aptitudefitnesstracker.presentation.Presenter
+import kotlinx.android.synthetic.main.activity_add_exercise.*
 
-class DatabaseTestActivity : AppCompatActivity() {
+class AddExerciseActivity : AppCompatActivity() {
     private var txtDetails: TextView? = null
     private var inputName: EditText? = null
     private var btnSave: Button? = null
@@ -24,14 +26,14 @@ class DatabaseTestActivity : AppCompatActivity() {
         ThemeUtils.setThemeApp(this)
         ThemeUtils.setAppFont(this)
         ThemeUtils.setAppFontFamily(this)
-        setContentView(R.layout.activity_databasetest)
+        setContentView(R.layout.activity_add_exercise)
         // Displaying toolbar icon
 //        supportActionBar!!.setDisplayShowHomeEnabled(true)
 //        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
         txtDetails = findViewById<View>(R.id.txt_user) as TextView
         inputName = findViewById<View>(R.id.name) as EditText
         btnSave = findViewById<View>(R.id.btn_save) as Button
-
+        toolbar.title = "Add Exercise"
 
         // Save / update the user
         btnSave!!.setOnClickListener {
@@ -39,7 +41,7 @@ class DatabaseTestActivity : AppCompatActivity() {
 
             // Check for already existed userId
             if (TextUtils.isEmpty(userId)) {
-                createRoutine(name)
+                createExercise(name)
             } else {
 //                updateExercise(name)
             }
@@ -59,12 +61,12 @@ class DatabaseTestActivity : AppCompatActivity() {
     /**
      * Creating new user node under 'users'
      */
-    private fun createRoutine(name: String) {
+    private fun createExercise(name: String) {
         val presenter = application as Presenter
 
         if (name.isNotEmpty()) {
-            presenter.createRoutine(Routine(name))
-            Toast.makeText(presenter, "Routine added", Toast.LENGTH_LONG).show()
+            presenter.createExercise(Exercise(name))
+            Toast.makeText(presenter, "Exercise added", Toast.LENGTH_LONG).show()
         } else {
             presenter.deleteAllRoutines() //todo let's not leave this in for final release eh?
             Toast.makeText(presenter, "Deleted all routines", Toast.LENGTH_LONG).show()
@@ -72,6 +74,6 @@ class DatabaseTestActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = DatabaseTestActivity::class.java.simpleName
+        private val TAG = AddExerciseActivity::class.java.simpleName
     }
 }
