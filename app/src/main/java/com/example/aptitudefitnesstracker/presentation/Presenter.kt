@@ -14,19 +14,19 @@ import com.google.firebase.auth.AuthResult
 
 //singleton class to manage GUI stuff and link to application data
 class Presenter : Application() {
-    val session: Session by lazy { Session(this) }
-    val routineList: LiveData<List<Routine>> by lazy { session.repository.localRoutines }
+    //val session: Session by lazy { Session() }
+    //val routineList: LiveData<List<Routine>> by lazy { session.getLocalRoutines() }
 
 
     /**
     RoutineListActivity
      **/
     fun createRoutine(routine: Routine) {
-        session.insertRoutine(routine)
+        //session.insertRoutine(routine)
     }
 
     fun deleteAllRoutines() {
-        session.deleteAllRoutines()
+        //session.deleteAllRoutines()
     }
 
     fun addNewRoutineButtonPressed() { //temp for testing
@@ -38,14 +38,14 @@ class Presenter : Application() {
         startActivity(intent)
     }
 
-    fun accountSettingButton() { //temp for testing
-        val intent = Intent(
-            this,
-            AccountActivity::class.java
-        ) //TODO replace "DatabaseTestActivity" with appropriate class later
-        intent.flags = FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
-    }
+    //fun accountSettingButton() { //temp for testing
+    //    val intent = Intent(
+    //        this,
+    //        AccountActivity::class.java
+    //    )
+    //    intent.flags = FLAG_ACTIVITY_NEW_TASK
+    //    startActivity(intent)
+    //}
 
     fun routineSelected(routine: Routine){
         //take you to exerciseListActivity
@@ -65,11 +65,11 @@ class Presenter : Application() {
     }
 
     fun createExercise(exercise: Exercise) {
-        session.insertExercise(exercise)
+        //session.insertExercise(exercise)
     }
 
     fun deleteAllExercices() {
-        session.deleteAllExercises()
+        //session.deleteAllExercises()
     }
 
     /**
@@ -88,7 +88,7 @@ class Presenter : Application() {
                 }
             }
 
-        session.authenticateLogin(email, password, listener)
+        //session.authenticateLogin(email, password, listener)
 
 //                // If sign in fails, display a message to the user. If sign in succeeds
 //                // the auth state listener will be notified and logic to handle the

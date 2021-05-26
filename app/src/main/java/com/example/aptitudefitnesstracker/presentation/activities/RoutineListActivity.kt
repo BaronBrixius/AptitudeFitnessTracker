@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Routine
+import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
-import com.example.aptitudefitnesstracker.presentation.Presenter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_exercise_list.*
 import kotlinx.android.synthetic.main.activity_exercise_list.downloadExerciseButton
@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.activity_item_list.*
  * item details side-by-side using two vertical panes.
  */
 class RoutineListActivity : AppCompatActivity() {
-    private val presenter: Presenter by lazy { application as Presenter }
+    private val session: Session by lazy { application as Session }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
