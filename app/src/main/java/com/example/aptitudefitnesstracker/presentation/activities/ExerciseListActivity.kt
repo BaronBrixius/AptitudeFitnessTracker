@@ -15,10 +15,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
-import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.example.aptitudefitnesstracker.presentation.Presenter
-import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_exercise_list.*
 
@@ -94,10 +92,6 @@ class ExerciseListActivity : AppCompatActivity() {
         //TODO Implement
         }
 
-        //Click "account settings" button to go to account settings (AccountActivity)
-        findViewById<Button>(R.id.AccountSettings).setOnClickListener { view ->
-            presenter.accountSettingButton()
-        }
         setupRecyclerView()
     }
 
