@@ -48,13 +48,8 @@ class RoutineListActivity : AppCompatActivity() {
 
         //Add new
         findViewById<FloatingActionButton>(R.id.newRoutineFAB).setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
-//            presenter.addNewRoutineButtonPressed()
-
             newRoutineFABClicked()
         }
-
         setupRecyclerView()
     }
 
@@ -70,7 +65,7 @@ class RoutineListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val routineList: LiveData<List<Routine>> =
-            if (session.firebaseMode) session.repository.downloadRemoteRoutines() else session.repository.localRoutines
+            if (session.firebaseMode) session.downloadRemoteRoutines() else session.getLocalRoutines()
         routineList.observe(this, { routines ->
             routines?.let { adapter.submitList(it) }
         })
