@@ -18,7 +18,11 @@ class Session : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())
     private val auth by lazy {
         val auth = FirebaseAuth.getInstance()
-        auth.addAuthStateListener { loggedInUser = auth.currentUser }
+        auth.addAuthStateListener {
+            loggedInUser = auth.currentUser
+            if (!userIsLoggedIn())
+                turnFirebaseModeOff()
+        }
         auth
     }
     private val localDao by lazy { LocalRoomDatabase.getDatabase(this, applicationScope).iDao() }
@@ -27,6 +31,7 @@ class Session : Application() {
     var firebaseMode: Boolean = false
     var activeRoutine: Routine? = null
     var activeExercise: Exercise? = null
+    private var observer: IFirebaseModeObserver? = null
 
     fun getLocalRoutines(): LiveData<List<Routine>> {
         return localDao.getAllRoutines().map {
@@ -92,6 +97,47 @@ class Session : Application() {
         return loggedInUser != null
     }
 
+    fun turnFirebaseModeOn(): Boolean {
+        return if (userIsLoggedIn()) {
+            setFirebaseModeAndNotify(true)
+        } else {
+            false
+        }
+    }
+
+    fun turnFirebaseModeOff(): Boolean {
+        return setFirebaseModeAndNotify(false)
+    }
+
+    fun toggleAndGetFirebaseMode(): Boolean {
+        return if (!firebaseMode) {
+            turnFirebaseModeOn()
+        } else {
+            turnFirebaseModeOff()
+        }
+    }
+
+    private fun setFirebaseModeAndNotify(turnOn: Boolean): Boolean {
+        if (firebaseMode != turnOn) {
+            firebaseMode = turnOn
+            observer?.let { observer!!.notify(firebaseMode) }
+        }
+
+        return firebaseMode
+    }
+    //fun turnOnFirebaseMode(): Boolean {
+    //    if (userIsLoggedIn().and(!firebaseMode))
+    //        toggleFirebaseMode()
+    //
+    //    return firebaseMode
+    //}
+    //fun turnOffFirebaseMode(): Boolean {
+    //    if (firebaseMode)
+    //        toggleFirebaseMode()
+    //
+    //    return firebaseMode
+    //}
+
     @AddTrace(name = "authenticateLogin")
     fun authenticateLogin(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
         val auth = FirebaseAuth.getInstance()
@@ -100,6 +146,24 @@ class Session : Application() {
 
     fun signOut() {
         auth.signOut()
-        firebaseMode = false
+    }
+
+    fun addObserver(newObserver: IFirebaseModeObserver) {
+        observer = newObserver
+    }
+
+    //TODO think of a better name than "proper" routines
+    fun getProperRoutines(): LiveData<List<Routine>> {
+        return if (firebaseMode)
+            downloadRemoteRoutines()
+        else
+            getLocalRoutines()
+    }
+
+    fun getProperExercises(): LiveData<List<Exercise>>? {
+        return if (firebaseMode)
+            downloadRemoteExercises()
+        else
+            activeRoutine?.exercises
     }
 }
