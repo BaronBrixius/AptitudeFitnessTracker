@@ -56,7 +56,7 @@ abstract class LocalRoomDatabase : RoomDatabase() {
             // test routines
             localDao.insertRoutine(Routine("Push"))
             localDao.insertRoutine(Routine("Pull!"))
-            localDao.insertExercise(Exercise(0, 1, "Exercise", ArrayList(), LinkedHashMap(), ""))
+//            localDao.insertExercise(Exercise(0, 1, "Exercise", ArrayList(), LinkedHashMap(), ""))
         }
     }
 

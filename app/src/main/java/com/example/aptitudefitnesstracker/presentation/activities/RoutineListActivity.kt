@@ -19,11 +19,7 @@ import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.activity_exercise_list.*
-import kotlinx.android.synthetic.main.activity_exercise_list.downloadExerciseButton
-import kotlinx.android.synthetic.main.activity_exercise_list.newExerciseButton
-import kotlinx.android.synthetic.main.activity_exercise_list.newExerciseFromRoutineButton
-import kotlinx.android.synthetic.main.activity_item_list.*
+import kotlinx.android.synthetic.main.activity_routine_list.*
 
 
 /**
@@ -47,7 +43,7 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         ThemeUtils.setThemeApp(this) // for set theme
         ThemeUtils.setAppFont(this) // for set font size
         ThemeUtils.setAppFontFamily(this) // for set font family
-        setContentView(R.layout.activity_item_list)
+        setContentView(R.layout.activity_routine_list)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.title = title
@@ -57,11 +53,27 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
             newRoutineFABClicked()
         }
 
-        findViewById<FloatingActionButton>(R.id.downloadExerciseButton).setOnClickListener { view ->
-            downloadButtonClicked()
-        }
+
 
         setupRecyclerView()
+
+        newRoutineButton.setOnClickListener{
+            val intent = Intent(this, AddRoutineActivity::class.java )
+            startActivity(intent)
+        }
+
+        viewOnlineRoutinesButton.setOnClickListener{
+            if(!session.firebaseMode){
+                toolbar.title = "Viewing Online Routines"
+                viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
+            }
+            else{
+                toolbar.title = "Personal Routines"
+                viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
+            }
+            toggleDownloadMode()
+        }
+
     }
 
     override fun onResume() {
@@ -173,41 +185,35 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
     private fun setVisibility(clicked: Boolean) {
         if (!clicked) {
-            newExerciseButton.visibility = View.VISIBLE
-            newExerciseFromRoutineButton.visibility = View.VISIBLE
-            downloadExerciseButton.visibility = View.VISIBLE
+            newRoutineButton.visibility = View.VISIBLE
+            viewOnlineRoutinesButton.visibility = View.VISIBLE
         } else {
-            newExerciseButton.visibility = View.INVISIBLE
-            newExerciseFromRoutineButton.visibility = View.INVISIBLE
-            downloadExerciseButton.visibility = View.INVISIBLE
+            newRoutineButton.visibility = View.INVISIBLE
+            viewOnlineRoutinesButton.visibility = View.INVISIBLE
         }
     }
 
     private fun setAnimation(clicked: Boolean) {
         if (!clicked) {
-            newExerciseButton.startAnimation(fromBott)
-            newExerciseFromRoutineButton.startAnimation(fromBott)
-            downloadExerciseButton.startAnimation(fromBott)
+            newRoutineButton.startAnimation(fromBott)
+            viewOnlineRoutinesButton.startAnimation(fromBott)
             newRoutineFAB.startAnimation(rotateOpen)
         } else {
-            newExerciseButton.startAnimation(toBott)
-            newExerciseFromRoutineButton.startAnimation(toBott)
-            downloadExerciseButton.startAnimation(toBott)
+            newRoutineButton.startAnimation(toBott)
+            viewOnlineRoutinesButton.startAnimation(toBott)
             newRoutineFAB.startAnimation(rotateClose)
         }
     }
 
     private fun setClickable(clicked: Boolean) {
         if (!clicked) {
-            newExerciseButton.isClickable = false
-            newExerciseFromRoutineButton.isClickable = false
-            downloadExerciseButton.isClickable = false
+            newRoutineButton.isClickable = false
+            viewOnlineRoutinesButton.isClickable = false
 
 
         } else {
-            newExerciseButton.isClickable = true
-            newExerciseFromRoutineButton.isClickable = true
-            downloadExerciseButton.isClickable = true
+            newRoutineButton.isClickable = true
+            viewOnlineRoutinesButton.isClickable = true
 
         }
     }

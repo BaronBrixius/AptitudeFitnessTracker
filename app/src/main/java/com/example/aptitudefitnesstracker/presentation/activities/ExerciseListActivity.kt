@@ -20,6 +20,8 @@ import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_exercise_list.*
+import com.example.aptitudefitnesstracker.presentation.activities.EditExerciseActivity
+
 
 
 /**
@@ -83,15 +85,36 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         newExerciseButton.setOnClickListener {
             Toast.makeText(this, "New Exercise Button", Toast.LENGTH_SHORT).show()
-            //TODO Implement
+            var exercise = Exercise()
+            session.insertExercise( exercise )
+            intent = Intent(this, EditExerciseActivity::class.java)
+            session.activeExercise = exercise
+            startActivity(intent)
+
+
         }
         newExerciseFromRoutineButton.setOnClickListener {
             Toast.makeText(this, "newExerciseFromRoutineButton", Toast.LENGTH_SHORT).show()
             //TODO Implement
         }
+
         downloadExerciseButton.setOnClickListener {
             downloadButtonClicked()
         }
+
+        viewOnlineExercisesButton.setOnClickListener {
+            if(!session.firebaseMode){
+                toolbar.title = "Viewing Online Exercises"
+                viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
+            }
+            else{
+                viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
+                if(session.activeRoutine == null){
+                    finish()
+                    finishAffinity()
+                }
+
+            }
 
         setupRecyclerView()
     }
@@ -189,12 +212,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
 
     /* END HERE For create Setting option menu */
-    /* for destroy all previous activity */
-//    override fun onBackPressed() {
-//        super.onBackPressed()
-//        finish()
-//        finishAffinity()
-//    }
+
 
     private fun newExerciseFABClicked() {
         setVisibility(clicked)
@@ -207,11 +225,11 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         if (!clicked) {
             newExerciseButton.visibility = View.VISIBLE
             newExerciseFromRoutineButton.visibility = View.VISIBLE
-            downloadExerciseButton.visibility = View.VISIBLE
+            viewOnlineExercisesButton.visibility = View.VISIBLE
         } else {
             newExerciseButton.visibility = View.INVISIBLE
             newExerciseFromRoutineButton.visibility = View.INVISIBLE
-            downloadExerciseButton.visibility = View.INVISIBLE
+            viewOnlineExercisesButton.visibility = View.INVISIBLE
         }
     }
 
@@ -219,12 +237,12 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         if (!clicked) {
             newExerciseButton.startAnimation(fromBott)
             newExerciseFromRoutineButton.startAnimation(fromBott)
-            downloadExerciseButton.startAnimation(fromBott)
+            viewOnlineExercisesButton.startAnimation(fromBott)
             newExerciseFAB.startAnimation(rotateOpen)
         } else {
             newExerciseButton.startAnimation(toBott)
             newExerciseFromRoutineButton.startAnimation(toBott)
-            downloadExerciseButton.startAnimation(toBott)
+            viewOnlineExercisesButton.startAnimation(toBott)
             newExerciseFAB.startAnimation(rotateClose)
         }
     }
@@ -233,13 +251,13 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         if (!clicked) {
             newExerciseButton.isClickable = false
             newExerciseFromRoutineButton.isClickable = false
-            downloadExerciseButton.isClickable = false
+            viewOnlineExercisesButton.isClickable = false
 
 
         } else {
             newExerciseButton.isClickable = true
             newExerciseFromRoutineButton.isClickable = true
-            downloadExerciseButton.isClickable = true
+            viewOnlineExercisesButton.isClickable = true
 
         }
     }
