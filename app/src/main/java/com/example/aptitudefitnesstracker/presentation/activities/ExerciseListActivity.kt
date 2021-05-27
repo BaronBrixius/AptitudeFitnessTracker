@@ -20,9 +20,6 @@ import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_exercise_list.*
-import com.example.aptitudefitnesstracker.presentation.activities.EditExerciseActivity
-
-
 
 /**
  * An activity representing a list of Pings. This activity
@@ -98,23 +95,23 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             //TODO Implement
         }
 
-        downloadExerciseButton.setOnClickListener {
-            downloadButtonClicked()
-        }
+//        downloadExerciseButton.setOnClickListener {   //fixme merge conflict between this and below, get Ben and Malek to sync them up
+//            downloadButtonClicked()
+//        }
 
         viewOnlineExercisesButton.setOnClickListener {
-            if(!session.firebaseMode){
+            if (!session.firebaseMode) {
                 toolbar.title = "Viewing Online Exercises"
                 viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
-            }
-            else{
+            } else {
                 viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
-                if(session.activeRoutine == null){
+                if (session.activeRoutine == null) {
                     finish()
                     finishAffinity()
                 }
 
             }
+        }
 
         setupRecyclerView()
     }

@@ -2,6 +2,7 @@ package com.example.aptitudefitnesstracker.persistence.local
 
 import android.content.Context
 import androidx.room.*
+import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.ILocalDao
@@ -10,12 +11,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    version = 1,
+    version = 2,
     entities = [Routine::class, Exercise::class],
     exportSchema = true,
-//    autoMigrations = [
-//        AutoMigration(from = 1, to = 2)
-//    ]
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2, spec = LocalRoomDatabase.AutoMigrationSpec1To2::class)
+    ]
 )
 @TypeConverters(Converters::class)
 abstract class LocalRoomDatabase : RoomDatabase() {
@@ -33,7 +34,7 @@ abstract class LocalRoomDatabase : RoomDatabase() {
                     "routine"
                 )
                     .addCallback(LocalRoomDatabaseCallback(scope))
-                    .fallbackToDestructiveMigration()   //fixme no destructive once we're running
+//                    .fallbackToDestructiveMigration()   //fixme no destructive once we're running
                     .build()
                 INSTANCE = instance
                 // return instance
@@ -56,12 +57,11 @@ abstract class LocalRoomDatabase : RoomDatabase() {
             // test routines
             localDao.insertRoutine(Routine("Push"))
             localDao.insertRoutine(Routine("Pull!"))
-//            localDao.insertExercise(Exercise(0, 1, "Exercise", ArrayList(), LinkedHashMap(), ""))
+            localDao.insertExercise(Exercise(0, 1, "Exercise", LinkedHashMap(), ""))
         }
     }
 
     // Migration Specs
-
-//    @RenameColumn(tableName = "routines", fromColumnName = "id", toColumnName = "routineId")
-//    class AutoMigrationSpec2To3 : AutoMigrationSpec
+    @DeleteColumn(tableName = "exercises", columnName = "tags") // cut the tags feature due to manpower, what a shame
+    class AutoMigrationSpec1To2 : AutoMigrationSpec
 }

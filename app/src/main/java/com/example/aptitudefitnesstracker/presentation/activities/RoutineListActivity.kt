@@ -53,10 +53,6 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
             newRoutineFABClicked()
         }
 
-
-
-        setupRecyclerView()
-
         newRoutineButton.setOnClickListener{
             val intent = Intent(this, AddRoutineActivity::class.java )
             startActivity(intent)
@@ -71,9 +67,9 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
                 toolbar.title = "Personal Routines"
                 viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
             }
-            toggleDownloadMode()
         }
 
+        setupRecyclerView()
     }
 
     override fun onResume() {
