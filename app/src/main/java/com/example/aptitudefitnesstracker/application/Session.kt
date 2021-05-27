@@ -42,7 +42,7 @@ class Session : Application() {
     }
 
     fun updateRoutine(routine: Routine) = applicationScope.launch {
-        localDao.update(routine)
+        localDao.updateRoutine(routine)
     }
 
     fun addExerciseToRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
@@ -58,16 +58,16 @@ class Session : Application() {
     }
 
     fun delete(routine: Routine) = applicationScope.launch {
-        localDao.delete(routine)
+        localDao.deleteRoutine(routine)
     }
 
     fun deleteAllRoutines() = applicationScope.launch {
-        localDao.deleteAllRoutines()
+        localDao.getAllRoutines()
     }
 
     fun insertExercise(exercise: Exercise) = applicationScope.launch {
         TODO()
-        //localDao.insertExercise(exercise)
+        localDao.insertExercise(exercise)
     }
 
     fun delete(exercise: Exercise) = applicationScope.launch {

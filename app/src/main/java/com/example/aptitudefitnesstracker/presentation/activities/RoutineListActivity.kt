@@ -18,11 +18,7 @@ import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.activity_exercise_list.*
-import kotlinx.android.synthetic.main.activity_exercise_list.downloadExerciseButton
-import kotlinx.android.synthetic.main.activity_exercise_list.newExerciseButton
-import kotlinx.android.synthetic.main.activity_exercise_list.newExerciseFromRoutineButton
-import kotlinx.android.synthetic.main.activity_item_list.*
+import kotlinx.android.synthetic.main.activity_routine_list.*
 
 
 /**
@@ -51,9 +47,7 @@ class RoutineListActivity : AppCompatActivity() {
             newRoutineFABClicked()
         }
 
-        findViewById<FloatingActionButton>(R.id.downloadExerciseButton).setOnClickListener { view ->
-            downloadButtonClicked()
-        }
+
 
         setupRecyclerView()
 
@@ -76,7 +70,7 @@ class RoutineListActivity : AppCompatActivity() {
 
     }
 
-    private fun toggleDownloadMode() {
+
     private fun downloadButtonClicked() {
         if (session.userIsLoggedIn()) {
             toggleDownloadMode()

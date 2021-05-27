@@ -13,7 +13,7 @@ import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import kotlinx.android.synthetic.main.activity_add_exercise.*
 
-class AddExerciseActivity : AppCompatActivity() {
+class EditExerciseActivity : AppCompatActivity() {
     private var inputDetails: EditText? = null
     private var inputName: EditText? = null
     private var inputNotes: EditText? = null
@@ -85,6 +85,6 @@ class AddExerciseActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = AddExerciseActivity::class.java.simpleName
+        private val TAG = EditExerciseActivity::class.java.simpleName
     }
 }

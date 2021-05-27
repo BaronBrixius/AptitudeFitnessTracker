@@ -19,6 +19,8 @@ import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_exercise_list.*
+import com.example.aptitudefitnesstracker.presentation.activities.EditExerciseActivity
+
 
 
 /**
