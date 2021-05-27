@@ -9,13 +9,16 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
+import com.example.aptitudefitnesstracker.presentation.DialogUtils
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.perf.metrics.AddTrace
+import kotlinx.android.synthetic.main.activity_account.*
 
 class SignupActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
@@ -44,11 +47,9 @@ class SignupActivity : AppCompatActivity() {
         btnResetPassword = findViewById(R.id.btn_reset_password)
 
         btnResetPassword!!.setOnClickListener {
-            var intent = Intent(this, AccountActivity::class.java)
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent) //Takes you to AccountActivity
-
+            resetPassword()
         }
+
         btnSignIn!!.setOnClickListener {
             finish()
         }
@@ -107,6 +108,36 @@ class SignupActivity : AppCompatActivity() {
                         finish()
                     }
                 })
+    }
+
+    private fun resetPassword() {
+        val builder: MaterialDialog.Builder =
+            DialogUtils.createCustomDialogWithoutContent(
+                this@SignupActivity,
+                R.string.send_password_reset_email
+            )
+        val materialDialog: MaterialDialog =
+            builder.customView(R.layout.dialog_reset_password, true)
+                .onPositive { dialog, _ ->
+                    val email = dialog.email_input.text.toString()
+                    session.sendPasswordResetEmail(email) { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(
+                                this@SignupActivity,
+                                "Password reset email sent.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@SignupActivity,
+                                "Failed to send password reset email.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+                .build()
+        materialDialog.show()
     }
 
     override fun onResume() {

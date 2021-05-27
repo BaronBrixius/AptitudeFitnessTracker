@@ -158,10 +158,6 @@ class RoutineListActivity : AppCompatActivity() {
                 startActivity(Intent(this@RoutineListActivity, SettingsActivity::class.java))
                 true
             }
-            R.id.AccountSettingsItem -> {
-                startActivity(Intent(this@RoutineListActivity, AccountActivity::class.java))
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }
