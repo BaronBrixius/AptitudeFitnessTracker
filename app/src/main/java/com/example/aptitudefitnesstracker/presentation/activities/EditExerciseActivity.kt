@@ -13,7 +13,7 @@ import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import kotlinx.android.synthetic.main.activity_add_exercise.*
 
-class EditExerciseActivity : AppCompatActivity() {
+class AddExerciseActivity : AppCompatActivity() {
     private var inputDetails: EditText? = null
     private var inputName: EditText? = null
     private var inputNotes: EditText? = null
@@ -78,7 +78,6 @@ class EditExerciseActivity : AppCompatActivity() {
         if (name.isNotEmpty()) {
             session.insertExercise(Exercise(name))
             Toast.makeText(this, "Exercise added", Toast.LENGTH_LONG).show()
-
         } else {
             session.deleteAllRoutines() //todo let's not leave this in for final release eh?
             Toast.makeText(this, "Deleted all routines", Toast.LENGTH_LONG).show()
@@ -86,6 +85,6 @@ class EditExerciseActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = EditExerciseActivity::class.java.simpleName
+        private val TAG = AddExerciseActivity::class.java.simpleName
     }
 }
