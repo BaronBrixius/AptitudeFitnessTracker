@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
+import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
@@ -29,8 +30,13 @@ import kotlinx.android.synthetic.main.activity_routine_list.*
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-class RoutineListActivity : AppCompatActivity() {
-    private val session: Session by lazy { application as Session }
+class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
+    private val session: Session by lazy {
+       val session = application as Session
+        session.addObserver(this)
+        session
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,19 +76,18 @@ class RoutineListActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupRecyclerView()
+    }
 
     private fun downloadButtonClicked() {
         if (session.userIsLoggedIn()) {
-            toggleDownloadMode()
+            session.toggleFirebaseMode()
         }
         else {
             startActivity(Intent(this@RoutineListActivity, LoginActivity::class.java))
         }
-    }
-
-    fun toggleDownloadMode() {
-        session.firebaseMode = !session.firebaseMode
-        setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
@@ -91,11 +96,7 @@ class RoutineListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val routineList: LiveData<List<Routine>> =
-            if (session.firebaseMode)
-                session.downloadRemoteRoutines()
-            else
-                session.getLocalRoutines()
+        val routineList: LiveData<List<Routine>> = session.getProperRoutines()
         routineList.observe(this, { routines ->
             routines?.let { adapter.submitList(it) }
         })
@@ -171,10 +172,6 @@ class RoutineListActivity : AppCompatActivity() {
                 startActivity(Intent(this@RoutineListActivity, SettingsActivity::class.java))
                 true
             }
-            R.id.AccountSettingsItem -> {
-                startActivity(Intent(this@RoutineListActivity, AccountActivity::class.java))
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -246,5 +243,9 @@ class RoutineListActivity : AppCompatActivity() {
         )
     }
     private var clicked = false
+
+    override fun notify(mode: Boolean) {
+        setupRecyclerView()
+    }
 
 }

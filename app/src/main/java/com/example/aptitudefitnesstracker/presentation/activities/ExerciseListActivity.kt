@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
+import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -31,8 +32,12 @@ import com.example.aptitudefitnesstracker.presentation.activities.EditExerciseAc
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-class ExerciseListActivity : AppCompatActivity() {
-    private val session: Session by lazy { application as Session }
+class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
+    private val session: Session by lazy {
+        val session = application as Session
+        session.addObserver(this)
+        session
+    }
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -93,6 +98,9 @@ class ExerciseListActivity : AppCompatActivity() {
             //TODO Implement
         }
 
+        downloadExerciseButton.setOnClickListener {
+            downloadButtonClicked()
+        }
 
         viewOnlineExercisesButton.setOnClickListener {
             if(!session.firebaseMode){
@@ -107,15 +115,17 @@ class ExerciseListActivity : AppCompatActivity() {
                 }
 
             }
-            toggleDownloadMode()
-        }
 
         setupRecyclerView()
     }
 
-    fun toggleDownloadMode() {
-        session.firebaseMode = !session.firebaseMode
-        setupRecyclerView()
+    private fun downloadButtonClicked() {
+        if (session.userIsLoggedIn()) {
+            session.toggleFirebaseMode()
+        }
+        else {
+            startActivity(Intent(this@ExerciseListActivity, LoginActivity::class.java))
+        }
     }
 
     fun setupRecyclerView() {
@@ -124,11 +134,7 @@ class ExerciseListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val routineList: LiveData<List<Exercise>>? =
-            if (session.firebaseMode)
-                session.downloadRemoteExercises()
-            else
-                session.activeRoutine?.exercises
+        val routineList: LiveData<List<Exercise>>? = session.getProperExercises()
         routineList!!.observe(this, { routines ->
             routines?.let { adapter.submitList(it) }
         })
@@ -201,10 +207,6 @@ class ExerciseListActivity : AppCompatActivity() {
                 startActivity(Intent(this@ExerciseListActivity, SettingsActivity::class.java))
                 true
             }
-            R.id.AccountSettingsItem -> {
-                startActivity(Intent(this@ExerciseListActivity, AccountActivity::class.java))
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -258,5 +260,9 @@ class ExerciseListActivity : AppCompatActivity() {
             viewOnlineExercisesButton.isClickable = true
 
         }
+    }
+
+    override fun notify(mode: Boolean) {
+        setupRecyclerView()
     }
 }

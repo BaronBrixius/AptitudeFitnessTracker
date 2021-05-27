@@ -5,9 +5,6 @@
     <item
         android:id="@+id/actionAppSettings"
         android:orderInCategory="100"
-        android:title="App Settings"
+        android:title="@string/settings"
         app:showAsAction="collapseActionView" />
-    <item android:title="Account Settings"
-        android:id="@+id/AccountSettingsItem"/>
-
 </menu>

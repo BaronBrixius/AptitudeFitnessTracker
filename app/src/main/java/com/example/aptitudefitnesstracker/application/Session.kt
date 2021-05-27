@@ -18,7 +18,11 @@ class Session : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())
     private val auth by lazy {
         val auth = FirebaseAuth.getInstance()
-        auth.addAuthStateListener { loggedInUser = auth.currentUser }
+        auth.addAuthStateListener {
+            loggedInUser = auth.currentUser
+            if (!userIsLoggedIn())
+                turnFirebaseModeOff()
+        }
         auth
     }
     private val localDao by lazy { LocalRoomDatabase.getDatabase(this, applicationScope).iDao() }
@@ -27,6 +31,8 @@ class Session : Application() {
     var firebaseMode: Boolean = false
     var activeRoutine: Routine? = null
     var activeExercise: Exercise? = null
+    private var observers: MutableList<IFirebaseModeObserver> = mutableListOf()
+    //private var observer: IFirebaseModeObserver? = null
 
     fun getLocalRoutines(): LiveData<List<Routine>> {
         return localDao.getAllRoutines().map {
@@ -110,14 +116,75 @@ class Session : Application() {
         return loggedInUser != null
     }
 
+    fun turnFirebaseModeOn(): Boolean {
+        return if (userIsLoggedIn()) {
+            setFirebaseModeAndNotify(true)
+        } else {
+            false
+        }
+    }
+
+    fun turnFirebaseModeOff(): Boolean {
+        return setFirebaseModeAndNotify(false)
+    }
+
+    fun toggleFirebaseMode(): Boolean {
+        return if (!firebaseMode) {
+            turnFirebaseModeOn()
+        } else {
+            turnFirebaseModeOff()
+        }
+    }
+
+    private fun setFirebaseModeAndNotify(turnOn: Boolean): Boolean {
+        firebaseMode = turnOn
+        for (item in observers)
+            item.notify(firebaseMode)
+
+        return firebaseMode
+    }
+
     @AddTrace(name = "authenticateLogin")
     fun authenticateLogin(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
-        val auth = FirebaseAuth.getInstance()
+        //val auth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
+        println("delete me")
     }
 
     fun signOut() {
         auth.signOut()
-        firebaseMode = false
+    }
+
+    fun addObserver(newObserver: IFirebaseModeObserver) {
+        observers.add(newObserver)
+    }
+
+    //think of a better name than "proper" routines
+    fun getProperRoutines(): LiveData<List<Routine>> {
+        return if (firebaseMode)
+            downloadRemoteRoutines()
+        else
+            getLocalRoutines()
+    }
+
+    fun getProperExercises(): LiveData<List<Exercise>>? {
+        return if (firebaseMode)
+            downloadRemoteExercises()
+        else
+            activeRoutine?.exercises
+    }
+
+    fun addFirebaseAuthStateListener(authListener: FirebaseAuth.AuthStateListener) {
+        auth.addAuthStateListener(authListener)
+    }
+
+    fun removeFirebaseAuthStateListener(authListener: FirebaseAuth.AuthStateListener) {
+        auth.removeAuthStateListener(authListener)
+    }
+
+    //Sending the reset email only takes a Task<Void> callback instead of Task<AuthResult>
+    //I don't think changing it causes problems, but I noted the change here in case it does
+    fun sendPasswordResetEmail(email: String, callback: (Task<Void>) -> Unit) {
+        auth.sendPasswordResetEmail(email).addOnCompleteListener(callback)
     }
 }
