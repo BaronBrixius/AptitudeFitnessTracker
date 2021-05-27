@@ -4,7 +4,6 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.firebase-perf'
     id 'kotlin-kapt'
-    id 'kotlin-android-extensions' // for find and use control of xml file into kotlin
 }
 
 android {

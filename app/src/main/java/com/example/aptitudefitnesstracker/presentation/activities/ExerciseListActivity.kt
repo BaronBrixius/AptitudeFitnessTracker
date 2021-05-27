@@ -17,9 +17,9 @@ import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Session
+import com.example.aptitudefitnesstracker.databinding.ActivityExerciseListBinding
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.activity_exercise_list.*
 
 /**
  * An activity representing a list of Pings. This activity
@@ -35,11 +35,8 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         session.addObserver(this)
         session
     }
+    private lateinit var binding: ActivityExerciseListBinding
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
             this,
@@ -66,21 +63,26 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
     private var clicked = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    
+     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtils.setThemeApp(this) // for set theme
         ThemeUtils.setAppFont(this) // for set font size
         ThemeUtils.setAppFontFamily(this) // for set font family
         setContentView(R.layout.activity_exercise_list)
+        
+        binding = ActivityExerciseListBinding.inflate(layoutInflater)
+        
+        
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.title = "Exercises"
 
-        findViewById<FloatingActionButton>(R.id.newExerciseFAB).setOnClickListener { view ->
+        binding.newExerciseFAB.setOnClickListener { view ->
             newExerciseFABClicked()
         }
 
-        newExerciseButton.setOnClickListener {
+        binding.newExerciseButton.setOnClickListener {
             Toast.makeText(this, "New Exercise Button", Toast.LENGTH_SHORT).show()
             var exercise = Exercise()
             session.insertExercise( exercise )
@@ -90,7 +92,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
 
         }
-        newExerciseFromRoutineButton.setOnClickListener {
+        binding.newExerciseFromRoutineButton.setOnClickListener {
             Toast.makeText(this, "newExerciseFromRoutineButton", Toast.LENGTH_SHORT).show()
             //TODO Implement
         }
@@ -99,12 +101,12 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 //            downloadButtonClicked()
 //        }
 
-        viewOnlineExercisesButton.setOnClickListener {
+        binding.viewOnlineExercisesButton.setOnClickListener {
             if (!session.firebaseMode) {
                 toolbar.title = "Viewing Online Exercises"
-                viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
+                binding.viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
             } else {
-                viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
+                binding.viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
                 if (session.activeRoutine == null) {
                     finish()
                     finishAffinity()
@@ -220,41 +222,41 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
     private fun setVisibility(clicked: Boolean) {
         if (!clicked) {
-            newExerciseButton.visibility = View.VISIBLE
-            newExerciseFromRoutineButton.visibility = View.VISIBLE
-            viewOnlineExercisesButton.visibility = View.VISIBLE
+            binding.newExerciseButton.visibility = View.VISIBLE
+            binding.newExerciseFromRoutineButton.visibility = View.VISIBLE
+            binding.viewOnlineExercisesButton.visibility = View.VISIBLE
         } else {
-            newExerciseButton.visibility = View.INVISIBLE
-            newExerciseFromRoutineButton.visibility = View.INVISIBLE
-            viewOnlineExercisesButton.visibility = View.INVISIBLE
+            binding.newExerciseButton.visibility = View.INVISIBLE
+            binding.newExerciseFromRoutineButton.visibility = View.INVISIBLE
+            binding.viewOnlineExercisesButton.visibility = View.INVISIBLE
         }
     }
 
     private fun setAnimation(clicked: Boolean) {
         if (!clicked) {
-            newExerciseButton.startAnimation(fromBott)
-            newExerciseFromRoutineButton.startAnimation(fromBott)
-            viewOnlineExercisesButton.startAnimation(fromBott)
-            newExerciseFAB.startAnimation(rotateOpen)
+            binding.newExerciseButton.startAnimation(fromBott)
+            binding.newExerciseFromRoutineButton.startAnimation(fromBott)
+            binding.viewOnlineExercisesButton.startAnimation(fromBott)
+            binding.newExerciseFAB.startAnimation(rotateOpen)
         } else {
-            newExerciseButton.startAnimation(toBott)
-            newExerciseFromRoutineButton.startAnimation(toBott)
-            viewOnlineExercisesButton.startAnimation(toBott)
-            newExerciseFAB.startAnimation(rotateClose)
+            binding.newExerciseButton.startAnimation(toBott)
+            binding.newExerciseFromRoutineButton.startAnimation(toBott)
+            binding.viewOnlineExercisesButton.startAnimation(toBott)
+            binding.newExerciseFAB.startAnimation(rotateClose)
         }
     }
 
     private fun setClickable(clicked: Boolean) {
         if (!clicked) {
-            newExerciseButton.isClickable = false
-            newExerciseFromRoutineButton.isClickable = false
-            viewOnlineExercisesButton.isClickable = false
+            binding.newExerciseButton.isClickable = false
+            binding.newExerciseFromRoutineButton.isClickable = false
+            binding.viewOnlineExercisesButton.isClickable = false
 
 
         } else {
-            newExerciseButton.isClickable = true
-            newExerciseFromRoutineButton.isClickable = true
-            viewOnlineExercisesButton.isClickable = true
+            binding.newExerciseButton.isClickable = true
+            binding.newExerciseFromRoutineButton.isClickable = true
+            binding.viewOnlineExercisesButton.isClickable = true
 
         }
     }

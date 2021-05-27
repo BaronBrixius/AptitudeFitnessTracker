@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
@@ -11,13 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
+import com.example.aptitudefitnesstracker.databinding.ActivitySettingsBinding
 import com.example.aptitudefitnesstracker.presentation.DialogUtils
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
-import kotlinx.android.synthetic.main.activity_account.*
-import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
+    private lateinit var binding: ActivitySettingsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,24 +27,27 @@ class SettingsActivity : AppCompatActivity() {
         ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_settings)
 
-        setSupportActionBar(toolbar)
-        toolbar.title = title
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
 
+        setSupportActionBar(binding.toolbar)
+        binding.toolbar.title = title
+
+        //todo move these over to proper databinding calls https://stackoverflow.com/questions/47364182/databinding-onclick-listener-on-button
         /* Control click listeners */
-        linearChangeTheme.setOnClickListener {
+        binding.linearChangeTheme.setOnClickListener {
             setTheme()
         }
-        linearFontSize.setOnClickListener {
+        binding.linearFontSize.setOnClickListener {
             setAppFont()
         }
-        linearChangeFontFamily.setOnClickListener {
+        binding.linearChangeFontFamily.setOnClickListener {
             setFontFamily()
         }
 
-        linearResetPass.setOnClickListener {
+        binding.linearResetPass.setOnClickListener {
             resetPassword()
         }
-        linearSignOut.setOnClickListener {
+        binding.linearSignOut.setOnClickListener {
             signOut()
         }
     }
@@ -149,7 +153,7 @@ class SettingsActivity : AppCompatActivity() {
         val materialDialog: MaterialDialog =
             builder.customView(R.layout.dialog_reset_password, true)
                 .onPositive { dialog, _ ->
-                    val email = dialog.email_input.text.toString()
+                    val email = findViewById<EditText>(R.id.email_input).text.toString()
 
                     session.sendPasswordResetEmail(email) { task ->
                         if (task.isSuccessful) {
