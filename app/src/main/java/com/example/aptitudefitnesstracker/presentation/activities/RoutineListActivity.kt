@@ -18,7 +18,11 @@ import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.activity_routine_list.*
+import kotlinx.android.synthetic.main.activity_exercise_list.*
+import kotlinx.android.synthetic.main.activity_exercise_list.downloadExerciseButton
+import kotlinx.android.synthetic.main.activity_exercise_list.newExerciseButton
+import kotlinx.android.synthetic.main.activity_exercise_list.newExerciseFromRoutineButton
+import kotlinx.android.synthetic.main.activity_item_list.*
 
 
 /**
@@ -40,12 +44,17 @@ class RoutineListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_routine_list)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toolbar.title = "Personal Routines"
+        toolbar.title = title
 
         //Add new
         findViewById<FloatingActionButton>(R.id.newRoutineFAB).setOnClickListener { view ->
             newRoutineFABClicked()
         }
+
+        findViewById<FloatingActionButton>(R.id.downloadExerciseButton).setOnClickListener { view ->
+            downloadButtonClicked()
+        }
+
         setupRecyclerView()
 
         newRoutineButton.setOnClickListener{
@@ -68,6 +77,16 @@ class RoutineListActivity : AppCompatActivity() {
     }
 
     private fun toggleDownloadMode() {
+    private fun downloadButtonClicked() {
+        if (session.userIsLoggedIn()) {
+            toggleDownloadMode()
+        }
+        else {
+            startActivity(Intent(this@RoutineListActivity, LoginActivity::class.java))
+        }
+    }
+
+    fun toggleDownloadMode() {
         session.firebaseMode = !session.firebaseMode
         setupRecyclerView()
     }
@@ -79,7 +98,10 @@ class RoutineListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val routineList: LiveData<List<Routine>> =
-            if (session.firebaseMode) session.downloadRemoteRoutines() else session.getLocalRoutines()
+            if (session.firebaseMode)
+                session.downloadRemoteRoutines()
+            else
+                session.getLocalRoutines()
         routineList.observe(this, { routines ->
             routines?.let { adapter.submitList(it) }
         })

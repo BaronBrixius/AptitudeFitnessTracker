@@ -9,11 +9,13 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
+import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.firebase.auth.FirebaseAuth
 
 
 class AccountActivity : AppCompatActivity() {
+    private val session: Session by lazy { application as Session }
     private var btnChangeEmail: Button? = null
     private var btnChangePassword: Button? = null
     private var btnSendResetEmail: Button? = null
@@ -238,15 +240,17 @@ class AccountActivity : AppCompatActivity() {
             }
         }
         signOut!!.setOnClickListener {
-            fun onClick() {
                 signOut()
-            }
         }
     }
 
     //sign out method
     private fun signOut() {
-        auth!!.signOut()
+        session.signOut()
+
+        val intent = Intent(this, RoutineListActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
 
     override fun onResume() {
