@@ -31,10 +31,53 @@ class Session : Application() {
     fun getLocalRoutines(): LiveData<List<Routine>> {
         return localDao.getAllRoutines().map {
             it.map { routine ->
-                routine.exercises = localDao.getExercisesInRoutine(routine.id)
-                routine
+                addExercisesToRoutine(routine)
             }
         }
+    }
+
+    private fun addExercisesToRoutine(routine: Routine): Routine {
+        routine.exercises = localDao.getExercisesInRoutine(routine.id)
+        return routine
+    }
+
+    fun updateRoutine(routine: Routine) = applicationScope.launch {
+        localDao.updateRoutine(routine)
+    }
+
+    fun addExerciseToRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
+        TODO()
+    }
+
+    fun removeExerciseFromRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
+        TODO()
+    }
+
+    fun insertRoutine(routine: Routine) = applicationScope.launch {
+        localDao.insertRoutine(routine)
+    }
+
+    fun delete(routine: Routine) = applicationScope.launch {
+        localDao.deleteRoutine(routine)
+    }
+
+    fun deleteAllRoutines() = applicationScope.launch {
+        localDao.getAllRoutines()
+    }
+
+    fun insertExercise(exercise: Exercise) = applicationScope.launch {
+        TODO()
+        localDao.insertExercise(exercise)
+    }
+
+    fun delete(exercise: Exercise) = applicationScope.launch {
+        TODO()
+        //localDao.delete(exercise)
+    }
+
+    fun deleteAllExercises() = applicationScope.launch {
+        TODO()
+        //localDao.deleteAllExercises()
     }
 
     fun downloadRemoteRoutines(): LiveData<List<Routine>> {
@@ -43,31 +86,6 @@ class Session : Application() {
 
     fun downloadRemoteExercises(): LiveData<List<Exercise>> {
         return remoteDao.getAllExercises()
-    }
-
-    fun updateRoutine(routine: Routine) = applicationScope.launch {
-        localDao.updateRoutine(routine)
-    }
-
-    fun copyExerciseToRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
-        val copyExercise = exercise.copy(routineId = routine.id)
-        insertExercise(copyExercise)
-    }
-
-    fun insertRoutine(routine: Routine) = applicationScope.launch {
-        localDao.insertRoutine(routine)
-    }
-
-    fun insertExercise(exercise: Exercise) = applicationScope.launch {
-        localDao.insertExercise(exercise)
-    }
-
-    fun deleteRoutine(routine: Routine) = applicationScope.launch {
-        localDao.deleteRoutine(routine)
-    }
-
-    fun deleteExercise(exercise: Exercise) = applicationScope.launch {
-        localDao.deleteExercise(exercise)
     }
 
     suspend fun share(routine: Routine): Boolean {
