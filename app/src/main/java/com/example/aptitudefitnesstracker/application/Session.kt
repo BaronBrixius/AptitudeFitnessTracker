@@ -60,8 +60,8 @@ class Session : Application() {
     }
 
     fun insertExercise(exercise: Exercise) = applicationScope.launch {
-        TODO()
-        //localDao.insertExercise(exercise)
+//        TODO()
+        localDao.insertExercise(exercise)
     }
 
     fun delete(exercise: Exercise) = applicationScope.launch {
