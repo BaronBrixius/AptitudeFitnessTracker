@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.databinding.ActivityLoginBinding
+//import com.example.aptitudefitnesstracker.databinding.ActivityLoginBinding
 import com.example.aptitudefitnesstracker.presentation.DialogUtils
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.gms.tasks.Task
@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
     private var btnLogin: Button? = null
     private var btnReset: Button? = null
 
-    private lateinit var binding: ActivityLoginBinding
+    //private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
         ThemeUtils.setAppFont(this) // for set font size
         ThemeUtils.setAppFontFamily(this) // for set font family
 
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        //binding = ActivityLoginBinding.inflate(layoutInflater)
 
         // set the view now
         setContentView(R.layout.activity_login)

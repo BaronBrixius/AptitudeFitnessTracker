@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class Session : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())
-    val auth by lazy {
+    private val auth by lazy {
         val auth = FirebaseAuth.getInstance()
         auth.addAuthStateListener {
             loggedInUser = auth.currentUser
@@ -157,14 +157,16 @@ class Session : Application() {
     }
 
     fun addFirebaseAuthStateListener(authListener: FirebaseAuth.AuthStateListener) {
-        println("add auth listener")
+        auth.addAuthStateListener(authListener)
     }
 
     fun removeFirebaseAuthStateListener(authListener: FirebaseAuth.AuthStateListener) {
-        println("remove auth listener")
+        auth.removeAuthStateListener(authListener)
     }
 
-    fun sendPasswordResetEmail(email: String, callback: (Task<AuthResult>) -> Unit) {
-        println("reset email button")
+    //Sending the reset email only takes a Task<Void> callback instead of Task<AuthResult>
+    //I don't think changing it causes problems, but I noted the change here in case it does
+    fun sendPasswordResetEmail(email: String, callback: (Task<Void>) -> Unit) {
+        auth.sendPasswordResetEmail(email).addOnCompleteListener(callback)
     }
 }
