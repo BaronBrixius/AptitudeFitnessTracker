@@ -64,9 +64,14 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         setupRecyclerView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupRecyclerView()
+    }
+
     private fun downloadButtonClicked() {
-        if (session.toggleAndGetFirebaseMode()) {
-            setupRecyclerView()
+        if (session.userIsLoggedIn()) {
+            session.toggleFirebaseMode()
         }
         else {
             startActivity(Intent(this@RoutineListActivity, LoginActivity::class.java))
@@ -238,7 +243,7 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private var clicked = false
 
     override fun notify(mode: Boolean) {
-        TODO("Not yet implemented")
+        setupRecyclerView()
     }
 
 }

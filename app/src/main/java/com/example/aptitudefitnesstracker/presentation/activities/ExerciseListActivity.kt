@@ -90,11 +90,19 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             //TODO Implement
         }
         downloadExerciseButton.setOnClickListener {
-            Toast.makeText(this, "downloadExerciseButton", Toast.LENGTH_SHORT).show()
-            //TODO Implement
+            downloadButtonClicked()
         }
 
         setupRecyclerView()
+    }
+
+    private fun downloadButtonClicked() {
+        if (session.userIsLoggedIn()) {
+            session.toggleFirebaseMode()
+        }
+        else {
+            startActivity(Intent(this@ExerciseListActivity, LoginActivity::class.java))
+        }
     }
 
     fun setupRecyclerView() {
@@ -241,6 +249,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
 
     override fun notify(mode: Boolean) {
-        TODO("Not yet implemented")
+        setupRecyclerView()
     }
 }

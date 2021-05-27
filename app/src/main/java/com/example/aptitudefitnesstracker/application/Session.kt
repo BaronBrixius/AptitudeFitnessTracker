@@ -31,7 +31,8 @@ class Session : Application() {
     var firebaseMode: Boolean = false
     var activeRoutine: Routine? = null
     var activeExercise: Exercise? = null
-    private var observer: IFirebaseModeObserver? = null
+    private var observers: MutableList<IFirebaseModeObserver> = mutableListOf()
+    //private var observer: IFirebaseModeObserver? = null
 
     fun getLocalRoutines(): LiveData<List<Routine>> {
         return localDao.getAllRoutines().map {
@@ -109,7 +110,7 @@ class Session : Application() {
         return setFirebaseModeAndNotify(false)
     }
 
-    fun toggleAndGetFirebaseMode(): Boolean {
+    fun toggleFirebaseMode(): Boolean {
         return if (!firebaseMode) {
             turnFirebaseModeOn()
         } else {
@@ -118,30 +119,18 @@ class Session : Application() {
     }
 
     private fun setFirebaseModeAndNotify(turnOn: Boolean): Boolean {
-        if (firebaseMode != turnOn) {
-            firebaseMode = turnOn
-            observer?.let { observer!!.notify(firebaseMode) }
-        }
+        firebaseMode = turnOn
+        for (item in observers)
+            item.notify(firebaseMode)
 
         return firebaseMode
     }
-    //fun turnOnFirebaseMode(): Boolean {
-    //    if (userIsLoggedIn().and(!firebaseMode))
-    //        toggleFirebaseMode()
-    //
-    //    return firebaseMode
-    //}
-    //fun turnOffFirebaseMode(): Boolean {
-    //    if (firebaseMode)
-    //        toggleFirebaseMode()
-    //
-    //    return firebaseMode
-    //}
 
     @AddTrace(name = "authenticateLogin")
     fun authenticateLogin(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
-        val auth = FirebaseAuth.getInstance()
+        //val auth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
+        println("delete me")
     }
 
     fun signOut() {
@@ -149,10 +138,10 @@ class Session : Application() {
     }
 
     fun addObserver(newObserver: IFirebaseModeObserver) {
-        observer = newObserver
+        observers.add(newObserver)
     }
 
-    //TODO think of a better name than "proper" routines
+    //think of a better name than "proper" routines
     fun getProperRoutines(): LiveData<List<Routine>> {
         return if (firebaseMode)
             downloadRemoteRoutines()
