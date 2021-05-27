@@ -1,23 +1,23 @@
 package com.example.aptitudefitnesstracker.presentation.activities
 
-import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
+import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.DialogUtils
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
+import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
-
-    /*Set context of the current class*/
-    private var mActivity: Activity? = null
+    private val session: Session by lazy { application as Session }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,12 +25,11 @@ class SettingsActivity : AppCompatActivity() {
         ThemeUtils.setAppFont(this)
         ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_settings)
-        mActivity = this as Activity
 
         setSupportActionBar(toolbar)
         toolbar.title = title
 
-        /* Control click listner which is used for make action */
+        /* Control click listeners */
         linearChangeTheme.setOnClickListener {
             setTheme()
         }
@@ -39,6 +38,13 @@ class SettingsActivity : AppCompatActivity() {
         }
         linearChangeFontFamily.setOnClickListener {
             setFontFamily()
+        }
+
+        linearResetPass.setOnClickListener {
+            resetPassword()
+        }
+        linearSignOut.setOnClickListener {
+            signOut()
         }
     }
 
@@ -59,7 +65,7 @@ class SettingsActivity : AppCompatActivity() {
                 val radioButton = view.findViewById<RadioButton>(selectedId)
                 val themeName = radioButton.text.toString()
                 ThemeUtils.saveTheme(this@SettingsActivity, themeName)
-                mActivity!!.recreate()
+                recreate()
             }
             .build()
         val radioGroup: RadioGroup =
@@ -90,7 +96,7 @@ class SettingsActivity : AppCompatActivity() {
                 val fontName = radioFontButton.text.toString()
                 Log.e("PLPLP", fontName)
                 ThemeUtils.saveFontSize(this@SettingsActivity, fontName)
-                mActivity!!.recreate()
+                recreate()
             }
             .build()
         val radioGroupFont: RadioGroup =
@@ -121,7 +127,7 @@ class SettingsActivity : AppCompatActivity() {
                 val fontFamilyName = radioFontButton.text.toString()
                 Log.e("PLPLP", fontFamilyName)
                 ThemeUtils.saveFontFamily(this@SettingsActivity, fontFamilyName)
-                mActivity!!.recreate()
+                recreate()
             }
             .build()
         val radioGroupFont: RadioGroup =
@@ -131,6 +137,49 @@ class SettingsActivity : AppCompatActivity() {
                 ThemeUtils.getSelectedFontFamilyPosition(this@SettingsActivity)
             ) as RadioButton
         rbutton.isChecked = true
+        materialDialog.show()
+    }
+
+    private fun resetPassword() {
+        val builder: MaterialDialog.Builder =
+            DialogUtils.createCustomDialogWithoutContent(
+                this@SettingsActivity,
+                R.string.send_password_reset_email
+            )
+        val materialDialog: MaterialDialog =
+            builder.customView(R.layout.dialog_reset_password, true)
+                .onPositive { dialog, _ ->
+                    val email = dialog.email_input.text.toString()
+
+                    session.sendPasswordResetEmail(email) { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(
+                                this@SettingsActivity,
+                                "Password reset email sent.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@SettingsActivity,
+                                "Failed to send password reset email.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+                .build()
+        materialDialog.show()
+    }
+
+    private fun signOut() {
+        val materialDialog: MaterialDialog =
+            DialogUtils.createCustomDialogWithoutContent(
+                this@SettingsActivity,
+                R.string.sign_out_confirmation
+            ).onPositive { _, _ ->
+                session.signOut()
+                finish()
+            }.build()
         materialDialog.show()
     }
 

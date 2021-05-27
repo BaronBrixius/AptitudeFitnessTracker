@@ -1,7 +1,7 @@
 package com.example.aptitudefitnesstracker.presentation
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.util.Log
 import com.example.aptitudefitnesstracker.R
 

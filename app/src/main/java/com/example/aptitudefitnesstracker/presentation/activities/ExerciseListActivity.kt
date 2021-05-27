@@ -184,10 +184,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
                 startActivity(Intent(this@ExerciseListActivity, SettingsActivity::class.java))
                 true
             }
-            R.id.AccountSettingsItem -> {
-                startActivity(Intent(this@ExerciseListActivity, AccountActivity::class.java))
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }

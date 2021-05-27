@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class Session : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())
-    private val auth by lazy {
+    val auth by lazy {
         val auth = FirebaseAuth.getInstance()
         auth.addAuthStateListener {
             loggedInUser = auth.currentUser
@@ -154,5 +154,17 @@ class Session : Application() {
             downloadRemoteExercises()
         else
             activeRoutine?.exercises
+    }
+
+    fun addFirebaseAuthStateListener(authListener: FirebaseAuth.AuthStateListener) {
+        println("add auth listener")
+    }
+
+    fun removeFirebaseAuthStateListener(authListener: FirebaseAuth.AuthStateListener) {
+        println("remove auth listener")
+    }
+
+    fun sendPasswordResetEmail(email: String, callback: (Task<AuthResult>) -> Unit) {
+        println("reset email button")
     }
 }
