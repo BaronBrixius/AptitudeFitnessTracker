@@ -54,6 +54,11 @@ class Session : Application() {
         localDao.updateRoutine(routine)
     }
 
+    fun updateExercise(exercise: Exercise) = applicationScope.launch {
+        localDao.updateExercise(exercise)
+    }
+
+
     fun copyExerciseToRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
         val copyExercise = exercise.copy(routineId = routine.id)
         insertExercise(copyExercise)
