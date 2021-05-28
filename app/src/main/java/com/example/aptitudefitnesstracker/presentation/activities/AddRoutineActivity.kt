@@ -13,7 +13,6 @@ import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 
-
 class AddRoutineActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
     private var txtDetails: TextView? = null

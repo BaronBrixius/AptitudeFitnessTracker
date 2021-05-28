@@ -4,16 +4,11 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.firebase-perf'
     id 'kotlin-kapt'
-    id 'kotlin-android-extensions' // for find and use control of xml file into kotlin
 }
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
-
-    buildFeatures {
-        viewBinding true
-    }
     
     defaultConfig {
         applicationId "com.example.aptitudefitnesstracker"

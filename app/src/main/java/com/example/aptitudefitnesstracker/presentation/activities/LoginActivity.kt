@@ -4,20 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
-//import com.example.aptitudefitnesstracker.databinding.ActivityLoginBinding
 import com.example.aptitudefitnesstracker.presentation.DialogUtils
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import kotlinx.android.synthetic.main.activity_account.*
 
 class LoginActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
@@ -116,7 +111,7 @@ class LoginActivity : AppCompatActivity() {
         val materialDialog: MaterialDialog =
             builder.customView(R.layout.dialog_reset_password, true)
                 .onPositive { dialog, _ ->
-                    val email = dialog.email_input.text.toString()
+                    val email = findViewById<EditText>(R.id.email_input).text.toString()
                     session.sendPasswordResetEmail(email) { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(

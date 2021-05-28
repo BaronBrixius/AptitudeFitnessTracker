@@ -19,7 +19,6 @@ import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.activity_routine_list.*
 
 
 /**
@@ -37,6 +36,10 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         session
     }
 
+    private lateinit var newRoutineFAB: FloatingActionButton
+    private lateinit var newRoutineButton: FloatingActionButton
+    private lateinit var viewOnlineRoutinesButton: FloatingActionButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +49,10 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         setContentView(R.layout.activity_routine_list)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        newRoutineFAB = findViewById(R.id.newRoutineFAB)
+        newRoutineButton = findViewById(R.id.newRoutineButton)
+        viewOnlineRoutinesButton = findViewById(R.id.viewOnlineRoutinesButton)
 
         //Add new
         findViewById<FloatingActionButton>(R.id.newRoutineFAB).setOnClickListener { view ->

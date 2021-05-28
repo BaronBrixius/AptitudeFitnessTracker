@@ -7,11 +7,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
-import kotlinx.android.synthetic.main.activity_add_exercise.*
 
 class EditExerciseActivity : AppCompatActivity() {
     private var inputDetails: EditText? = null
@@ -34,7 +34,7 @@ class EditExerciseActivity : AppCompatActivity() {
         inputDetails = findViewById<View>(R.id.Detail) as EditText
         inputNotes = findViewById<View>(R.id.Notes) as EditText
         btnSave = findViewById<View>(R.id.btn_save) as Button
-        toolbar.title = "Add Exercise"
+        findViewById<Toolbar>(R.id.toolbar).title = "Add Exercise"
 
         var exercise = session.activeExercise
 

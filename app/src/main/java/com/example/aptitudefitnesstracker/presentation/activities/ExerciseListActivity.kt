@@ -19,8 +19,6 @@ import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.activity_exercise_list.*
-import kotlinx.android.synthetic.main.activity_routine_list.*
 
 /**
  * An activity representing a list of Pings. This activity
@@ -36,6 +34,10 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         session.addObserver(this)
         session
     }
+    private lateinit var newExerciseFAB: FloatingActionButton
+    private lateinit var newExerciseButton: FloatingActionButton
+    private lateinit var newExerciseFromRoutineButton: FloatingActionButton
+    private lateinit var viewOnlineExercisesButton: FloatingActionButton
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -75,8 +77,14 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         setContentView(R.layout.activity_exercise_list)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+        toolbar.title = "Exercises"
 
-        findViewById<FloatingActionButton>(R.id.newExerciseFAB).setOnClickListener { view ->
+        newExerciseFAB = findViewById(R.id.newExerciseFAB)
+        newExerciseButton = findViewById(R.id.newExerciseButton)
+        newExerciseFromRoutineButton = findViewById(R.id.newExerciseFromRoutineButton)
+        viewOnlineExercisesButton = findViewById(R.id.viewOnlineExercisesButton)
+
+        newExerciseFAB.setOnClickListener { view ->
             newExerciseFABClicked()
         }
 

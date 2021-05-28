@@ -4,17 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.DialogUtils
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
-import kotlinx.android.synthetic.main.activity_account.*
-import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
@@ -26,24 +23,25 @@ class SettingsActivity : AppCompatActivity() {
         ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_settings)
 
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.title = title
 
         /* Control click listeners */
-        linearChangeTheme.setOnClickListener {
+        findViewById<LinearLayout>(R.id.linearChangeTheme).setOnClickListener {
             setTheme()
         }
-        linearFontSize.setOnClickListener {
+        findViewById<LinearLayout>(R.id.linearFontSize).setOnClickListener {
             setAppFont()
         }
-        linearChangeFontFamily.setOnClickListener {
+        findViewById<LinearLayout>(R.id.linearChangeFontFamily).setOnClickListener {
             setFontFamily()
         }
 
-        linearResetPass.setOnClickListener {
+        findViewById<LinearLayout>(R.id.linearResetPass).setOnClickListener {
             resetPassword()
         }
-        linearSignOut.setOnClickListener {
+        findViewById<LinearLayout>(R.id.linearSignOut).setOnClickListener {
             signOut()
         }
     }
@@ -148,8 +146,8 @@ class SettingsActivity : AppCompatActivity() {
             )
         val materialDialog: MaterialDialog =
             builder.customView(R.layout.dialog_reset_password, true)
-                .onPositive { dialog, _ ->
-                    val email = dialog.email_input.text.toString()
+                .onPositive { _, _ ->
+                    val email = findViewById<EditText>(R.id.email_input).text.toString()
 
                     session.sendPasswordResetEmail(email) { task ->
                         if (task.isSuccessful) {
