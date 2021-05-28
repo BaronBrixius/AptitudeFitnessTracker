@@ -6,8 +6,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import android.widget.Toast
 import com.example.aptitudefitnesstracker.R
+import com.example.aptitudefitnesstracker.application.Exercise
+import com.example.aptitudefitnesstracker.application.Session
+import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
+import com.google.android.material.appbar.CollapsingToolbarLayout
 
 /**
  * An activity representing a single Item detail screen. This
@@ -16,6 +21,7 @@ import com.example.aptitudefitnesstracker.presentation.ThemeUtils
  * in a [RoutineListActivity].
  */
 class ExerciseDetailActivity : AppCompatActivity() {
+    private val session: Session by lazy { application as Session }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,13 +30,26 @@ class ExerciseDetailActivity : AppCompatActivity() {
         ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_item_detail)
         setSupportActionBar(findViewById(R.id.detail_toolbar))
-        findViewById<FloatingActionButton>(R.id.newExerciseFAB).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+
+        var exercise: Exercise = session.activeExercise!!
+
+
+
+        findViewById<FloatingActionButton>(R.id.editExerciseFAB).setOnClickListener { view ->
+//            var exercise = Exercise()
+
+            intent = Intent(this, EditExerciseActivity::class.java)
+            startActivity(intent)
+            Toast.makeText(this, "editExerciseFAB", Toast.LENGTH_SHORT).show()
+
         }
 
         // Show the Up button in the action bar.
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout)?.title = exercise.name
+        println(exercise.name)
+
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -41,7 +60,7 @@ class ExerciseDetailActivity : AppCompatActivity() {
         //
         // http://developer.android.com/guide/components/fragments.html
         //
-        if (savedInstanceState == null) {
+//        if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
 //            val fragment = ExerciseDetailFragment().apply {
@@ -56,7 +75,7 @@ class ExerciseDetailActivity : AppCompatActivity() {
 //            supportFragmentManager.beginTransaction()
 //                .add(R.id.item_detail_container, fragment)
 //                .commit()
-        }
+//        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =

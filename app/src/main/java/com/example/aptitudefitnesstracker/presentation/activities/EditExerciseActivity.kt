@@ -49,15 +49,17 @@ class EditExerciseActivity : AppCompatActivity() {
             val details = inputDetails!!.text.toString()
             val notes = inputNotes!!.text.toString()
 
+            exercise!!.name = name
+            exercise!!.notes = notes
 
-            // Check for already existed userId
-            if (TextUtils.isEmpty(userId)) {
-                if (exercise != null) {
-                    exercise.name = name
-                }
-            } else {
-//                updateExercise(name)
-            }
+//            session.updateExercise(exercise)
+
+//            // Check for already existed userId
+//            if (TextUtils.isEmpty(userId)) {
+//
+//            } else {
+////                updateExercise(name)
+//            }
         }
         toggleButton()
     }
