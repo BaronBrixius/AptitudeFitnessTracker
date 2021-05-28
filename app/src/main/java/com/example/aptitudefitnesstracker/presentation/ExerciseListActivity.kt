@@ -117,7 +117,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             startActivity(Intent(this@ExerciseListActivity, LoginActivity::class.java))
     }
 
-    fun setupRecyclerView() {
+    private fun setupRecyclerView() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         val recyclerView: RecyclerView = findViewById(R.id.item_list)
         val adapter = ExerciseRecyclerViewAdapter(this)
@@ -136,7 +136,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
                 finish()
                 finishAffinity()
             }
-            toggleDownloadMode()
         }
         val exerciseList: LiveData<List<Exercise>>? = session.getProperExercises()
         exerciseList!!.observe(this, { exercises ->
@@ -145,14 +144,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
 //        setupRecyclerView()
     }
-
-    fun toggleDownloadMode() {
-        session.firebaseMode = !session.firebaseMode
-        setupRecyclerView()
-    }
-
-
-
 
     class ExerciseRecyclerViewAdapter(
         private val parentActivity: ExerciseListActivity
@@ -208,7 +199,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         }
     }
 
-    /* START HERE For create Setting option menu  */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_settings, menu)
@@ -224,9 +214,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    /* END HERE For create Setting option menu */
-
 
     private fun newExerciseFABClicked() {
         setVisibility(clicked)
