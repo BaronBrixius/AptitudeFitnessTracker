@@ -90,7 +90,7 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
 
     private fun setupRecyclerView() {
-        val recyclerView: RecyclerView = findViewById(R.id.item_list)
+        val recyclerView: RecyclerView = findViewById(R.id.item_parent_list_routine)
         val adapter = RoutineRecyclerViewAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -127,7 +127,7 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_list_content, parent, false)
+                .inflate(R.layout.item_list_routine, parent, false)
             return RoutineViewHolder(view)
         }
 
