@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
+import com.google.android.gms.tasks.Task
 
 class SettingsActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
@@ -66,8 +67,7 @@ class SettingsActivity : AppCompatActivity() {
             .build()
         val radioGroup: RadioGroup =
             materialDialog.customView!!.findViewById(R.id.radio_group_themes)
-        val rb = radioGroup
-            .getChildAt(
+        val rb = radioGroup.getChildAt(
                 ThemeUtils.getSelectedThemePosition(this@SettingsActivity)
             ) as RadioButton
         rb.isChecked = true
@@ -97,8 +97,7 @@ class SettingsActivity : AppCompatActivity() {
             .build()
         val radioGroupFont: RadioGroup =
             materialDialog.customView!!.findViewById(R.id.radio_group_font)
-        val rbutton = radioGroupFont
-            .getChildAt(
+        val rbutton = radioGroupFont.getChildAt(
                 ThemeUtils.getSelectedFontPosition(this@SettingsActivity)
             ) as RadioButton
         rbutton.isChecked = true
@@ -144,27 +143,24 @@ class SettingsActivity : AppCompatActivity() {
             )
         val materialDialog: MaterialDialog =
             builder.customView(R.layout.dialog_reset_password, true)
-                .onPositive { _, _ ->
-                    val email = findViewById<EditText>(R.id.email_input).text.toString()
+                .onPositive { dialog, _ ->
+                    val emailInput = dialog.findViewById(R.id.email_input) as EditText
+                    val email = emailInput.text.toString()
 
-                    session.sendPasswordResetEmail(email) { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(
-                                this@SettingsActivity,
-                                "Password reset email sent.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                this@SettingsActivity,
-                                "Failed to send password reset email.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+                    session.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+                        if (task.isSuccessful)
+                            displayPopup("Password reset email sent.")
+                        else
+                            displayPopup("Failed to send password reset email.")
                     }
-                }
-                .build()
+                }.build()
+
         materialDialog.show()
+    }
+
+    //TODO I can't find a way to make the Toast appear
+    private fun displayPopup(text: String) {
+        Toast.makeText(this@SettingsActivity, text, Toast.LENGTH_LONG).show()
     }
 
     private fun signOut() {
