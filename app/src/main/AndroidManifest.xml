@@ -16,7 +16,6 @@
         <activity
             android:name=".presentation.SettingsActivity"
             android:label="@string/app_name" />
-        <!-- <activity android:name=".presentation.activities.ResetPasswordActivity"></activity> -->
         <activity
             android:name=".presentation.LoginActivity"
             android:label="@string/app_name">
@@ -27,9 +26,6 @@
         <activity
             android:name=".presentation.AddRoutineActivity"
             android:label="@string/app_name" />
-<!--        <activity-->
-<!--            android:name=".presentation.activities.AccountActivity"-->
-<!--            android:label="@string/app_name" />-->
         <activity
             android:name=".presentation.RoutineListActivity"
             android:label="@string/app_name">
@@ -46,10 +42,5 @@
             android:name=".presentation.EditExerciseActivity"
             android:label="@string/app_name"
             android:parentActivityName=".presentation.ExerciseListActivity" />
-        <activity
-            android:name=".presentation.ExerciseDetailActivity"
-            android:label="@string/title_item_detail"
-            android:parentActivityName=".presentation.ExerciseListActivity">
-        </activity>
     </application>
 </manifest>

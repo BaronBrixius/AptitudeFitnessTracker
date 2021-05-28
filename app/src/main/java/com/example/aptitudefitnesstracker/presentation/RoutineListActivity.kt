@@ -19,15 +19,6 @@ import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-
-/**
- * An activity representing a list of Pings. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a [ExerciseDetailActivity] representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
 class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private val session: Session by lazy {
        val session = application as Session

@@ -19,14 +19,6 @@ import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Session
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-/**
- * An activity representing a list of Pings. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a [ExerciseDetailActivity] representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
 class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
      val session: Session by lazy {
         val session = application as Session
@@ -153,7 +145,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             val exercise = v.tag as Exercise
 
             parentActivity.session.activeExercise = exercise
-            val intent = Intent(v.context, ExerciseDetailActivity::class.java)
+            val intent = Intent(v.context, EditExerciseActivity::class.java)
             v.context.startActivity(intent)
         }
 
