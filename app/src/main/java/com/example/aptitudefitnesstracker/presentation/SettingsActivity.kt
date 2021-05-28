@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.presentation.activities
+package com.example.aptitudefitnesstracker.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +10,6 @@ import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.presentation.DialogUtils
-import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 
 class SettingsActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }

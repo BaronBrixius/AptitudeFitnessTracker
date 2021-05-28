@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.presentation.activities
+package com.example.aptitudefitnesstracker.presentation
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 
 class AddRoutineActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }

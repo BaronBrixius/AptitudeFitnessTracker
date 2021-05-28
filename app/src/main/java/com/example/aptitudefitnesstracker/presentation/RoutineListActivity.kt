@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.presentation.activities
+package com.example.aptitudefitnesstracker.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,7 +17,6 @@ import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 

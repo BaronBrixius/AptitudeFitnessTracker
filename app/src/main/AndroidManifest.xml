@@ -14,24 +14,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeWhite">
         <activity
-            android:name=".presentation.activities.SettingsActivity"
+            android:name=".presentation.SettingsActivity"
             android:label="@string/app_name" />
         <!-- <activity android:name=".presentation.activities.ResetPasswordActivity"></activity> -->
         <activity
-            android:name=".presentation.activities.LoginActivity"
+            android:name=".presentation.LoginActivity"
             android:label="@string/app_name">
         </activity>
         <activity
-            android:name=".presentation.activities.SignupActivity"
+            android:name=".presentation.SignupActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".presentation.activities.AddRoutineActivity"
+            android:name=".presentation.AddRoutineActivity"
             android:label="@string/app_name" />
 <!--        <activity-->
 <!--            android:name=".presentation.activities.AccountActivity"-->
 <!--            android:label="@string/app_name" />-->
         <activity
-            android:name=".presentation.activities.RoutineListActivity"
+            android:name=".presentation.RoutineListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,17 +39,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.activities.ExerciseListActivity"
+            android:name=".presentation.ExerciseListActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".presentation.activities.RoutineListActivity" />
+            android:parentActivityName=".presentation.RoutineListActivity" />
         <activity
-            android:name=".presentation.activities.EditExerciseActivity"
+            android:name=".presentation.EditExerciseActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".presentation.activities.ExerciseListActivity" />
+            android:parentActivityName=".presentation.ExerciseListActivity" />
         <activity
-            android:name=".presentation.activities.ExerciseDetailActivity"
+            android:name=".presentation.ExerciseDetailActivity"
             android:label="@string/title_item_detail"
-            android:parentActivityName=".presentation.activities.ExerciseListActivity">
+            android:parentActivityName=".presentation.ExerciseListActivity">
         </activity>
     </application>
 </manifest>

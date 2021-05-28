@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.presentation.activities
+package com.example.aptitudefitnesstracker.presentation
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -11,7 +11,6 @@ import androidx.appcompat.widget.Toolbar
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 
 class EditExerciseActivity : AppCompatActivity() {
     private var inputDetails: EditText? = null
@@ -84,9 +83,5 @@ class EditExerciseActivity : AppCompatActivity() {
 //            session.deleteAllRoutines() //todo let's not leave this in for final release eh?
 //            Toast.makeText(this, "Deleted all routines", Toast.LENGTH_LONG).show()
         }
-    }
-
-    companion object {
-        private val TAG = EditExerciseActivity::class.java.simpleName
     }
 }

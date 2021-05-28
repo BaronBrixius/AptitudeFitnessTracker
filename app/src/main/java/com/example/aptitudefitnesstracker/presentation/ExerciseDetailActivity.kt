@@ -1,18 +1,15 @@
-package com.example.aptitudefitnesstracker.presentation.activities
+package com.example.aptitudefitnesstracker.presentation
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
-import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * An activity representing a single Item detail screen. This
@@ -61,8 +58,8 @@ class ExerciseDetailActivity : AppCompatActivity() {
         // http://developer.android.com/guide/components/fragments.html
         //
 //        if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
+        // Create the detail fragment and add it to the activity
+        // using a fragment transaction.
 //            val fragment = ExerciseDetailFragment().apply {
 //                arguments = Bundle().apply {
 //                    putString(

@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.presentation.activities
+package com.example.aptitudefitnesstracker.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,8 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.presentation.DialogUtils
-import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 
