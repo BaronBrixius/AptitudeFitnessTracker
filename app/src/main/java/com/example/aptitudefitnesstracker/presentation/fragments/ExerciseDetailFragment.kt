@@ -21,8 +21,8 @@ class ExerciseDetailFragment : Fragment() {
 
         arguments?.let {
             if (it.containsKey(ARG_ITEM_ID)) {
-                activity?.findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout)?.title =
-                    "Item Detail"
+                activity?.findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout)?.title
+
             }
         }
     }

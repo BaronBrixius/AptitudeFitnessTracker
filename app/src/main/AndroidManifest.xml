@@ -27,9 +27,9 @@
         <activity
             android:name=".presentation.activities.AddRoutineActivity"
             android:label="@string/app_name" />
-        <activity
-            android:name=".presentation.activities.AccountActivity"
-            android:label="@string/app_name" />
+<!--        <activity-->
+<!--            android:name=".presentation.activities.AccountActivity"-->
+<!--            android:label="@string/app_name" />-->
         <activity
             android:name=".presentation.activities.RoutineListActivity"
             android:label="@string/app_name">
@@ -45,7 +45,7 @@
         <activity
             android:name=".presentation.activities.EditExerciseActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".presentation.activities.RoutineListActivity" />
+            android:parentActivityName=".presentation.activities.ExerciseListActivity" />
         <activity
             android:name=".presentation.activities.ExerciseDetailActivity"
             android:label="@string/title_item_detail"

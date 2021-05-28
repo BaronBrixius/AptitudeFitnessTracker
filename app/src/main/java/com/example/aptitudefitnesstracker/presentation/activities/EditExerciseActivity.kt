@@ -49,15 +49,17 @@ class EditExerciseActivity : AppCompatActivity() {
             val details = inputDetails!!.text.toString()
             val notes = inputNotes!!.text.toString()
 
+            exercise!!.name = name
+            exercise!!.notes = notes
 
-            // Check for already existed userId
-            if (TextUtils.isEmpty(userId)) {
-                if (exercise != null) {
-                    exercise.name = name
-                }
-            } else {
-//                updateExercise(name)
-            }
+//            session.updateExercise(exercise)
+
+//            // Check for already existed userId
+//            if (TextUtils.isEmpty(userId)) {
+//
+//            } else {
+////                updateExercise(name)
+//            }
         }
         toggleButton()
     }
@@ -79,8 +81,8 @@ class EditExerciseActivity : AppCompatActivity() {
             session.insertExercise(Exercise(name))
             Toast.makeText(this, "Exercise added", Toast.LENGTH_LONG).show()
         } else {
-            session.deleteAllRoutines() //todo let's not leave this in for final release eh?
-            Toast.makeText(this, "Deleted all routines", Toast.LENGTH_LONG).show()
+//            session.deleteExercise() //todo let's not leave this in for final release eh?
+//            Toast.makeText(this, "Deleted all routines", Toast.LENGTH_LONG).show()
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,7 +30,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  * item details side-by-side using two vertical panes.
  */
 class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
-    private val session: Session by lazy {
+     val session: Session by lazy {
         val session = application as Session
         session.addObserver(this)
         session
@@ -89,15 +90,16 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         }
 
         newExerciseButton.setOnClickListener {
-            Toast.makeText(this, "New Exercise Button", Toast.LENGTH_SHORT).show()
             var exercise = Exercise()
-            session.insertExercise( exercise )
-            intent = Intent(this, EditExerciseActivity::class.java)
+            exercise.routineId = session.activeRoutine?.id!!
+            session.insertExercise(exercise)
             session.activeExercise = exercise
+
+            intent = Intent(this, EditExerciseActivity::class.java)
             startActivity(intent)
-
-
         }
+
+
         newExerciseFromRoutineButton.setOnClickListener {
             Toast.makeText(this, "newExerciseFromRoutineButton", Toast.LENGTH_SHORT).show()
             //TODO Implement
@@ -136,13 +138,23 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
                 finish()
                 finishAffinity()
             }
+            toggleDownloadMode()
         }
-
         val exerciseList: LiveData<List<Exercise>>? = session.getProperExercises()
         exerciseList!!.observe(this, { exercises ->
             exercises?.let { adapter.submitList(it) }
         })
+
+//        setupRecyclerView()
     }
+
+    fun toggleDownloadMode() {
+        session.firebaseMode = !session.firebaseMode
+        setupRecyclerView()
+    }
+
+
+
 
     class ExerciseRecyclerViewAdapter(
         private val parentActivity: ExerciseListActivity

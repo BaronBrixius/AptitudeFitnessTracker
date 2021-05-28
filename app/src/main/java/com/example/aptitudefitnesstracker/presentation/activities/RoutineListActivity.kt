@@ -69,6 +69,13 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         }
 
         setupRecyclerView()
+
+        if (session.userIsLoggedIn()){
+            println("USER LOGGED IN")
+        }
+        else{
+            println("NOT LOGGED IN!")
+        }
     }
 
     override fun onResume() {
