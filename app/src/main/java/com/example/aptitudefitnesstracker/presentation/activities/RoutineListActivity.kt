@@ -17,7 +17,6 @@ import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.databinding.ActivityRoutineListBinding
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -32,11 +31,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  */
 class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private val session: Session by lazy {
-        val session = application as Session
+       val session = application as Session
         session.addObserver(this)
         session
     }
-    private lateinit var binding: ActivityRoutineListBinding
+
+    private lateinit var newRoutineFAB: FloatingActionButton
+    private lateinit var newRoutineButton: FloatingActionButton
+    private lateinit var viewOnlineRoutinesButton: FloatingActionButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,30 +47,32 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         ThemeUtils.setAppFont(this) // for set font size
         ThemeUtils.setAppFontFamily(this) // for set font family
         setContentView(R.layout.activity_routine_list)
-
-        binding = ActivityRoutineListBinding.inflate(layoutInflater)
-
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.title = title
+
+        newRoutineFAB = findViewById(R.id.newRoutineFAB)
+        newRoutineButton = findViewById(R.id.newRoutineButton)
+        viewOnlineRoutinesButton = findViewById(R.id.viewOnlineRoutinesButton)
 
         //Add new
         findViewById<FloatingActionButton>(R.id.newRoutineFAB).setOnClickListener { view ->
             newRoutineFABClicked()
         }
 
-        binding.newRoutineButton.setOnClickListener {
-            val intent = Intent(this, AddRoutineActivity::class.java)
+        newRoutineButton.setOnClickListener{
+            val intent = Intent(this, AddRoutineActivity::class.java )
             startActivity(intent)
         }
 
-        binding.viewOnlineRoutinesButton.setOnClickListener {
-            if (!session.firebaseMode) {
+        viewOnlineRoutinesButton.setOnClickListener{
+            if(!session.firebaseMode){
                 toolbar.title = "Viewing Online Routines"
-                binding.viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
-            } else {
+                viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
+            }
+            else{
                 toolbar.title = "Personal Routines"
-                binding.viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
+                viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
             }
         }
 
@@ -82,7 +87,8 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private fun downloadButtonClicked() {
         if (session.userIsLoggedIn()) {
             session.toggleFirebaseMode()
-        } else {
+        }
+        else {
             startActivity(Intent(this@RoutineListActivity, LoginActivity::class.java))
         }
     }
@@ -182,33 +188,36 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
     private fun setVisibility(clicked: Boolean) {
         if (!clicked) {
-            binding.newRoutineButton.visibility = View.VISIBLE
-            binding.viewOnlineRoutinesButton.visibility = View.VISIBLE
+            newRoutineButton.visibility = View.VISIBLE
+            viewOnlineRoutinesButton.visibility = View.VISIBLE
         } else {
-            binding.newRoutineButton.visibility = View.INVISIBLE
-            binding.viewOnlineRoutinesButton.visibility = View.INVISIBLE
+            newRoutineButton.visibility = View.INVISIBLE
+            viewOnlineRoutinesButton.visibility = View.INVISIBLE
         }
     }
 
     private fun setAnimation(clicked: Boolean) {
         if (!clicked) {
-            binding.newRoutineButton.startAnimation(fromBott)
-            binding.viewOnlineRoutinesButton.startAnimation(fromBott)
-            binding.newRoutineFAB.startAnimation(rotateOpen)
+            newRoutineButton.startAnimation(fromBott)
+            viewOnlineRoutinesButton.startAnimation(fromBott)
+            newRoutineFAB.startAnimation(rotateOpen)
         } else {
-            binding.newRoutineButton.startAnimation(toBott)
-            binding.viewOnlineRoutinesButton.startAnimation(toBott)
-            binding.newRoutineFAB.startAnimation(rotateClose)
+            newRoutineButton.startAnimation(toBott)
+            viewOnlineRoutinesButton.startAnimation(toBott)
+            newRoutineFAB.startAnimation(rotateClose)
         }
     }
 
     private fun setClickable(clicked: Boolean) {
         if (!clicked) {
-            binding.newRoutineButton.isClickable = false
-            binding.viewOnlineRoutinesButton.isClickable = false
+            newRoutineButton.isClickable = false
+            viewOnlineRoutinesButton.isClickable = false
+
+
         } else {
-            binding.newRoutineButton.isClickable = true
-            binding.viewOnlineRoutinesButton.isClickable = true
+            newRoutineButton.isClickable = true
+            viewOnlineRoutinesButton.isClickable = true
+
         }
     }
 

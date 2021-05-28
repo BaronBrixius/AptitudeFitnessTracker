@@ -4,21 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.databinding.ActivitySettingsBinding
 import com.example.aptitudefitnesstracker.presentation.DialogUtils
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 
 class SettingsActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
-    private lateinit var binding: ActivitySettingsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,27 +23,25 @@ class SettingsActivity : AppCompatActivity() {
         ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_settings)
 
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.title = title
 
-        setSupportActionBar(binding.toolbar)
-        binding.toolbar.title = title
-
-        //todo move these over to proper databinding calls https://stackoverflow.com/questions/47364182/databinding-onclick-listener-on-button
         /* Control click listeners */
-        binding.linearChangeTheme.setOnClickListener {
+        findViewById<LinearLayout>(R.id.linearChangeTheme).setOnClickListener {
             setTheme()
         }
-        binding.linearFontSize.setOnClickListener {
+        findViewById<LinearLayout>(R.id.linearFontSize).setOnClickListener {
             setAppFont()
         }
-        binding.linearChangeFontFamily.setOnClickListener {
+        findViewById<LinearLayout>(R.id.linearChangeFontFamily).setOnClickListener {
             setFontFamily()
         }
 
-        binding.linearResetPass.setOnClickListener {
+        findViewById<LinearLayout>(R.id.linearResetPass).setOnClickListener {
             resetPassword()
         }
-        binding.linearSignOut.setOnClickListener {
+        findViewById<LinearLayout>(R.id.linearSignOut).setOnClickListener {
             signOut()
         }
     }
@@ -152,7 +146,7 @@ class SettingsActivity : AppCompatActivity() {
             )
         val materialDialog: MaterialDialog =
             builder.customView(R.layout.dialog_reset_password, true)
-                .onPositive { dialog, _ ->
+                .onPositive { _, _ ->
                     val email = findViewById<EditText>(R.id.email_input).text.toString()
 
                     session.sendPasswordResetEmail(email) { task ->
