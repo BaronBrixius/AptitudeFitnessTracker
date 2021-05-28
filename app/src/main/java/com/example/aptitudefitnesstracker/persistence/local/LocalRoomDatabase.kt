@@ -56,13 +56,9 @@ abstract class LocalRoomDatabase : RoomDatabase() {
             // test routines
             localDao.insertRoutine(Routine("Push"))
             localDao.insertRoutine(Routine("Pull!"))
-//            val testExercise = Exercise()
-//            testExercise.routineId = 1
-//            testExercise.name = "test Exercise"
-//            testExercise.details.put("TEST SETS", 4.0)
-//            testExercise.notes = "This is a test note for the test exercise, it contains many words wowowowo"
-//            localDao.insertExercise(testExercise)
-            localDao.insertExercise(Exercise(0, 1, "Exercise", LinkedHashMap(), ""))
+            val exercise = Exercise(0, 1, "Exercise", LinkedHashMap(), "")
+            exercise.details["Foo"] = 42.0
+            localDao.insertExercise(exercise)
         }
     }
 

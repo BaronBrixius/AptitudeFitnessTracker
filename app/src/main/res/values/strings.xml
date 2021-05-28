@@ -52,4 +52,6 @@
     <string name="comic">Comic</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="detail_name">Detail</string>
+    <string name="detail_value">Value</string>
 </resources>
