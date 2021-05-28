@@ -84,22 +84,28 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             var exercise = Exercise()
             exercise.name = "New Exercise"
             exercise.routineId = session.activeRoutine?.id!!
-            exercise.details.put("Sets", Random.nextDouble(10.0))
+//            exercise.details.put("Sets", Random.nextDouble(10.0))
             session.insertExercise(exercise)
             session.activeExercise = exercise
+            newExerciseFABClicked()
 
             intent = Intent(this, EditExerciseActivity::class.java)
             startActivity(intent)
+
         }
 
 
         newExerciseFromRoutineButton.setOnClickListener {
             Toast.makeText(this, "newExerciseFromRoutineButton", Toast.LENGTH_SHORT).show()
             //TODO Implement
+            newExerciseFABClicked()
+
         }
 
         viewOnlineExercisesButton.setOnClickListener {
+            newExerciseFABClicked()
             viewOnlineExercisesButtonClicked()
+
         }
 
         setupRecyclerView()

@@ -6,10 +6,11 @@
     android:name="com.example.aptitudefitnesstracker.ItemListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+
+
+
     app:layoutManager="LinearLayoutManager"
     tools:context=".presentation.ExerciseListActivity"
     tools:listitem="@layout/item_list_exercise"
     android:divider="#f00"
-    android:dividerHeight="1dp"/>
+    android:dividerHeight="10dp"/>
