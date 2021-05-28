@@ -89,6 +89,8 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+
         if (session.firebaseMode) {
             toolbar.title = "Viewing Online Routines"
             viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
