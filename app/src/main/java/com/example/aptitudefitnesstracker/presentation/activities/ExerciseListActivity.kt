@@ -20,6 +20,7 @@ import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_exercise_list.*
+import kotlinx.android.synthetic.main.activity_routine_list.*
 
 /**
  * An activity representing a list of Pings. This activity
@@ -74,7 +75,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         setContentView(R.layout.activity_exercise_list)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toolbar.title = "Exercises"
 
         findViewById<FloatingActionButton>(R.id.newExerciseFAB).setOnClickListener { view ->
             newExerciseFABClicked()
@@ -95,45 +95,44 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             //TODO Implement
         }
 
-//        downloadExerciseButton.setOnClickListener {   //fixme merge conflict between this and below, get Ben and Malek to sync them up
-//            downloadButtonClicked()
-//        }
-
         viewOnlineExercisesButton.setOnClickListener {
-            if (!session.firebaseMode) {
-                toolbar.title = "Viewing Online Exercises"
-                viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
-            } else {
-                viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
-                if (session.activeRoutine == null) {
-                    finish()
-                    finishAffinity()
-                }
-
-            }
+            viewOnlineExercisesButtonClicked()
         }
 
         setupRecyclerView()
     }
 
-    private fun downloadButtonClicked() {
-        if (session.userIsLoggedIn()) {
-            session.toggleFirebaseMode()
-        }
-        else {
+    private fun viewOnlineExercisesButtonClicked() {
+        if (session.userIsLoggedIn())
+            session.toggleAndGetFirebaseMode()
+        else
             startActivity(Intent(this@ExerciseListActivity, LoginActivity::class.java))
-        }
     }
 
     fun setupRecyclerView() {
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         val recyclerView: RecyclerView = findViewById(R.id.item_list)
         val adapter = ExerciseRecyclerViewAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val routineList: LiveData<List<Exercise>>? = session.getProperExercises()
-        routineList!!.observe(this, { routines ->
-            routines?.let { adapter.submitList(it) }
+        if (session.firebaseMode) {
+            toolbar.title = "Viewing Online Exercises"
+            viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
+        }
+        else {
+            toolbar.title = "Personal Exercises"
+            viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
+
+            if (session.activeRoutine == null) {
+                finish()
+                finishAffinity()
+            }
+        }
+
+        val exerciseList: LiveData<List<Exercise>>? = session.getProperExercises()
+        exerciseList!!.observe(this, { exercises ->
+            exercises?.let { adapter.submitList(it) }
         })
     }
 

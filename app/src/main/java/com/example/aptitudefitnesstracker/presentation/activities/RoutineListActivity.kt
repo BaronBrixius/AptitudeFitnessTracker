@@ -46,7 +46,6 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         setContentView(R.layout.activity_routine_list)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toolbar.title = title
 
         //Add new
         findViewById<FloatingActionButton>(R.id.newRoutineFAB).setOnClickListener { view ->
@@ -59,14 +58,7 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         }
 
         viewOnlineRoutinesButton.setOnClickListener{
-            if(!session.firebaseMode){
-                toolbar.title = "Viewing Online Routines"
-                viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
-            }
-            else{
-                toolbar.title = "Personal Routines"
-                viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
-            }
+            viewOnlineRoutinesButtonClicked()
         }
 
         setupRecyclerView()
@@ -77,13 +69,11 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         setupRecyclerView()
     }
 
-    private fun downloadButtonClicked() {
-        if (session.userIsLoggedIn()) {
-            session.toggleFirebaseMode()
-        }
-        else {
+    private fun viewOnlineRoutinesButtonClicked() {
+        if (session.userIsLoggedIn())
+            session.toggleAndGetFirebaseMode()
+        else
             startActivity(Intent(this@RoutineListActivity, LoginActivity::class.java))
-        }
     }
 
     private fun setupRecyclerView() {
@@ -91,6 +81,15 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         val adapter = RoutineRecyclerViewAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        if (session.firebaseMode) {
+            toolbar.title = "Viewing Online Routines"
+            viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
+        }
+        else {
+            toolbar.title = "Personal Routines"
+            viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
+        }
 
         val routineList: LiveData<List<Routine>> = session.getProperRoutines()
         routineList.observe(this, { routines ->

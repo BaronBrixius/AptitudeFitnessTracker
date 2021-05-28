@@ -32,7 +32,6 @@ class Session : Application() {
     var activeRoutine: Routine? = null
     var activeExercise: Exercise? = null
     private var observers: MutableList<IFirebaseModeObserver> = mutableListOf()
-    //private var observer: IFirebaseModeObserver? = null
 
     fun getLocalRoutines(): LiveData<List<Routine>> {
         return localDao.getAllRoutines().map {
@@ -72,7 +71,6 @@ class Session : Application() {
     }
 
     fun insertExercise(exercise: Exercise) = applicationScope.launch {
-        TODO()
         localDao.insertExercise(exercise)
     }
 
@@ -128,7 +126,7 @@ class Session : Application() {
         return setFirebaseModeAndNotify(false)
     }
 
-    fun toggleFirebaseMode(): Boolean {
+    fun toggleAndGetFirebaseMode(): Boolean {
         return if (!firebaseMode) {
             turnFirebaseModeOn()
         } else {
@@ -146,9 +144,7 @@ class Session : Application() {
 
     @AddTrace(name = "authenticateLogin")
     fun authenticateLogin(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
-        //val auth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
-        println("delete me")
     }
 
     fun signOut() {
