@@ -45,9 +45,9 @@ class LoginActivity : AppCompatActivity() {
         btnReset = findViewById<View>(R.id.btn_reset_password) as Button
 
         btnSignup!!.setOnClickListener {
-//            var intent = Intent(this, SignupActivity::class.java)
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            startActivity(intent)
+            var intent = Intent(this, SignupActivity::class.java)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
 
         btnReset!!.setOnClickListener {
