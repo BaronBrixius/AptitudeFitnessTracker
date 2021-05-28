@@ -50,4 +50,6 @@
     <string name="calibri">Calibri</string>
     <string name="helvetica">Helvetica</string>
     <string name="comic">Comic</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>

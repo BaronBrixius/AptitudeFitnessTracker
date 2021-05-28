@@ -34,7 +34,6 @@ abstract class LocalRoomDatabase : RoomDatabase() {
                     "routine"
                 )
                     .addCallback(LocalRoomDatabaseCallback(scope))
-//                    .fallbackToDestructiveMigration()   //fixme no destructive once we're running
                     .build()
                 INSTANCE = instance
                 // return instance

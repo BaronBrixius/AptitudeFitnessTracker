@@ -17,7 +17,6 @@ import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.perf.metrics.AddTrace
 
 class SignupActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
@@ -54,15 +53,14 @@ class SignupActivity : AppCompatActivity() {
         }
 
         btnSignUp!!.setOnClickListener(View.OnClickListener {
-            SignUp()
+            signUp()
         })
     }
 
     /*
     SignUp() needs to be refactored into separate methods in Presenter and Session classes
      */
-    @AddTrace(name = "SignUp")
-    private fun SignUp() {
+    private fun signUp() {
         val email = inputEmail!!.text.toString().trim { it <= ' ' }
         val password = inputPassword!!.text.toString().trim { it <= ' ' }
         if (TextUtils.isEmpty(email)) {

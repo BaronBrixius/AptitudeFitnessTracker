@@ -8,7 +8,6 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 
-//@IgnoreExtraProperties
 @Entity(tableName = "routines")
 data class Routine(
     @PrimaryKey(autoGenerate = true)

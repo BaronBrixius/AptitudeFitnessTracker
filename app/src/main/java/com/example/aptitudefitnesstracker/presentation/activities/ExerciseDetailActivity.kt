@@ -7,7 +7,6 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.presentation.fragments.ExerciseDetailFragment
 import com.example.aptitudefitnesstracker.presentation.ThemeUtils
 
 /**
@@ -45,18 +44,18 @@ class ExerciseDetailActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            val fragment = ExerciseDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(
-                        ExerciseDetailFragment.ARG_ITEM_ID,
-                        intent.getStringExtra(ExerciseDetailFragment.ARG_ITEM_ID)
-                    )
-                }
-            }
+//            val fragment = ExerciseDetailFragment().apply {
+//                arguments = Bundle().apply {
+//                    putString(
+//                        ExerciseDetailFragment.ARG_ITEM_ID,
+//                        intent.getStringExtra(ExerciseDetailFragment.ARG_ITEM_ID)
+//                    )
+//                }
+//            }
 
-            supportFragmentManager.beginTransaction()
-                .add(R.id.item_detail_container, fragment)
-                .commit()
+//            supportFragmentManager.beginTransaction()
+//                .add(R.id.item_detail_container, fragment)
+//                .commit()
         }
     }
 

@@ -79,8 +79,8 @@ class EditExerciseActivity : AppCompatActivity() {
             session.insertExercise(Exercise(name))
             Toast.makeText(this, "Exercise added", Toast.LENGTH_LONG).show()
         } else {
-            session.deleteAllRoutines() //todo let's not leave this in for final release eh?
-            Toast.makeText(this, "Deleted all routines", Toast.LENGTH_LONG).show()
+//            session.deleteAllRoutines() //todo let's not leave this in for final release eh?
+//            Toast.makeText(this, "Deleted all routines", Toast.LENGTH_LONG).show()
         }
     }
 

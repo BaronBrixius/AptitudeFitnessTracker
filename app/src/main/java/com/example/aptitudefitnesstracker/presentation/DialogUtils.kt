@@ -1,8 +1,8 @@
 package com.example.aptitudefitnesstracker.presentation
 
-import android.R
 import android.app.Activity
 import com.afollestad.materialdialogs.MaterialDialog
+import com.example.aptitudefitnesstracker.R
 
 object DialogUtils {
     /**
