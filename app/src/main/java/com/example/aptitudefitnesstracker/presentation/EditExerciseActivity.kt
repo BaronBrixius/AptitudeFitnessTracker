@@ -27,6 +27,7 @@ class EditExerciseActivity : AppCompatActivity() {
     private var inputDetails: EditText? = null
     private var inputDetailsValue: EditText? = null
     private var btnSave: Button? = null
+    private var btnDelete: Button? = null
     private var userId: String? = null
 
     private val session: Session by lazy { application as Session }
@@ -47,6 +48,8 @@ class EditExerciseActivity : AppCompatActivity() {
         inputDetailsValue = findViewById<EditText>(R.id.detail_value)
         inputNotes = findViewById<View>(R.id.Notes) as EditText
         btnSave = findViewById<View>(R.id.btn_save) as Button
+        btnDelete = findViewById<View>(R.id.btn_delete) as Button
+
 
         findViewById<Toolbar>(R.id.toolbar).title = "Edit Exercise"
 
@@ -83,6 +86,23 @@ class EditExerciseActivity : AppCompatActivity() {
             }
             saveDialog.show()
 
+
+        }
+
+        btnDelete!!.setOnClickListener{
+
+            val saveDialog = AlertDialog.Builder(this)
+            saveDialog.setTitle("Delete Exercise")
+            saveDialog.setMessage("Are you sure?")
+
+            saveDialog.setPositiveButton("Delete") { dialog, which ->
+                session.deleteExercise(exercise)
+                finish()
+            }
+            saveDialog.setNegativeButton(android.R.string.no) { dialog, which ->
+                finish()
+            }
+            saveDialog.show()
 
         }
         toggleButton()
