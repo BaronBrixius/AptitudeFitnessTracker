@@ -156,7 +156,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         recyclerView.addItemDecoration(mDividerItemDecoration)
 
         if (session.firebaseMode) {
-            toolbar.title = "Viewing Online Exercises"
+           // toolbar.title = "Viewing Online Exercises"
             viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
         } else {
 //            toolbar.title = "Personal Exercises"

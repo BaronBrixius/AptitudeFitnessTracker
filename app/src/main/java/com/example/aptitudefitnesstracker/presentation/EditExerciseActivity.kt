@@ -1,9 +1,6 @@
 package com.example.aptitudefitnesstracker.presentation
 
-import android.content.DialogInterface
 import android.os.Bundle
-import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +12,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Session
+
 
 class EditExerciseActivity : AppCompatActivity() {
     private var inputDetailsLayout: RecyclerView? = null
@@ -62,9 +59,6 @@ class EditExerciseActivity : AppCompatActivity() {
             val notes = inputNotes!!.text.toString()
 //            val details = inputDetails!!.text.toString()
 //            val detailsValue = inputDetailsValue!!.text.toString()
-
-            exercise.name = name
-            exercise.notes = notes
 //            exercise.details[details] = detailsValue.toDouble()
 
             /**
@@ -75,6 +69,12 @@ class EditExerciseActivity : AppCompatActivity() {
             saveDialog.setMessage("Are you sure you would like to save changes?")
 
             saveDialog.setPositiveButton("Save") { dialog, which ->
+                if (inputName!!.text.toString() != "")
+                    exercise.name = name
+
+                if (inputNotes!!.text.toString() != "")
+                    exercise.notes = notes
+
                 session.updateExercise(exercise)
                 finish()
             }
@@ -86,18 +86,18 @@ class EditExerciseActivity : AppCompatActivity() {
 
 
         btnDelete!!.setOnClickListener {
-            val saveDialog = AlertDialog.Builder(this)
-            saveDialog.setTitle("Delete Exercise")
-            saveDialog.setMessage("Are you sure?")
+            val deleteDialog = AlertDialog.Builder(this)
+            deleteDialog.setTitle("Delete Exercise")
+            deleteDialog.setMessage("Are you sure?")
 
-            saveDialog.setPositiveButton("Delete") { dialog, which ->
+            deleteDialog.setPositiveButton("Delete") { dialog, which ->
                 session.deleteExercise(exercise)
                 finish()
             }
-            saveDialog.setNegativeButton(android.R.string.no) { dialog, which ->
+            deleteDialog.setNegativeButton(android.R.string.no) { dialog, which ->
                 finish()
             }
-            saveDialog.show()
+            deleteDialog.show()
         }
         setupRecyclerView()
     }
@@ -108,13 +108,6 @@ class EditExerciseActivity : AppCompatActivity() {
         val adapter = ExerciseDetailsRecyclerViewAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-//        val exerciseList: LiveData<List<Exercise>>? = session.getProperExercises()    //todo updates
-//        exerciseList!!.observe(this, { exercises ->
-//            exercises?.let {
-//                adapter.submitList(it) }
-//        })
-
         adapter.submitList(exercise.details.entries.toList())
     }
 
