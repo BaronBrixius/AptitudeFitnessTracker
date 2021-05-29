@@ -64,14 +64,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/action_save"
                 android:textStyle="bold" />
-
             <Button
                 android:id="@+id/btn_delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:shadowColor="#C81010"
-                android:background="#DA0606"
                 android:text="delete exercise"
+                android:background="@color/red"
                 android:textStyle="bold" />
 
         </LinearLayout>

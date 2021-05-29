@@ -1,6 +1,8 @@
 package com.example.aptitudefitnesstracker.presentation
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
 import android.view.*
 import android.view.animation.Animation
@@ -18,6 +20,7 @@ import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Routine
 import com.example.aptitudefitnesstracker.application.Session
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.*
 
 class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private val session: Session by lazy {
@@ -108,6 +111,7 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     ) :
         ListAdapter<Routine, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
 
+
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
             val item = v.tag as Routine
 
@@ -122,12 +126,15 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
             return RoutineViewHolder(view)
         }
 
+        var int = 1
         override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
             val routine = getItem(position)
             //holder.bind("id: " + item.id + " name: " + item.name)
-            holder.idView.text =
-                "id: " + routine.id    //fixme placeholder stuff for database testing
-            holder.contentView.text = " name: " + routine.name
+                //fixme placeholder stuff for database testing
+            holder.contentView.text = routine.name
+            holder.routineID.text = int.toString()
+            int++
+
 
             with(holder.itemView) {
                 tag = routine
@@ -136,9 +143,13 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         }
 
         inner class RoutineViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val idView: TextView = view.findViewById(R.id.id_text)
-            val contentView: TextView =
-                view.findViewById(R.id.content) //no clue what this is, feel free to use it
+//            val idView: TextView = view.findViewById(R.id.id_text)
+            val contentView: TextView = view.findViewById(R.id.content)
+            val routineID: TextView = view.findViewById(R.id.routine_id)
+            var circle: View? = view.findViewById(R.id.circle)
+
+        //no clue what this is, feel free to use it
+
 
             /*fun bind(text: String?) {
                 idView.text = text

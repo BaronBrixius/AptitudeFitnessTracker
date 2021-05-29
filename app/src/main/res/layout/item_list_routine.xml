@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/customborder"
+    android:layout_margin="5dp"
     android:orientation="horizontal">
 
+
     <TextView
-        android:id="@+id/id_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="dfdgfg"
-        />
+        android:id="@+id/routine_id"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/circle"
+        android:gravity="center"
+        android:shadowColor="@android:color/white"
+        android:shadowRadius="10.0"
+        android:text="X"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/content"
-        android:text="sdfsdf"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-         />
+        android:text="Routine Name"
+        android:textAlignment="textStart" />
+
+
 </LinearLayout>

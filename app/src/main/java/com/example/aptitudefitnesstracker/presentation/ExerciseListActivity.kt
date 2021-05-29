@@ -69,6 +69,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         setContentView(R.layout.activity_exercise_list)
         val toolbar = findViewById<Toolbar>(R.id.exercise_toolbar)
         setSupportActionBar(toolbar)
+        toolbar.title = "Exercises in " + session.activeRoutine!!.name
 
 
         newExerciseFAB = findViewById(R.id.newExerciseFAB)
@@ -106,6 +107,15 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             newExerciseFABClicked()
             viewOnlineExercisesButtonClicked()
 
+        }
+
+        toolbar.setOnClickListener{
+            intent = Intent(this, EditRoutineActivity::class.java)
+//            var deleteButton:Button = findViewById(R.id.btn_delete)
+//            deleteButton.visibility = View.VISIBLE
+//            deleteButton.isClickable = true
+//            deleteButton.focusable = View.FOCUSABLE
+            startActivity(intent)
         }
         setupRecyclerView()
 
