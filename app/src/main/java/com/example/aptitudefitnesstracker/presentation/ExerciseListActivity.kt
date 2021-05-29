@@ -16,6 +16,7 @@ import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Session
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlin.random.Random
 
 
 class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
@@ -68,6 +69,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         setContentView(R.layout.activity_exercise_list)
         val toolbar = findViewById<Toolbar>(R.id.exercise_toolbar)
         setSupportActionBar(toolbar)
+        toolbar.title = "Exercises in " + session.activeRoutine!!.name
 
 
         newExerciseFAB = findViewById(R.id.newExerciseFAB)
@@ -106,6 +108,14 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         }
 
+        toolbar.setOnClickListener{
+            intent = Intent(this, EditRoutineActivity::class.java)
+//            var deleteButton:Button = findViewById(R.id.btn_delete)
+//            deleteButton.visibility = View.VISIBLE
+//            deleteButton.isClickable = true
+//            deleteButton.focusable = View.FOCUSABLE
+            startActivity(intent)
+        }
         setupRecyclerView()
     }
 
@@ -134,6 +144,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
 
     fun setupRecyclerView() {
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         val recyclerView: RecyclerView = findViewById(R.id.item_parent_list_exercise)
         val adapter = ExerciseRecyclerViewAdapter(this, recyclerView)
         recyclerView.adapter = adapter
@@ -145,8 +156,10 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         recyclerView.addItemDecoration(mDividerItemDecoration)
 
         if (session.firebaseMode) {
+            toolbar.title = "Viewing Online Exercises"
             viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
         } else {
+//            toolbar.title = "Personal Exercises"
             viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
 
             if (session.activeRoutine == null) {
@@ -154,8 +167,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
                 finishAffinity()
             }
         }
-
-
         val exerciseList: LiveData<List<Exercise>>? = session.getProperExercises()
         exerciseList!!.observe(this, { exercises ->
             exercises?.let { adapter.submitList(it) }
@@ -254,7 +265,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
 
     private fun setVisibility(clicked: Boolean) {
-
         if (!clicked) {
             newExerciseFromRoutineButton.visibility = View.VISIBLE
 

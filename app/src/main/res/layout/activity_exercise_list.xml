@@ -16,6 +16,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/exercise_toolbar"
             app:title="Exercises"
+            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/Theme.AptitudeFitnessTracker.PopupOverlay" />
@@ -26,13 +27,7 @@
         android:id="@+id/header_container"
         android:layout_marginTop="59dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <include
-            layout="@layout/exercise_list_header"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </FrameLayout>
+        android:layout_height="match_parent"/>
 
 
     <FrameLayout
