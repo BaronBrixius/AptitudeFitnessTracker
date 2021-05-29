@@ -39,9 +39,6 @@ class EditExerciseActivity : AppCompatActivity() {
         ThemeUtils.setAppFont(this)
         ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_add_exercise)
-        // Displaying toolbar icon
-//        supportActionBar!!.setDisplayShowHomeEnabled(true)
-//        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
         inputName = findViewById<View>(R.id.name) as EditText
         inputDetailsLayout = findViewById(R.id.detail_list)
         inputDetails = findViewById<EditText>(R.id.detail_name)
@@ -58,8 +55,8 @@ class EditExerciseActivity : AppCompatActivity() {
 //        inputDetails!!.hint = exercise.details[]
 //        inputDetailsValue!!.hint = exercise.details[]
         inputNotes!!.hint = exercise.notes
-
         // Save / update the exercise
+        btnSave!!.text = "Save"
         btnSave!!.setOnClickListener {
             val name = inputName!!.text.toString()
             val notes = inputNotes!!.text.toString()
@@ -85,12 +82,10 @@ class EditExerciseActivity : AppCompatActivity() {
                 finish()
             }
             saveDialog.show()
-
-
         }
 
-        btnDelete!!.setOnClickListener{
 
+        btnDelete!!.setOnClickListener {
             val saveDialog = AlertDialog.Builder(this)
             saveDialog.setTitle("Delete Exercise")
             saveDialog.setMessage("Are you sure?")
@@ -103,22 +98,10 @@ class EditExerciseActivity : AppCompatActivity() {
                 finish()
             }
             saveDialog.show()
-
         }
-        toggleButton()
-
         setupRecyclerView()
-
     }
 
-    // Changing button text
-    private fun toggleButton() {
-        if (TextUtils.isEmpty(userId)) {
-            btnSave!!.text = "Save"
-        } else {
-            btnSave!!.text = "Update"
-        }
-    }
 
     private fun setupRecyclerView() {
         val recyclerView: RecyclerView = findViewById(R.id.detail_list)
@@ -133,10 +116,7 @@ class EditExerciseActivity : AppCompatActivity() {
 //        })
 
         adapter.submitList(exercise.details.entries.toList())
-
-//        setupRecyclerView()
     }
-
 
 
     class ExerciseDetailsRecyclerViewAdapter(

@@ -25,14 +25,12 @@ class AddRoutineActivity : AppCompatActivity() {
         ThemeUtils.setAppFont(this)
         ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_databasetest)
-        // Displaying toolbar icon
-//        supportActionBar!!.setDisplayShowHomeEnabled(true)
-//        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
         txtDetails = findViewById<View>(R.id.txt_user) as TextView
         inputName = findViewById<View>(R.id.name) as EditText
         btnSave = findViewById<View>(R.id.btn_save) as Button
 
 
+        btnSave!!.text = "Save"
         // Save / update the user
         btnSave!!.setOnClickListener {
             val name = inputName!!.text.toString()
@@ -41,19 +39,7 @@ class AddRoutineActivity : AppCompatActivity() {
             if (TextUtils.isEmpty(userId)) {
                 createRoutine(name)
                 finish()
-            } else {
-//                updateExercise(name)
             }
-        }
-        toggleButton()
-    }
-
-    // Changing button text
-    private fun toggleButton() {
-        if (TextUtils.isEmpty(userId)) {
-            btnSave!!.text = "Save"
-        } else {
-            btnSave!!.text = "Update"
         }
     }
 
@@ -65,9 +51,5 @@ class AddRoutineActivity : AppCompatActivity() {
             session.insertRoutine(Routine(name))
             Toast.makeText(this, "Routine added", Toast.LENGTH_LONG).show()
         }
-    }
-
-    companion object {
-        private val TAG = AddRoutineActivity::class.java.simpleName
     }
 }
