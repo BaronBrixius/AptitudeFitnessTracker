@@ -17,9 +17,11 @@ data class Exercise(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     @Exclude    //local id isn't needed for Firebase shares
-    val id: Int,
+    var id: Int,
     @ColumnInfo(name = "routineId", index = true)
     var routineId: Int,
+    @ColumnInfo(name = "position", defaultValue = "99")
+    var position: Int,
     @ColumnInfo(name = "name", defaultValue = "")
     var name: String,
     @ColumnInfo(name = "details", defaultValue = "")
@@ -27,8 +29,8 @@ data class Exercise(
     @ColumnInfo(name = "notes", defaultValue = "")
     var notes: String
 ) {
-    constructor() : this(0, 0,"", LinkedHashMap(),"")
+    constructor() : this(0, 0,99,"", LinkedHashMap(),"")
 
     @Ignore
-    constructor(name: String) : this(0, 0, name, LinkedHashMap(), "")
+    constructor(name: String) : this(0, 0,99, name, LinkedHashMap(), "")
 }

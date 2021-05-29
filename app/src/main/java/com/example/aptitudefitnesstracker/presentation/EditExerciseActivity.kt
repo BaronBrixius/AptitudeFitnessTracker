@@ -1,21 +1,17 @@
 package com.example.aptitudefitnesstracker.presentation
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.MaterialDialog
+import androidx.recyclerview.widget.*
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Session
@@ -89,21 +85,19 @@ class EditExerciseActivity : AppCompatActivity() {
 
         }
 
-        btnDelete!!.setOnClickListener{
+        btnDelete!!.setOnClickListener {
+            val confirmDeleteDialog = AlertDialog.Builder(this)
+                .setTitle("Delete Exercise")
+                .setMessage("Are you sure?")
 
-            val saveDialog = AlertDialog.Builder(this)
-            saveDialog.setTitle("Delete Exercise")
-            saveDialog.setMessage("Are you sure?")
-
-            saveDialog.setPositiveButton("Delete") { dialog, which ->
+            confirmDeleteDialog.setPositiveButton("Delete") { dialog, which ->
                 session.deleteExercise(exercise)
                 finish()
             }
-            saveDialog.setNegativeButton(android.R.string.no) { dialog, which ->
+            confirmDeleteDialog.setNegativeButton("No") { dialog, which ->
                 finish()
             }
-            saveDialog.show()
-
+            confirmDeleteDialog.show()
         }
         toggleButton()
 
@@ -137,7 +131,35 @@ class EditExerciseActivity : AppCompatActivity() {
 //        setupRecyclerView()
     }
 
+    val itemTouchHelperCallback = object :
+        ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return false
+        }
 
+        override fun onMoved(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            fromPos: Int,
+            target: RecyclerView.ViewHolder,
+            toPos: Int,
+            x: Int,
+            y: Int
+        ) {
+            super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y)
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
+            println(
+                viewHolder.absoluteAdapterPosition
+            )
+        }
+
+    }
 
     class ExerciseDetailsRecyclerViewAdapter(
         private val parentActivity: EditExerciseActivity
