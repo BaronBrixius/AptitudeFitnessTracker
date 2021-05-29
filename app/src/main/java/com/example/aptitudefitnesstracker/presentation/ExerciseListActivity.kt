@@ -16,7 +16,6 @@ import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Session
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlin.random.Random
 
 
 class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
@@ -94,7 +93,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         }
 
-
         newExerciseFromRoutineButton.setOnClickListener {
             Toast.makeText(this, "newExerciseFromRoutineButton", Toast.LENGTH_SHORT).show()
             //TODO Implement
@@ -107,16 +105,8 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             viewOnlineExercisesButtonClicked()
 
         }
+
         setupRecyclerView()
-
-
-
-
-
-//        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-//        itemTouchHelper.attachToRecyclerView(findViewById(R.id.item_parent_list_exercise))
-
-
     }
 
     val itemTouchHelperCallback = object :
@@ -144,7 +134,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
 
     fun setupRecyclerView() {
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         val recyclerView: RecyclerView = findViewById(R.id.item_parent_list_exercise)
         val adapter = ExerciseRecyclerViewAdapter(this, recyclerView)
         recyclerView.adapter = adapter
@@ -156,10 +145,8 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         recyclerView.addItemDecoration(mDividerItemDecoration)
 
         if (session.firebaseMode) {
-            toolbar.title = "Viewing Online Exercises"
             viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
         } else {
-//            toolbar.title = "Personal Exercises"
             viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
 
             if (session.activeRoutine == null) {
@@ -167,6 +154,8 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
                 finishAffinity()
             }
         }
+
+
         val exerciseList: LiveData<List<Exercise>>? = session.getProperExercises()
         exerciseList!!.observe(this, { exercises ->
             exercises?.let { adapter.submitList(it) }
@@ -200,32 +189,20 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
             val exercise = getItem(position)
-            //holder.bind("id: " + item.id + " name: " + item.name)
-//            holder.idView.text = "id: " + exercise.id    //fixme placeholder stuff for database testing
-//            holder.contentView.text = " name: " + exercise.name
             holder.exerciseName.text = exercise.name
 
-//            val map: LinkedHashMap<String, Double> = exercise.details
-//            val entry = map.entries.iterator().next()
-//            val key = entry.key
-//            val value = entry.value
-//            holder.exerciseDetail.text = key
-//            holder.exerciseDetailValue.text = value.toString()
+            val details: LinkedHashMap<String, Double> = exercise.details
 
-//            holder.exerciseDetail.text = "Hardcoded detail"
-//            holder.exerciseDetailValue.text = "Hardcoded detail value"
-
-            if (!exercise.details.entries.isEmpty()) {
-                holder.exerciseDetail.text = exercise.details.entries.elementAt(0).key
+            if (details.isNotEmpty()) {
+                holder.exerciseDetail.text = details.entries.elementAt(0).key
                 holder.exerciseDetailValue.text =
-                    exercise.details.entries.elementAt(0).value.toString()
+                    details.entries.elementAt(0).value.toString()
             }
 
             with(holder.itemView) {
                 tag = exercise
                 setOnClickListener(onClickListener)
             }
-
         }
 
         inner class ExerciseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -277,43 +254,48 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
 
     private fun setVisibility(clicked: Boolean) {
+
         if (!clicked) {
-            newExerciseButton.visibility = View.VISIBLE
             newExerciseFromRoutineButton.visibility = View.VISIBLE
-            viewOnlineExercisesButton.visibility = View.VISIBLE
+
+            if (!session.firebaseMode) {
+                viewOnlineExercisesButton.visibility = View.VISIBLE
+                newExerciseButton.visibility = View.VISIBLE
+            }
         } else {
-            newExerciseButton.visibility = View.INVISIBLE
             newExerciseFromRoutineButton.visibility = View.INVISIBLE
-            viewOnlineExercisesButton.visibility = View.INVISIBLE
+
+            if (!session.firebaseMode) {
+                viewOnlineExercisesButton.visibility = View.INVISIBLE
+                newExerciseButton.visibility = View.INVISIBLE
+            }
         }
     }
 
     private fun setAnimation(clicked: Boolean) {
         if (!clicked) {
-            newExerciseButton.startAnimation(fromBott)
             newExerciseFromRoutineButton.startAnimation(fromBott)
-            viewOnlineExercisesButton.startAnimation(fromBott)
             newExerciseFAB.startAnimation(rotateOpen)
+            if (!session.firebaseMode) {
+                newExerciseButton.startAnimation(fromBott)
+                viewOnlineExercisesButton.startAnimation(fromBott)
+            }
         } else {
-            newExerciseButton.startAnimation(toBott)
             newExerciseFromRoutineButton.startAnimation(toBott)
-            viewOnlineExercisesButton.startAnimation(toBott)
             newExerciseFAB.startAnimation(rotateClose)
+            if (!session.firebaseMode) {
+                viewOnlineExercisesButton.startAnimation(toBott)
+                newExerciseButton.startAnimation(toBott)
+            }
         }
     }
 
     private fun setClickable(clicked: Boolean) {
-        if (!clicked) {
-            newExerciseButton.isClickable = false
-            newExerciseFromRoutineButton.isClickable = false
-            viewOnlineExercisesButton.isClickable = false
+        newExerciseFromRoutineButton.isClickable = clicked
 
-
-        } else {
-            newExerciseButton.isClickable = true
-            newExerciseFromRoutineButton.isClickable = true
-            viewOnlineExercisesButton.isClickable = true
-
+        if (!session.firebaseMode) {
+            newExerciseButton.isClickable = clicked
+            viewOnlineExercisesButton.isClickable = clicked
         }
     }
 

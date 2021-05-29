@@ -196,27 +196,25 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
     private fun setAnimation(clicked: Boolean) {
         if (!clicked) {
-            newRoutineButton.startAnimation(fromBott)
-            viewOnlineRoutinesButton.startAnimation(fromBott)
             newRoutineFAB.startAnimation(rotateOpen)
+            if (!session.firebaseMode) {
+                newRoutineButton.startAnimation(fromBott)
+                viewOnlineRoutinesButton.startAnimation(fromBott)
+            }
+
         } else {
-            newRoutineButton.startAnimation(toBott)
-            viewOnlineRoutinesButton.startAnimation(toBott)
             newRoutineFAB.startAnimation(rotateClose)
+            if (!session.firebaseMode) {
+                newRoutineButton.startAnimation(toBott)
+                viewOnlineRoutinesButton.startAnimation(toBott)
+            }
         }
     }
 
     private fun setClickable(clicked: Boolean) {
-        if (!clicked) {
-            newRoutineButton.isClickable = false
-            viewOnlineRoutinesButton.isClickable = false
-
-
-        } else {
-            newRoutineButton.isClickable = true
-            viewOnlineRoutinesButton.isClickable = true
-
-        }
+        viewOnlineRoutinesButton.isClickable = clicked
+        if (!session.firebaseMode)
+            newRoutineButton.isClickable = clicked
     }
 
     private val rotateOpen: Animation by lazy {

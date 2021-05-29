@@ -40,6 +40,7 @@ class AddRoutineActivity : AppCompatActivity() {
             // Check for already existed userId
             if (TextUtils.isEmpty(userId)) {
                 createRoutine(name)
+                finish()
             } else {
 //                updateExercise(name)
             }

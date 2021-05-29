@@ -45,16 +45,21 @@ class LoginActivity : AppCompatActivity() {
         btnReset!!.setOnClickListener { resetPassword() }
 
         btnLogin!!.setOnClickListener {
-            val email = inputEmail!!.text.toString()
-            val password = inputPassword!!.text.toString()
+            loginButonPressed()
+        }
+    }
 
-            if (checkLoginInputs(email, password)) {
-                session.authenticateLogin(email, password) { task ->
-                    if (task.isSuccessful) {
-                        val intent = Intent(this, RoutineListActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(intent)
-                    }
+    private fun loginButonPressed() {
+        val email = inputEmail!!.text.toString()
+        val password = inputPassword!!.text.toString()
+
+        if (checkLoginInputs(email, password)) {
+            session.authenticateLogin(email, password) { task ->
+                if (task.isSuccessful) {
+                    val intent = Intent(this, RoutineListActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    finish()
                 }
             }
         }
