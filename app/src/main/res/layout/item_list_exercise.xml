@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/customborder"
     android:orientation="horizontal"
-    android:layout_margin="5dp">
+    android:layout_margin="14dp">
 
 
     <TextView
@@ -16,21 +16,30 @@
         android:textAlignment="viewStart"
         android:textSize="25dp" />
 
-    <TextView
-        android:id="@+id/exercise_detail"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="Detail Name"
-        android:textAlignment="textStart" />
+    <LinearLayout
+        android:background="@drawable/customborder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/exercise_detailValue"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="15dp"
-        android:text="Detail Value"
-        android:textAlignment="textStart" />
+        <TextView
+            android:id="@+id/exercise_detail"
+            android:layout_width="53dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:text="Reps"
+            android:textAlignment="textStart"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/exercise_detailValue"
+            android:layout_width="137dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="0dp"
+            android:textSize="35dp"
+            android:text="69"
+            android:textAlignment="textStart" />
+    </LinearLayout>
 
 
 </LinearLayout>

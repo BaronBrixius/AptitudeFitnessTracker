@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.ListAdapter
 import com.example.aptitudefitnesstracker.R
@@ -119,6 +120,15 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             startActivity(intent)
         }
         setupRecyclerView()
+
+
+
+
+
+//        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+//        itemTouchHelper.attachToRecyclerView(findViewById(R.id.item_parent_list_exercise))
+
+
     }
 
     val itemTouchHelperCallback = object :
@@ -159,6 +169,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
             //required override, not used
         }
+
     }
 
     private fun viewOnlineExercisesButtonClicked() {
