@@ -14,7 +14,8 @@
         android:theme="@style/Theme.AptitudeFitnessTracker.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/exercise_toolbar"
+            app:title="Exercises"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/Theme.AptitudeFitnessTracker.PopupOverlay" />
@@ -22,13 +23,28 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
+        android:id="@+id/header_container"
+        android:layout_marginTop="59dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include
+            layout="@layout/exercise_list_header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+
+    <FrameLayout
         android:layout_marginTop="80sp"
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
         <include
-            layout="@layout/item_list"
+            layout="@layout/item_parent_list_exercise"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -90,4 +106,7 @@
             app:srcCompat="@drawable/ic_baseline_fiber_new_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

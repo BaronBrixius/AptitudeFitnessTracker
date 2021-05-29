@@ -1,28 +1,33 @@
 package com.example.aptitudefitnesstracker.presentation
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Session
 
 class EditExerciseActivity : AppCompatActivity() {
-    private var inputDetails: RecyclerView? = null
+    private var inputDetailsLayout: RecyclerView? = null
     private var inputName: EditText? = null
     private var inputNotes: EditText? = null
+    private var inputDetails: EditText? = null
+    private var inputDetailsValue: EditText? = null
     private var btnSave: Button? = null
+    private var btnDelete: Button? = null
     private var userId: String? = null
 
     private val session: Session by lazy { application as Session }
@@ -38,22 +43,66 @@ class EditExerciseActivity : AppCompatActivity() {
 //        supportActionBar!!.setDisplayShowHomeEnabled(true)
 //        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
         inputName = findViewById<View>(R.id.name) as EditText
-        inputDetails = findViewById(R.id.detail_list)
+        inputDetailsLayout = findViewById(R.id.detail_list)
+        inputDetails = findViewById<EditText>(R.id.detail_name)
+        inputDetailsValue = findViewById<EditText>(R.id.detail_value)
         inputNotes = findViewById<View>(R.id.Notes) as EditText
         btnSave = findViewById<View>(R.id.btn_save) as Button
+        btnDelete = findViewById<View>(R.id.btn_delete) as Button
+
+
         findViewById<Toolbar>(R.id.toolbar).title = "Edit Exercise"
 
         exercise = session.activeExercise!!
         inputName!!.hint = exercise.name
-
+//        inputDetails!!.hint = exercise.details[]
+//        inputDetailsValue!!.hint = exercise.details[]
+        inputNotes!!.hint = exercise.notes
 
         // Save / update the exercise
         btnSave!!.setOnClickListener {
             val name = inputName!!.text.toString()
             val notes = inputNotes!!.text.toString()
+//            val details = inputDetails!!.text.toString()
+//            val detailsValue = inputDetailsValue!!.text.toString()
 
             exercise.name = name
             exercise.notes = notes
+//            exercise.details[details] = detailsValue.toDouble()
+
+            /**
+             * Pop up dialog to confirm saving changes
+             */
+            val saveDialog = AlertDialog.Builder(this)
+            saveDialog.setTitle("Confirm Changes")
+            saveDialog.setMessage("Are you sure you would like to save changes?")
+
+            saveDialog.setPositiveButton("Save") { dialog, which ->
+                session.updateExercise(exercise)
+                finish()
+            }
+            saveDialog.setNegativeButton(android.R.string.no) { dialog, which ->
+                finish()
+            }
+            saveDialog.show()
+
+
+        }
+
+        btnDelete!!.setOnClickListener{
+
+            val saveDialog = AlertDialog.Builder(this)
+            saveDialog.setTitle("Delete Exercise")
+            saveDialog.setMessage("Are you sure?")
+
+            saveDialog.setPositiveButton("Delete") { dialog, which ->
+                session.deleteExercise(exercise)
+                finish()
+            }
+            saveDialog.setNegativeButton(android.R.string.no) { dialog, which ->
+                finish()
+            }
+            saveDialog.show()
 
         }
         toggleButton()
@@ -87,6 +136,8 @@ class EditExerciseActivity : AppCompatActivity() {
 
 //        setupRecyclerView()
     }
+
+
 
     class ExerciseDetailsRecyclerViewAdapter(
         private val parentActivity: EditExerciseActivity

@@ -2,11 +2,15 @@
 <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_list"
+    android:id="@+id/item_parent_list_exercise"
     android:name="com.example.aptitudefitnesstracker.ItemListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="16dp"
+
+
+
     app:layoutManager="LinearLayoutManager"
-    tools:context=".presentation.RoutineListActivity"
-    tools:listitem="@layout/item_list_content" />
+    tools:context=".presentation.ExerciseListActivity"
+    tools:listitem="@layout/item_list_exercise"
+    android:divider="#f00"
+    android:dividerHeight="10dp"/>

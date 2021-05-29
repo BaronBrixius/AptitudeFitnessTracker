@@ -9,18 +9,18 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Session
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlin.random.Random
+
 
 class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
-     val session: Session by lazy {
+    val session: Session by lazy {
         val session = application as Session
         session.addObserver(this)
         session
@@ -29,6 +29,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private lateinit var newExerciseButton: FloatingActionButton
     private lateinit var newExerciseFromRoutineButton: FloatingActionButton
     private lateinit var viewOnlineExercisesButton: FloatingActionButton
+
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -66,9 +67,9 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         ThemeUtils.setAppFont(this) // for set font size
         ThemeUtils.setAppFontFamily(this) // for set font family
         setContentView(R.layout.activity_exercise_list)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.exercise_toolbar)
         setSupportActionBar(toolbar)
-        toolbar.title = "Exercises"
+
 
         newExerciseFAB = findViewById(R.id.newExerciseFAB)
         newExerciseButton = findViewById(R.id.newExerciseButton)
@@ -81,25 +82,58 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         newExerciseButton.setOnClickListener {
             var exercise = Exercise()
+            exercise.name = "New Exercise"
             exercise.routineId = session.activeRoutine?.id!!
+//            exercise.details.put("Sets", Random.nextDouble(10.0))
             session.insertExercise(exercise)
             session.activeExercise = exercise
+            newExerciseFABClicked()
 
             intent = Intent(this, EditExerciseActivity::class.java)
             startActivity(intent)
+
         }
 
 
         newExerciseFromRoutineButton.setOnClickListener {
             Toast.makeText(this, "newExerciseFromRoutineButton", Toast.LENGTH_SHORT).show()
             //TODO Implement
+            newExerciseFABClicked()
+
         }
 
         viewOnlineExercisesButton.setOnClickListener {
+            newExerciseFABClicked()
             viewOnlineExercisesButtonClicked()
+
+        }
+        setupRecyclerView()
+
+
+
+
+
+//        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+//        itemTouchHelper.attachToRecyclerView(findViewById(R.id.item_parent_list_exercise))
+
+
+    }
+
+    val itemTouchHelperCallback = object :
+        ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return false
         }
 
-        setupRecyclerView()
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
+            println(            viewHolder.absoluteAdapterPosition
+            )
+        }
+
     }
 
     private fun viewOnlineExercisesButtonClicked() {
@@ -109,19 +143,23 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             startActivity(Intent(this@ExerciseListActivity, LoginActivity::class.java))
     }
 
-    private fun setupRecyclerView() {
+    fun setupRecyclerView() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        val recyclerView: RecyclerView = findViewById(R.id.item_list)
-        val adapter = ExerciseRecyclerViewAdapter(this)
+        val recyclerView: RecyclerView = findViewById(R.id.item_parent_list_exercise)
+        val adapter = ExerciseRecyclerViewAdapter(this, recyclerView)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+        val mDividerItemDecoration = DividerItemDecoration(
+            recyclerView.context,
+            (recyclerView.layoutManager as LinearLayoutManager).getOrientation()
+        )
+        recyclerView.addItemDecoration(mDividerItemDecoration)
 
         if (session.firebaseMode) {
             toolbar.title = "Viewing Online Exercises"
             viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
-        }
-        else {
-            toolbar.title = "Personal Exercises"
+        } else {
+//            toolbar.title = "Personal Exercises"
             viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
 
             if (session.activeRoutine == null) {
@@ -134,13 +172,18 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             exercises?.let { adapter.submitList(it) }
         })
 
-//        setupRecyclerView()
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
+
     class ExerciseRecyclerViewAdapter(
-        private val parentActivity: ExerciseListActivity
+        private val parentActivity: ExerciseListActivity, recyclerView: RecyclerView
     ) :
         ListAdapter<Exercise, ExerciseRecyclerViewAdapter.ExerciseViewHolder>(ExerciseComparator()) {
+
+        val recyclerView = recyclerView
+
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
             val exercise = v.tag as Exercise
 
@@ -151,27 +194,46 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_list_content, parent, false)
+                .inflate(R.layout.item_list_exercise, parent, false)
             return ExerciseViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
             val exercise = getItem(position)
             //holder.bind("id: " + item.id + " name: " + item.name)
-            holder.idView.text =
-                "id: " + exercise.id    //fixme placeholder stuff for database testing
-            holder.contentView.text = " name: " + exercise.name
+//            holder.idView.text = "id: " + exercise.id    //fixme placeholder stuff for database testing
+//            holder.contentView.text = " name: " + exercise.name
+            holder.exerciseName.text = exercise.name
+
+//            val map: LinkedHashMap<String, Double> = exercise.details
+//            val entry = map.entries.iterator().next()
+//            val key = entry.key
+//            val value = entry.value
+//            holder.exerciseDetail.text = key
+//            holder.exerciseDetailValue.text = value.toString()
+
+//            holder.exerciseDetail.text = "Hardcoded detail"
+//            holder.exerciseDetailValue.text = "Hardcoded detail value"
+
+            if (!exercise.details.entries.isEmpty()) {
+                holder.exerciseDetail.text = exercise.details.entries.elementAt(0).key
+                holder.exerciseDetailValue.text =
+                    exercise.details.entries.elementAt(0).value.toString()
+            }
 
             with(holder.itemView) {
                 tag = exercise
                 setOnClickListener(onClickListener)
             }
+
         }
 
         inner class ExerciseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val idView: TextView = view.findViewById(R.id.id_text)
-            val contentView: TextView =
-                view.findViewById(R.id.content) //no clue what this is, feel free to use it
+            val exerciseName: TextView = view.findViewById(R.id.exercise_name)
+            val exerciseDetail: TextView = view.findViewById(R.id.exercise_detail)
+            val exerciseDetailValue: TextView = view.findViewById(R.id.exercise_detailValue)
+
+            //no clue what this is, feel free to use it
             /*fun bind(text: String?) {
                 idView.text = text
             }*/
