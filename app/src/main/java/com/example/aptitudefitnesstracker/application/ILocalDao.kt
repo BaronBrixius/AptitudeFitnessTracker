@@ -5,13 +5,13 @@ import androidx.room.*
 
 @Dao
 interface ILocalDao {
-    @Query("SELECT * FROM routines ORDER BY name")
+    @Query("SELECT * FROM routines ORDER BY id")
     fun getAllRoutines(): LiveData<List<Routine>>
 
-    @Query("SELECT * FROM exercises WHERE routineId = :routineId")
+    @Query("SELECT * FROM exercises WHERE routineId = :routineId ORDER BY position")
     fun getExercisesInRoutine(routineId: Int): LiveData<List<Exercise>>
 
-    @Query("SELECT * FROM exercises")
+    @Query("SELECT * FROM exercises ORDER BY position")
     fun getAllExercises(): LiveData<List<Exercise>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -25,6 +25,9 @@ interface ILocalDao {
 
     @Update
     suspend fun updateExercise(exercise: Exercise)
+
+    @Update
+    suspend fun updateExercises(exercise: List<Exercise>)
 
     @Delete
     suspend fun deleteRoutine(routine: Routine)

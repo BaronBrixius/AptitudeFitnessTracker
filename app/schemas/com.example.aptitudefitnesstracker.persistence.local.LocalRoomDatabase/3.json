@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 2,
-    "identityHash": "9f29d6eea751a3b8a317c69fc3c37962",
+    "version": 3,
+    "identityHash": "4f6d542f949acba8d75a563999ea2cf0",
     "entities": [
       {
         "tableName": "routines",
@@ -39,7 +39,7 @@
       },
       {
         "tableName": "exercises",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `routineId` INTEGER NOT NULL, `position` INTEGER NOT NULL, `name` TEXT NOT NULL DEFAULT '', `details` TEXT NOT NULL DEFAULT '', `notes` TEXT NOT NULL DEFAULT '', FOREIGN KEY(`routineId`) REFERENCES `routines`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `routineId` INTEGER NOT NULL, `position` INTEGER NOT NULL DEFAULT 99, `name` TEXT NOT NULL DEFAULT '', `details` TEXT NOT NULL DEFAULT '', `notes` TEXT NOT NULL DEFAULT '', FOREIGN KEY(`routineId`) REFERENCES `routines`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -57,7 +57,8 @@
             "fieldPath": "position",
             "columnName": "position",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "99"
           },
           {
             "fieldPath": "name",
@@ -115,7 +116,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9f29d6eea751a3b8a317c69fc3c37962')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4f6d542f949acba8d75a563999ea2cf0')"
     ]
   }
 }

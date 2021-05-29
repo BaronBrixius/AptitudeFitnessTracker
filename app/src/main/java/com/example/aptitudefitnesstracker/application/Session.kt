@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.aptitudefitnesstracker.persistence.firebase.RemoteFirebaseDatabase
 import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -15,7 +13,6 @@ import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class Session : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())
@@ -61,9 +58,12 @@ class Session : Application() {
         localDao.updateExercise(exercise)
     }
 
+    fun updateExercises(exercises: List<Exercise>) = applicationScope.launch {
+        localDao.updateExercises(exercises)
+    }
 
-    fun copyExerciseToRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
-        val copyExercise = exercise.copy(routineId = routine.id)
+    fun addExerciseToRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
+        val copyExercise = exercise.copy(routineId = routine.id, position = routine.exercises.value!!.size)
         insertExercise(copyExercise)
     }
 
@@ -134,7 +134,11 @@ class Session : Application() {
     }
 
     @AddTrace(name = "authenticateLogin")
-    fun authenticateLogin(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
+    fun authenticateLogin(
+        email: String,
+        password: String,
+        onCompleteListener: (Task<AuthResult>) -> Unit
+    ) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
     }
 

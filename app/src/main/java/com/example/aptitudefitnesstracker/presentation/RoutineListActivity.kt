@@ -166,7 +166,7 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
                 oldItem: Routine,
                 newItem: Routine
             ): Boolean {
-                return oldItem.name == newItem.name //todo?
+                return oldItem.id == newItem.id
             }
         }
     }

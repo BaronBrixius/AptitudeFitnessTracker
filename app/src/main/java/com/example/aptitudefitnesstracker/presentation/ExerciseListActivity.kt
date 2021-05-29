@@ -6,6 +6,7 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
@@ -16,7 +17,7 @@ import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Session
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlin.random.Random
+import java.util.*
 
 
 class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
@@ -118,32 +119,46 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             startActivity(intent)
         }
         setupRecyclerView()
-
-
-
-
-
-//        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-//        itemTouchHelper.attachToRecyclerView(findViewById(R.id.item_parent_list_exercise))
-
-
     }
 
     val itemTouchHelperCallback = object :
-        ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
+//            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+
         override fun onMove(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
             target: RecyclerView.ViewHolder
         ): Boolean {
-            return false
+            val fromPosition = viewHolder.bindingAdapterPosition
+            val toPosition = target.bindingAdapterPosition
+            val exerciseList = (recyclerView.adapter as ExerciseRecyclerViewAdapter).exerciseList!!
+
+            exerciseList[fromPosition].position = toPosition
+            if (fromPosition < toPosition) {
+                for (i in fromPosition until toPosition) {
+                    exerciseList[i + 1].position = i
+                }
+            } else {
+                for (i in fromPosition downTo toPosition + 1) {
+                    exerciseList[i - 1].position = i
+                }
+            }
+
+            recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
+            return true
+        }
+
+        override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+            super.clearView(recyclerView, viewHolder)
+            (recyclerView.adapter as ExerciseRecyclerViewAdapter).saveList()
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
-            println(            viewHolder.absoluteAdapterPosition
-            )
+            //required override, not used
         }
-
     }
 
     private fun viewOnlineExercisesButtonClicked() {
@@ -153,15 +168,15 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             startActivity(Intent(this@ExerciseListActivity, LoginActivity::class.java))
     }
 
-    fun setupRecyclerView() {
+    private fun setupRecyclerView() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         val recyclerView: RecyclerView = findViewById(R.id.item_parent_list_exercise)
-        val adapter = ExerciseRecyclerViewAdapter(this, recyclerView)
+        val adapter = ExerciseRecyclerViewAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         val mDividerItemDecoration = DividerItemDecoration(
             recyclerView.context,
-            (recyclerView.layoutManager as LinearLayoutManager).getOrientation()
+            (recyclerView.layoutManager as LinearLayoutManager).orientation
         )
         recyclerView.addItemDecoration(mDividerItemDecoration)
 
@@ -179,20 +194,17 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         }
         val exerciseList: LiveData<List<Exercise>>? = session.getProperExercises()
         exerciseList!!.observe(this, { exercises ->
-            exercises?.let { adapter.submitList(it) }
+            exercises?.let { adapter.setList(it) }
         })
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
-
-    class ExerciseRecyclerViewAdapter(
-        private val parentActivity: ExerciseListActivity, recyclerView: RecyclerView
-    ) :
+    class ExerciseRecyclerViewAdapter(private val parentActivity: ExerciseListActivity) :
         ListAdapter<Exercise, ExerciseRecyclerViewAdapter.ExerciseViewHolder>(ExerciseComparator()) {
 
-        val recyclerView = recyclerView
+        var exerciseList: List<Exercise>? = null
 
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
             val exercise = v.tag as Exercise
@@ -238,6 +250,19 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         }
 
+        fun setList(it: List<Exercise>) {
+            submitList(it)
+            this.exerciseList = it.toList()
+        }
+
+        fun saveList() {
+            parentActivity.session.updateExercises(exerciseList!!)
+        }
+
+        fun swipeItem(viewHolder: RecyclerView.ViewHolder, position: Int) {
+            parentActivity.session.deleteExercise(getItem(position))
+        }
+
         inner class ExerciseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val exerciseName: TextView = view.findViewById(R.id.exercise_name)
             val exerciseDetail: TextView = view.findViewById(R.id.exercise_detail)
@@ -258,7 +283,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
                 oldItem: Exercise,
                 newItem: Exercise
             ): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.id == newItem.id && oldItem.routineId == newItem.routineId
             }
         }
     }
