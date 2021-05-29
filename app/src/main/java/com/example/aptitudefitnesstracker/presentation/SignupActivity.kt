@@ -12,9 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
 
 class SignupActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
@@ -24,7 +21,6 @@ class SignupActivity : AppCompatActivity() {
     private var btnSignUp: Button? = null
     private var btnResetPassword: Button? = null
     private var progressBar: ProgressBar? = null
-    private var auth: FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +29,6 @@ class SignupActivity : AppCompatActivity() {
         ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_signup)
 
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance()
         btnSignIn = findViewById(R.id.sign_in_button)
         btnSignUp = findViewById(R.id.sign_up_button)
         inputEmail = findViewById(R.id.email)
@@ -42,67 +36,44 @@ class SignupActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
         btnResetPassword = findViewById(R.id.btn_reset_password)
 
-        btnResetPassword!!.setOnClickListener {
-            resetPassword()
-        }
-
-        btnSignIn!!.setOnClickListener {
-            finish()
-        }
-
-        btnSignUp!!.setOnClickListener(View.OnClickListener {
-            signUp()
-        })
+        btnResetPassword!!.setOnClickListener { resetPassword() }
+        btnSignIn!!.setOnClickListener { finish() }
+        btnSignUp!!.setOnClickListener { signUp() }
     }
 
-    /*
-    SignUp() needs to be refactored into separate methods in Presenter and Session classes
-     */
     private fun signUp() {
-        val email = inputEmail!!.text.toString().trim { it <= ' ' }
-        val password = inputPassword!!.text.toString().trim { it <= ' ' }
+        val email = inputEmail!!.text.toString()
+        val password = inputPassword!!.text.toString()
+
+        if (checkInputs(email, password)) {
+            progressBar!!.visibility = View.VISIBLE
+
+            session.createUser(email, password) { task ->
+                progressBar!!.visibility = View.GONE
+                if (task.isSuccessful) {
+                    startActivity(Intent(this@SignupActivity, RoutineListActivity::class.java))
+                    finish()
+                } else {
+                    displayPopup("Authentication failed.")
+                }
+            }
+        }
+    }
+
+    private fun checkInputs(email: String, password: String): Boolean {
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(applicationContext, "Enter email address!", Toast.LENGTH_SHORT)
-                .show()
-            return
+            displayPopup("Enter email address!")
+            return true
         }
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(applicationContext, "Enter password!", Toast.LENGTH_SHORT)
-                .show()
-            return
+            displayPopup("Enter password!")
+            return true
         }
         if (password.length < 6) {
-            Toast.makeText(
-                applicationContext,
-                "Password too short, enter minimum 6 characters!",
-                Toast.LENGTH_SHORT
-            ).show()
-            return
+            displayPopup("Password too short, enter minimum 6 characters!")
+            return true
         }
-        progressBar!!.visibility = View.VISIBLE
-        //create user
-        auth!!.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this@SignupActivity,
-                OnCompleteListener<AuthResult?> { task ->
-                    Toast.makeText(
-                        this@SignupActivity,
-                        "createUserWithEmail:onComplete:" + task.isSuccessful,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    progressBar!!.visibility = View.GONE
-                    // If sign in fails, display a message to the user. If sign in succeeds
-                    // the auth state listener will be notified and logic to handle the
-                    // signed in user can be handled in the listener.
-                    if (!task.isSuccessful) {
-                        Toast.makeText(
-                            this@SignupActivity, "Authentication failed." + task.exception,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        startActivity(Intent(this@SignupActivity, RoutineListActivity::class.java))
-                        finish()
-                    }
-                })
+        return false
     }
 
     private fun resetPassword() {
@@ -114,25 +85,22 @@ class SignupActivity : AppCompatActivity() {
         val materialDialog: MaterialDialog =
             builder.customView(R.layout.dialog_reset_password, true)
                 .onPositive { dialog, _ ->
-                    val email = findViewById<EditText>(R.id.email_input).text.toString()
-                    session.sendPasswordResetEmail(email) { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(
-                                this@SignupActivity,
-                                "Password reset email sent.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                this@SignupActivity,
-                                "Failed to send password reset email.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+                    val emailInput = dialog.findViewById(R.id.email_input) as EditText
+                    val email = emailInput.text.toString()
+
+                    session.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+                        if (task.isSuccessful)
+                            displayPopup("Password reset email sent.")
+                        else
+                            displayPopup("Failed to send password reset email.")
                     }
-                }
-                .build()
+                }.build()
+
         materialDialog.show()
+    }
+
+    private fun displayPopup(text: String) {
+        Toast.makeText(this@SignupActivity, text, Toast.LENGTH_LONG).show()
     }
 
     override fun onResume() {

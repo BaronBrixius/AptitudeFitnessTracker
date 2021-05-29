@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.aptitudefitnesstracker.persistence.firebase.RemoteFirebaseDatabase
 import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -13,6 +15,7 @@ import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class Session : Application() {
     private val applicationScope = CoroutineScope(SupervisorJob())
@@ -126,11 +129,7 @@ class Session : Application() {
     }
 
     @AddTrace(name = "authenticateLogin")
-    fun authenticateLogin(
-        email: String,
-        password: String,
-        onCompleteListener: (Task<AuthResult>) -> Unit
-    ) {
+    fun authenticateLogin(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
     }
 
@@ -165,9 +164,11 @@ class Session : Application() {
         auth.removeAuthStateListener(authListener)
     }
 
-    //Sending the reset email only takes a Task<Void> callback instead of Task<AuthResult>
-    //I don't think changing it causes problems, but I noted the change here in case it does
-    fun sendPasswordResetEmail(email: String, callback: (Task<Void>) -> Unit) {
-        auth.sendPasswordResetEmail(email).addOnCompleteListener(callback)
+    fun sendPasswordResetEmail(email: String): Task<Void> {
+        return auth.sendPasswordResetEmail(email)
+    }
+
+    fun createUser(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
     }
 }
