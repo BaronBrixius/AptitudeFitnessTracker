@@ -14,17 +14,16 @@ data class Routine(
     @ColumnInfo(name = "id")
     @Exclude    // local id isn't needed for Firebase shares
     var id: Int,
+    @Exclude    // users can't re-order online stuff so no need to track it, just default to alphabetical
     @ColumnInfo(name = "position", defaultValue = "99")
     var position: Int,
     @ColumnInfo(name = "name")
     var name: String,
-    @ColumnInfo(name = "tags", defaultValue = "")
-    var tags: List<String>,
     @Ignore @Exclude    //convenience reference, don't want to persist it in either database like this
     var exercises: LiveData<List<Exercise>>
 ) {
-    constructor() : this(0, 99,"", ArrayList(), MutableLiveData<List<Exercise>>())
+    constructor() : this(0, 99,"", MutableLiveData<List<Exercise>>())
 
     @Ignore
-    constructor(name: String) : this(0,99, name, ArrayList(), MutableLiveData<List<Exercise>>())
+    constructor(name: String) : this(0,99, name, MutableLiveData<List<Exercise>>())
 }
