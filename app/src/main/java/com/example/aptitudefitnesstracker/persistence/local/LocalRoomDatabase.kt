@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    version = 5,
+    version = 6,
     entities = [Routine::class, Exercise::class],
     exportSchema = true,
 )
@@ -54,9 +54,7 @@ abstract class LocalRoomDatabase : RoomDatabase() {
             // test routines
             localDao.insertRoutine(Routine("Push"))
             localDao.insertRoutine(Routine("Pull!"))
-            val exercise = Exercise(0, 1,1, "Exercise", LinkedHashMap(), "")
-            exercise.details["Foo"] = 42.0
-            exercise.details["Oof"] = -37.5
+            val exercise = Exercise(0, 1,1, "Exercise", ArrayList(), "")
             localDao.insertExercise(exercise)
         }
     }

@@ -27,12 +27,17 @@ data class Exercise(
     @ColumnInfo(name = "name", defaultValue = "")
     var name: String,
     @ColumnInfo(name = "details", defaultValue = "")
-    var details: LinkedHashMap<String, Double>,
+    var details: ArrayList<Detail>,
     @ColumnInfo(name = "notes", defaultValue = "")
     var notes: String
 ) {
-    constructor() : this(0, 0,99,"", LinkedHashMap(),"")
+    constructor() : this(0, 0,99,"", ArrayList(),"")
 
     @Ignore
-    constructor(name: String) : this(0, 0,99, name, LinkedHashMap(), "")
+    constructor(name: String) : this(0, 0,99, name, ArrayList(), "")
+
+    class Detail {
+        var key: String = ""
+        var value: Double = 0.0
+    }
 }

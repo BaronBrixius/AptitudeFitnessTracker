@@ -46,12 +46,12 @@ class ExerciseRecyclerViewAdapter(private val parentActivity: ExerciseListActivi
         val exercise = getItem(position)
         holder.exerciseName.text = exercise.name
 
-        val details: LinkedHashMap<String, Double> = exercise.details
+        val details: ArrayList<Exercise.Detail> = exercise.details
 
         if (details.isNotEmpty()) {
-            holder.exerciseDetail.text = details.entries.elementAt(0).key
+            holder.exerciseDetail.text = details.elementAt(0).key
             holder.exerciseDetailValue.text =
-                details.entries.elementAt(0).value.toString()
+                details.elementAt(0).value.toString()
         }
 
         with(holder.itemView) {

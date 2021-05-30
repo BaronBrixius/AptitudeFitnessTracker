@@ -48,8 +48,6 @@ class EditExerciseActivity : AppCompatActivity() {
         btnDelete = findViewById<View>(R.id.btn_delete) as Button
         btnAddDetail = findViewById<View>(R.id.btn_add_detail) as Button
 
-
-
         findViewById<Toolbar>(R.id.toolbar).title = "Edit Exercise"
 
         exercise = session.activeExercise!!
@@ -78,9 +76,7 @@ class EditExerciseActivity : AppCompatActivity() {
                     exercise.name = name
                 }
 
-                val detailsMap: LinkedHashMap<String, Double> = LinkedHashMap()
-                adapter.detailList?.forEach { entry -> detailsMap[entry.key] = entry.value }
-                exercise.details = detailsMap
+                exercise.details = adapter.detailList!!
 
                 if (inputNotes!!.text.toString() != "") {
                     exercise.notes = notes
@@ -112,7 +108,8 @@ class EditExerciseActivity : AppCompatActivity() {
         }
 
         btnAddDetail!!.setOnClickListener{
-            exercise.details[Random.nextInt().toString()] = Random.nextDouble(0.0,10.0)
+//            exercise.details[Random.nextInt().toString()] = Random.nextDouble(0.0,10.0)
+            exercise.details.add(Exercise.Detail())
             session.updateExercise(exercise)
             setupRecyclerView()
         }
@@ -127,7 +124,7 @@ class EditExerciseActivity : AppCompatActivity() {
         adapter = ExerciseDetailsRecyclerViewAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter.setList(exercise.details.entries.toList())
+        adapter.setList(exercise.details)
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
@@ -165,10 +162,10 @@ class EditExerciseActivity : AppCompatActivity() {
     }
 
     class ExerciseDetailsRecyclerViewAdapter(private val parentActivity: EditExerciseActivity) :
-        ListAdapter<Map.Entry<String, Double>, ExerciseDetailsRecyclerViewAdapter.ExerciseDetailsViewHolder>(
+        ListAdapter<Exercise.Detail, ExerciseDetailsRecyclerViewAdapter.ExerciseDetailsViewHolder>(
             ExerciseDetailComparator()
         ) {
-        var detailList: List<Map.Entry<String, Double>>? = null
+        var detailList: ArrayList<Exercise.Detail>? = null
 
         override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -205,9 +202,9 @@ class EditExerciseActivity : AppCompatActivity() {
 //            }
         }
 
-        fun setList(detailList: List<MutableMap.MutableEntry<String, Double>>) {
+        fun setList(detailList: ArrayList<Exercise.Detail>) {
             submitList(detailList)
-            this.detailList = detailList.toList()
+            this.detailList = detailList
         }
 
         inner class ExerciseDetailsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -216,19 +213,19 @@ class EditExerciseActivity : AppCompatActivity() {
             val btnDeleteDetail:Button = view.findViewById(R.id.delete_Detail)
         }
 
-        class ExerciseDetailComparator : DiffUtil.ItemCallback<Map.Entry<String, Double>>() {
+        class ExerciseDetailComparator : DiffUtil.ItemCallback<Exercise.Detail>() {
             override fun areItemsTheSame(
-                oldItem: Map.Entry<String, Double>,
-                newItem: Map.Entry<String, Double>
+                oldItem: Exercise.Detail,
+                newItem: Exercise.Detail
             ): Boolean {
                 return oldItem === newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: Map.Entry<String, Double>,
-                newItem: Map.Entry<String, Double>
+                oldItem: Exercise.Detail,
+                newItem: Exercise.Detail
             ): Boolean {
-                return oldItem == newItem
+                return oldItem.key == newItem.key && oldItem.value == newItem.value
             }
         }
     }

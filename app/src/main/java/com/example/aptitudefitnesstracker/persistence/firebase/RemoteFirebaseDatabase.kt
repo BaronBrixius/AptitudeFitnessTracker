@@ -2,10 +2,13 @@ package com.example.aptitudefitnesstracker.persistence.firebase
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.aptitudefitnesstracker.application.data.Exercise
 import com.example.aptitudefitnesstracker.application.dao.IRemoteDao
+import com.example.aptitudefitnesstracker.application.data.Exercise
 import com.example.aptitudefitnesstracker.application.data.Routine
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class RemoteFirebaseDatabase : IRemoteDao {
     private val databaseURL: String = "https://aptitude-fitness-tracker-default-rtdb.europe-west1.firebasedatabase.app"
@@ -75,6 +78,12 @@ class RemoteFirebaseDatabase : IRemoteDao {
     private fun toExercises(dataSnapshot: DataSnapshot): List<Exercise> {
         val exerciseList: ArrayList<Exercise> = ArrayList()
         dataSnapshot.children.forEach { child ->
+//            val newExercise = Exercise()
+//            newExercise.name = child.child("name").value as String
+//            newExercise.notes = child.child("notes").value as String
+//            val hashMapDetails = child.child("details").value as HashMap<String, Double> //Firebase had a lot of trouble deserializing the LinkedHashMap, so just treating it as a HashMap and moving values over
+//            hashMapDetails.forEach { (key, value) -> newExercise.details[key] = value }
+//            exerciseList.add(newExercise)
             child.getValue(Exercise::class.java)?.let { exerciseList.add(it) }
         }
         return exerciseList

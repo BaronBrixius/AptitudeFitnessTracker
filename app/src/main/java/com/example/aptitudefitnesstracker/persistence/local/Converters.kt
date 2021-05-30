@@ -1,6 +1,7 @@
 package com.example.aptitudefitnesstracker.persistence.local
 
 import androidx.room.TypeConverter
+import com.example.aptitudefitnesstracker.application.data.Exercise
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -8,18 +9,18 @@ class Converters {
     companion object {
         @TypeConverter
         @JvmStatic
-        fun fromMap(map: LinkedHashMap<String,Double>): String {
-            return Gson().toJson(map)
+        fun fromList(list: ArrayList<Exercise.Detail>): String {
+            return Gson().toJson(list)
         }
 
         @TypeConverter
         @JvmStatic
-        fun toMap(string: String?): LinkedHashMap<String,Double> {
+        fun toList(string: String?): ArrayList<Exercise.Detail> {
             if (string != null) {
-                val mapType = object : TypeToken<LinkedHashMap<String, Double>>() {}.type
-                return Gson().fromJson(string,mapType)
+                val listType = object : TypeToken<ArrayList<Exercise.Detail>>() {}.type
+                return Gson().fromJson(string,listType)
             }
-            return LinkedHashMap()
+            return ArrayList()
         }
     }
 }
