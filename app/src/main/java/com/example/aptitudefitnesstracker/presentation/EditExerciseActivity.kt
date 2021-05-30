@@ -5,13 +5,14 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Session
@@ -35,9 +36,6 @@ class EditExerciseActivity : AppCompatActivity() {
         ThemeUtils.setAppFont(this)
         ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_add_exercise)
-        // Displaying toolbar icon
-//        supportActionBar!!.setDisplayShowHomeEnabled(true)
-//        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
         inputName = findViewById<View>(R.id.name) as EditText
         inputDetailsLayout = findViewById(R.id.detail_list)
         inputDetails = findViewById<EditText>(R.id.detail_name)
@@ -54,16 +52,13 @@ class EditExerciseActivity : AppCompatActivity() {
 //        inputDetails!!.hint = exercise.details[]
 //        inputDetailsValue!!.hint = exercise.details[]
         inputNotes!!.hint = exercise.notes
-
         // Save / update the exercise
+        btnSave!!.text = "Save"
         btnSave!!.setOnClickListener {
             val name = inputName!!.text.toString()
             val notes = inputNotes!!.text.toString()
 //            val details = inputDetails!!.text.toString()
 //            val detailsValue = inputDetailsValue!!.text.toString()
-
-            exercise.name = name
-            exercise.notes = notes
 //            exercise.details[details] = detailsValue.toDouble()
 
             /**
@@ -74,6 +69,12 @@ class EditExerciseActivity : AppCompatActivity() {
             saveDialog.setMessage("Are you sure you would like to save changes?")
 
             saveDialog.setPositiveButton("Save") { dialog, which ->
+                if (inputName!!.text.toString() != "")
+                    exercise.name = name
+
+                if (inputNotes!!.text.toString() != "")
+                    exercise.notes = notes
+
                 session.updateExercise(exercise)
                 finish()
             }
@@ -81,54 +82,33 @@ class EditExerciseActivity : AppCompatActivity() {
                 finish()
             }
             saveDialog.show()
-
-
         }
 
-        btnDelete!!.setOnClickListener {
-            val confirmDeleteDialog = AlertDialog.Builder(this)
-                .setTitle("Delete Exercise")
-                .setMessage("Are you sure?")
 
-            confirmDeleteDialog.setPositiveButton("Delete") { dialog, which ->
+        btnDelete!!.setOnClickListener {
+            val deleteDialog = AlertDialog.Builder(this)
+            deleteDialog.setTitle("Delete Exercise")
+            deleteDialog.setMessage("Are you sure?")
+
+            deleteDialog.setPositiveButton("Delete") { dialog, which ->
                 session.deleteExercise(exercise)
                 finish()
             }
-            confirmDeleteDialog.setNegativeButton("No") { dialog, which ->
+            deleteDialog.setNegativeButton(android.R.string.no) { dialog, which ->
                 finish()
             }
-            confirmDeleteDialog.show()
+            deleteDialog.show()
         }
-        toggleButton()
-
         setupRecyclerView()
-
     }
 
-    // Changing button text
-    private fun toggleButton() {
-        if (TextUtils.isEmpty(userId)) {
-            btnSave!!.text = "Save"
-        } else {
-            btnSave!!.text = "Update"
-        }
-    }
 
     private fun setupRecyclerView() {
         val recyclerView: RecyclerView = findViewById(R.id.detail_list)
         val adapter = ExerciseDetailsRecyclerViewAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-//        val exerciseList: LiveData<List<Exercise>>? = session.getProperExercises()    //todo updates
-//        exerciseList!!.observe(this, { exercises ->
-//            exercises?.let {
-//                adapter.submitList(it) }
-//        })
-
         adapter.submitList(exercise.details.entries.toList())
-
-//        setupRecyclerView()
     }
 
     val itemTouchHelperCallback = object :

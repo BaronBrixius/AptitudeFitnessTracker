@@ -27,15 +27,12 @@ class AddRoutineActivity : AppCompatActivity() {
         ThemeUtils.setAppFont(this)
         ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_databasetest)
-        // Displaying toolbar icon
-//        supportActionBar!!.setDisplayShowHomeEnabled(true)
-//        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
         txtDetails = findViewById<View>(R.id.txt_user) as TextView
         inputName = findViewById<View>(R.id.name) as EditText
         btnSave = findViewById<View>(R.id.btn_save) as Button
 
-//        inputName.
 
+        btnSave!!.text = "Save"
         // Save / update the user
         btnSave!!.setOnClickListener {
             val name = inputName!!.text.toString()
@@ -50,14 +47,6 @@ class AddRoutineActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-
-
-
-
-
-
-//        toggleButton()
     }
 
     // Changing button text
