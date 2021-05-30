@@ -26,8 +26,6 @@ class EditRoutineActivity : AppCompatActivity() {
     private var btnShare: Button? = null
     private var btnDownload: Button? = null
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtils.setThemeApp(this)

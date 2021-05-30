@@ -46,24 +46,18 @@ class ExerciseDetailsRecyclerViewAdapter(private val parentActivity: EditExercis
         holder.value.doAfterTextChanged { text -> detail.value = text.toString().toDouble() }
 
         holder.btnDeleteDetail.setOnClickListener{
-//                btnDeleteDetail!!.startAnimation(scaleUp)
-
             val saveDialog = AlertDialog.Builder(parentActivity)
             saveDialog.setTitle("Delete Detail?")
-//                saveDialog.setMessage("Are you sure you would like to delete the detail?")
 
-            saveDialog.setPositiveButton("DELETE") { dialog, which ->
-                Toast.makeText(parentActivity, "DELETE", Toast.LENGTH_SHORT).show()
+            saveDialog.setPositiveButton("DELETE") { _, _ ->
+                detailList!!.remove(detail)
+                setList(detailList!!)
+                notifyDataSetChanged()
             }
             saveDialog.setNegativeButton(android.R.string.no) { _, _ ->
             }
             saveDialog.show()
         }
-
-//            with(holder.itemView) {
-//                tag = detail
-//                setOnClickListener(onClickListener)
-//            }
     }
 
     fun setList(detailList: ArrayList<Exercise.Detail>) {
