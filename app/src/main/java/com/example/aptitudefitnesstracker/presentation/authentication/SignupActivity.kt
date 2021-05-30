@@ -13,6 +13,7 @@ import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.settings.DialogUtils
 import com.example.aptitudefitnesstracker.presentation.settings.ThemeUtils
+import com.google.firebase.auth.FirebaseAuth
 
 class SignupActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
@@ -22,6 +23,9 @@ class SignupActivity : AppCompatActivity() {
     private var btnSignUp: Button? = null
     private var btnResetPassword: Button? = null
     private var progressBar: ProgressBar? = null
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,26 +43,36 @@ class SignupActivity : AppCompatActivity() {
 
         btnResetPassword!!.setOnClickListener { resetPassword() }
         btnSignIn!!.setOnClickListener { finish() }
-        btnSignUp!!.setOnClickListener { signUp() }
-    }
+        btnSignUp!!.setOnClickListener {
+            val auth = FirebaseAuth.getInstance()
 
-    private fun signUp() {
-        val email = inputEmail!!.text.toString()
-        val password = inputPassword!!.text.toString()
+            val email = inputEmail!!.text.toString()
+            val password = inputPassword!!.text.toString()
+            auth.createUserWithEmailAndPassword(email, password)
 
-        if (checkInputs(email, password)) {
-            progressBar!!.visibility = View.VISIBLE
-
-            session.createUser(email, password) { task ->
-                progressBar!!.visibility = View.GONE
-                if (task.isSuccessful) {
-                    finish()
-                } else {
-                    displayPopup("Authentication failed.")
-                }
-            }
         }
     }
+
+//    private fun signUp() {
+//        val email = inputEmail!!.text.toString()
+//        val password = inputPassword!!.text.toString()
+//
+//
+////        if (checkInputs(email, password)) {
+//
+//
+////            progressBar!!.visibility = View.VISIBLE
+////
+////            session.createUser(email, password) { task ->
+////                progressBar!!.visibility = View.GONE
+////                if (task.isSuccessful) {
+////                    finish()
+////                } else {
+////                    displayPopup("Authentication failed.")
+////                }
+////            }
+////        }
+//    }
 
     private fun checkInputs(email: String, password: String): Boolean {
         if (TextUtils.isEmpty(email)) {
