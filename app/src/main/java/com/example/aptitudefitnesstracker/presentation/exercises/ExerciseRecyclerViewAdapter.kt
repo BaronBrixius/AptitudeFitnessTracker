@@ -54,13 +54,10 @@ class ExerciseRecyclerViewAdapter(private val parentActivity: ExerciseListActivi
                 details.elementAt(0).value.toString()
         }
 
-
         with(holder.itemView) {
             tag = exercise
             setOnClickListener(onClickListener)
         }
-
-
     }
 
     fun setList(it: List<Exercise>) {
