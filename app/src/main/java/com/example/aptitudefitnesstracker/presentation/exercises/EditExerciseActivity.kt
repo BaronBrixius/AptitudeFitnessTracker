@@ -25,7 +25,7 @@ class EditExerciseActivity : AppCompatActivity() {
 
     private lateinit var adapter : ExerciseDetailsRecyclerViewAdapter
 
-    private val session: Session by lazy { application as Session }
+    val session: Session by lazy { application as Session }
     private lateinit var exercise: Exercise
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,5 +115,11 @@ class EditExerciseActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter.setList(exercise.details)
+
+        if(session.firebaseMode){
+            btnAddDetail!!.visibility = View.GONE
+            btnDelete!!.visibility = View.GONE
+            btnSave!!.visibility = View.GONE
+        }
     }
 }

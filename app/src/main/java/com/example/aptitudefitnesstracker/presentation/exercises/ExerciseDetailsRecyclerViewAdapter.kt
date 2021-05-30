@@ -45,18 +45,29 @@ class ExerciseDetailsRecyclerViewAdapter(private val parentActivity: EditExercis
         holder.name.doAfterTextChanged { text -> detail.key = text.toString() }
         holder.value.doAfterTextChanged { text -> detail.value = text.toString().toDouble() }
 
+        if(parentActivity.session.firebaseMode){
+            holder.btnDeleteDetail.visibility = View.GONE
+        }
+
         holder.btnDeleteDetail.setOnClickListener{
             val saveDialog = AlertDialog.Builder(parentActivity)
             saveDialog.setTitle("Delete Detail?")
+//                btnDeleteDetail!!.startAnimation(scaleUp)
+
+            val deleteDetailDialog = AlertDialog.Builder(parentActivity)
+            deleteDetailDialog.setTitle("Delete Detail?")
+//                saveDialog.setMessage("Are you sure you would like to delete the detail?")
 
             saveDialog.setPositiveButton("DELETE") { _, _ ->
                 detailList!!.remove(detail)
                 setList(detailList!!)
                 notifyDataSetChanged()
+            deleteDetailDialog.setPositiveButton("DELETE") { dialog, which ->
+                Toast.makeText(parentActivity, "DELETE", Toast.LENGTH_SHORT).show()
             }
-            saveDialog.setNegativeButton(android.R.string.no) { _, _ ->
+            deleteDetailDialog.setNegativeButton(android.R.string.no) { _, _ ->
             }
-            saveDialog.show()
+            deleteDetailDialog.show()
         }
     }
 
