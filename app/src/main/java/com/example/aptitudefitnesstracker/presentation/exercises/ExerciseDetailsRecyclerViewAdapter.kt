@@ -52,16 +52,17 @@ class ExerciseDetailsRecyclerViewAdapter(private val parentActivity: EditExercis
         }
 
         holder.btnDeleteDetail.setOnClickListener {
-            val saveDialog = AlertDialog.Builder(parentActivity)
-            saveDialog.setTitle("Delete Detail?")
-            saveDialog.setPositiveButton("DELETE") { _, _ ->
+            val deleteDetailDialog = AlertDialog.Builder(parentActivity)
+            deleteDetailDialog.setTitle("Delete Detail?")
+
+            deleteDetailDialog.setPositiveButton("DELETE") { _, _ ->
                 detailList!!.remove(detail)
                 setList(detailList!!)
                 notifyDataSetChanged()
             }
-            saveDialog.setNegativeButton(android.R.string.no) { _, _ ->
+            deleteDetailDialog.setNegativeButton("No") { _, _ ->
             }
-
+            deleteDetailDialog.show()
         }
     }
 
