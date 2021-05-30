@@ -47,9 +47,8 @@ class EditExerciseActivity : AppCompatActivity() {
 
         exercise = session.activeExercise!!
         inputName!!.hint = exercise.name
-//        inputDetails!!.hint = exercise.details[]
-//        inputDetailsValue!!.hint = exercise.details[]
         inputNotes!!.hint = exercise.notes
+
         // Save / update the exercise
         btnSave!!.text = "Save"
         btnSave!!.setOnClickListener {
@@ -85,7 +84,6 @@ class EditExerciseActivity : AppCompatActivity() {
             }
             saveDialog.show()
         }
-
 
         btnDelete!!.setOnClickListener {
             val deleteDialog = AlertDialog.Builder(this)
