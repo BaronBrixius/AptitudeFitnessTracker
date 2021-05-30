@@ -61,29 +61,9 @@
             tools:visibility="visible"
             android:focusable="true"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/newExerciseFromRoutineButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20sp"
-            android:clickable="true"
-            app:layout_constraintBottom_toTopOf="@+id/newExerciseFAB"
-            app:layout_constraintEnd_toEndOf="@+id/newExerciseFAB"
-            app:srcCompat="@drawable/ic_baseline_create_new_folder_24"
-            android:visibility="invisible"
-            android:focusable="true"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/viewOnlineExercisesButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:layout_marginBottom="10sp"
-            app:layout_constraintBottom_toTopOf="@+id/newExerciseFromRoutineButton"
-            app:layout_constraintEnd_toEndOf="@+id/newExerciseFromRoutineButton"
-            app:srcCompat="@drawable/ic_baseline_cloud_download_24"
-            android:visibility="invisible"
-            android:focusable="true"/>
+
+
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -94,8 +74,8 @@
             android:clickable="true"
             android:focusable="true"
             android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/viewOnlineExercisesButton"
-            app:layout_constraintEnd_toEndOf="@+id/viewOnlineExercisesButton"
+            app:layout_constraintBottom_toTopOf="@+id/newExerciseFAB"
+            app:layout_constraintEnd_toEndOf="@+id/newExerciseFAB"
             app:srcCompat="@drawable/ic_baseline_fiber_new_24" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

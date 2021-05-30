@@ -49,6 +49,7 @@ class ExerciseRecyclerViewAdapter(private val parentActivity: ExerciseListActivi
         val details: ArrayList<Exercise.Detail> = exercise.details
 
         if (details.isNotEmpty()) {
+            holder.circle.text = exercise.name.first().toString()
             holder.exerciseDetail.text = details.elementAt(0).key
             holder.exerciseDetailValue.text =
                 details.elementAt(0).value.toString()
@@ -74,6 +75,7 @@ class ExerciseRecyclerViewAdapter(private val parentActivity: ExerciseListActivi
         val exerciseName: TextView = view.findViewById(R.id.exercise_name)
         val exerciseDetail: TextView = view.findViewById(R.id.exercise_detail)
         val exerciseDetailValue: TextView = view.findViewById(R.id.exercise_detailValue)
+        var circle: TextView = view.findViewById(R.id.exercise_first_letter)
     }
 
     class ExerciseComparator : DiffUtil.ItemCallback<Exercise>() {

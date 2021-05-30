@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
@@ -169,8 +170,20 @@ class SettingsActivity : AppCompatActivity() {
                 this@SettingsActivity,
                 R.string.sign_out_confirmation
             ).onPositive { _, _ ->
-                session.signOut()
-                finish()
+                if(session.userIsLoggedIn()){
+                    session.signOut()
+                    finish()
+                }
+                else{
+                    val notLoggedIn = AlertDialog.Builder(this)
+                    notLoggedIn.setTitle("You are not logged in.")
+
+                    notLoggedIn.setPositiveButton("ok") { dialog, which ->
+                        finish()
+                    }
+
+                    notLoggedIn.show()
+                }
             }.build()
         materialDialog.show()
     }

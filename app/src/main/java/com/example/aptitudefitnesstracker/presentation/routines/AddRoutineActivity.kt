@@ -1,5 +1,6 @@
 package com.example.aptitudefitnesstracker.presentation.routines
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -7,10 +8,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.data.Routine
 import com.example.aptitudefitnesstracker.application.Session
+import com.example.aptitudefitnesstracker.presentation.authentication.LoginActivity
 import com.example.aptitudefitnesstracker.presentation.settings.ThemeUtils
 
 class AddRoutineActivity : AppCompatActivity() {
@@ -40,10 +43,9 @@ class AddRoutineActivity : AppCompatActivity() {
             // Check for already existed userId
             if (TextUtils.isEmpty(userId)) {
                 createRoutine(name)
-                Toast.makeText(this, "New Routine: " + name + "created!", Toast.LENGTH_SHORT).show()
-                finish()
+//                Toast.makeText(this, "New Routine: " + name + "created!", Toast.LENGTH_SHORT).show()
+
             } else {
-//                updateExercise(name)
                 finish()
             }
         }
@@ -65,6 +67,15 @@ class AddRoutineActivity : AppCompatActivity() {
         if (name.isNotEmpty()) {
             session.insertRoutine(Routine(name))
             Toast.makeText(this, "Routine added", Toast.LENGTH_LONG).show()
+            finish()
+        }
+        else {
+            val loginRequiredDialog: AlertDialog.Builder = AlertDialog.Builder(this)
+            loginRequiredDialog.setTitle("Invalid Name")
+            loginRequiredDialog.setMessage("Routine name cannot be blank, please input a name.")
+            loginRequiredDialog.setPositiveButton(android.R.string.ok) { dialog, which ->
+            }
+            loginRequiredDialog.show()
         }
     }
 

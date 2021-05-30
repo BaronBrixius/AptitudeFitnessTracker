@@ -6,6 +6,7 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
@@ -51,11 +52,13 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         }
 
         newRoutineButton.setOnClickListener {
+            newRoutineFABClicked()
             val intent = Intent(this, AddRoutineActivity::class.java)
             startActivity(intent)
         }
 
         viewOnlineRoutinesButton.setOnClickListener {
+            newRoutineFABClicked()
             viewOnlineRoutinesButtonClicked()
         }
 
@@ -76,8 +79,20 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private fun viewOnlineRoutinesButtonClicked() {
         if (session.userIsLoggedIn())
             session.toggleAndGetFirebaseMode()
-        else
-            startActivity(Intent(this@RoutineListActivity, LoginActivity::class.java))
+        else {
+
+            val loginRequiredDialog: AlertDialog.Builder = AlertDialog.Builder(this)
+            loginRequiredDialog.setTitle("Online Routines")
+            loginRequiredDialog.setMessage("To view online routines you need to be logged in. Would you like to login now?")
+
+            loginRequiredDialog.setPositiveButton("Login") { dialog, which ->
+                intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+            loginRequiredDialog.setNegativeButton(android.R.string.no) { dialog, which ->
+            }
+            loginRequiredDialog.show()
+        }
     }
 
     private fun setupRecyclerView() {
