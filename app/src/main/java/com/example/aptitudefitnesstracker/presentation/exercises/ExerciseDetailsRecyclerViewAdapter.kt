@@ -54,11 +54,9 @@ class ExerciseDetailsRecyclerViewAdapter(private val parentActivity: EditExercis
         holder.btnDeleteDetail.setOnClickListener {
             val saveDialog = AlertDialog.Builder(parentActivity)
             saveDialog.setTitle("Delete Detail?")
-//                btnDeleteDetail!!.startAnimation(scaleUp)
 
             val deleteDetailDialog = AlertDialog.Builder(parentActivity)
             deleteDetailDialog.setTitle("Delete Detail?")
-//                saveDialog.setMessage("Are you sure you would like to delete the detail?")
 
             saveDialog.setPositiveButton("DELETE") { _, _ ->
                 detailList!!.remove(detail)
