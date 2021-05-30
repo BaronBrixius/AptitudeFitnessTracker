@@ -46,8 +46,8 @@ class EditExerciseActivity : AppCompatActivity() {
         findViewById<Toolbar>(R.id.toolbar).title = "Edit Exercise"
 
         exercise = session.activeExercise!!
-        inputName!!.hint = exercise.name
-        inputNotes!!.hint = exercise.notes
+        inputName!!.setText(exercise.name)
+        inputNotes!!.setText(exercise.notes)
 
         // Save / update the exercise
         btnSave!!.text = "Save"
@@ -101,7 +101,6 @@ class EditExerciseActivity : AppCompatActivity() {
         }
 
         btnAddDetail!!.setOnClickListener{
-//            exercise.details[Random.nextInt().toString()] = Random.nextDouble(0.0,10.0)
             exercise.details.add(Exercise.Detail())
             session.updateExercise(exercise)
             setupRecyclerView()

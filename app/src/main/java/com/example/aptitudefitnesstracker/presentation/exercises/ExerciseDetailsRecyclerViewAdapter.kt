@@ -17,10 +17,10 @@ import com.example.aptitudefitnesstracker.application.data.Exercise
 import java.util.*
 
 class ExerciseDetailsRecyclerViewAdapter(private val parentActivity: EditExerciseActivity) :
-    ListAdapter<Map.Entry<String, Double>, ExerciseDetailsRecyclerViewAdapter.ExerciseDetailsViewHolder>(
+    ListAdapter<Exercise.Detail, ExerciseDetailsRecyclerViewAdapter.ExerciseDetailsViewHolder>(
         ExerciseDetailComparator()
     ) {
-    var detailList: List<Map.Entry<String, Double>>? = null
+    var detailList: ArrayList<Exercise.Detail>? = null
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
