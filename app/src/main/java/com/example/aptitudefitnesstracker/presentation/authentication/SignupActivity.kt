@@ -45,31 +45,11 @@ class SignupActivity : AppCompatActivity() {
         btnSignIn!!.setOnClickListener { finish() }
         btnSignUp!!.setOnClickListener {
             val auth = FirebaseAuth.getInstance()
-
             val email = inputEmail!!.text.toString()
             val password = inputPassword!!.text.toString()
             auth.createUserWithEmailAndPassword(email, password)
             finish()
-
         }
-    }
-
-
-
-    private fun checkInputs(email: String, password: String): Boolean {
-        if (TextUtils.isEmpty(email)) {
-            displayPopup("Enter email address!")
-            return true
-        }
-        if (TextUtils.isEmpty(password)) {
-            displayPopup("Enter password!")
-            return true
-        }
-        if (password.length < 6) {
-            displayPopup("Password too short, enter minimum 6 characters!")
-            return true
-        }
-        return false
     }
 
     private fun resetPassword() {
