@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.presentation
+package com.example.aptitudefitnesstracker.presentation.settings
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Session
-import com.google.android.gms.tasks.Task
+import com.example.aptitudefitnesstracker.presentation.routines.RoutineListActivity
 
 class SettingsActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
@@ -68,7 +68,7 @@ class SettingsActivity : AppCompatActivity() {
         val radioGroup: RadioGroup =
             materialDialog.customView!!.findViewById(R.id.radio_group_themes)
         val rb = radioGroup.getChildAt(
-                ThemeUtils.getSelectedThemePosition(this@SettingsActivity)
+            ThemeUtils.getSelectedThemePosition(this@SettingsActivity)
             ) as RadioButton
         rb.isChecked = true
         materialDialog.show()
@@ -98,7 +98,7 @@ class SettingsActivity : AppCompatActivity() {
         val radioGroupFont: RadioGroup =
             materialDialog.customView!!.findViewById(R.id.radio_group_font)
         val rbutton = radioGroupFont.getChildAt(
-                ThemeUtils.getSelectedFontPosition(this@SettingsActivity)
+            ThemeUtils.getSelectedFontPosition(this@SettingsActivity)
             ) as RadioButton
         rbutton.isChecked = true
         materialDialog.show()

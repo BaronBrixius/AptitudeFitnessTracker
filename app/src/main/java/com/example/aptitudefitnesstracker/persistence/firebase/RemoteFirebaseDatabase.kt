@@ -2,9 +2,9 @@ package com.example.aptitudefitnesstracker.persistence.firebase
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.aptitudefitnesstracker.application.Exercise
-import com.example.aptitudefitnesstracker.application.IRemoteDao
-import com.example.aptitudefitnesstracker.application.Routine
+import com.example.aptitudefitnesstracker.application.data.Exercise
+import com.example.aptitudefitnesstracker.application.dao.IRemoteDao
+import com.example.aptitudefitnesstracker.application.data.Routine
 import com.google.firebase.database.*
 
 class RemoteFirebaseDatabase : IRemoteDao {

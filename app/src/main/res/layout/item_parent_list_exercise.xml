@@ -8,5 +8,5 @@
     android:layout_height="match_parent"
 
     app:layoutManager="LinearLayoutManager"
-    tools:context=".presentation.ExerciseListActivity"
+    tools:context=".presentation.exercises.ExerciseListActivity"
     tools:listitem="@layout/item_list_exercise"/>

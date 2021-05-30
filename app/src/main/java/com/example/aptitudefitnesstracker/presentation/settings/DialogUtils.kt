@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.presentation
+package com.example.aptitudefitnesstracker.presentation.settings
 
 import android.app.Activity
 import com.afollestad.materialdialogs.MaterialDialog

@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.application
+package com.example.aptitudefitnesstracker.application.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

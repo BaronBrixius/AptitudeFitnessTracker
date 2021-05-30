@@ -1,11 +1,9 @@
-package com.example.aptitudefitnesstracker.presentation
+package com.example.aptitudefitnesstracker.presentation.exercises
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -13,8 +11,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.ListAdapter
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.application.Exercise
+import com.example.aptitudefitnesstracker.application.data.Exercise
 import com.example.aptitudefitnesstracker.application.Session
+import com.example.aptitudefitnesstracker.presentation.settings.ThemeUtils
 import java.util.*
 import kotlin.collections.LinkedHashMap
 import kotlin.random.Random
@@ -74,13 +73,13 @@ class EditExerciseActivity : AppCompatActivity() {
             saveDialog.setTitle("Confirm Changes")
             saveDialog.setMessage("Are you sure you would like to save changes?")
 
-            saveDialog.setPositiveButton("Save") { dialog, which ->
+            saveDialog.setPositiveButton("Save") { _, _ ->
                 if (inputName!!.text.toString() != "") {
                     exercise.name = name
                 }
 
                 val detailsMap: LinkedHashMap<String, Double> = LinkedHashMap()
-                adapter.detailList?.forEach { entry -> detailsMap.put(entry.key, entry.value) }
+                adapter.detailList?.forEach { entry -> detailsMap[entry.key] = entry.value }
                 exercise.details = detailsMap
 
                 if (inputNotes!!.text.toString() != "") {
@@ -90,7 +89,7 @@ class EditExerciseActivity : AppCompatActivity() {
                 session.updateExercise(exercise)
                 finish()
             }
-            saveDialog.setNegativeButton(android.R.string.no) { dialog, which ->
+            saveDialog.setNegativeButton(android.R.string.no) { _, _ ->
                 finish()
             }
             saveDialog.show()
@@ -171,16 +170,6 @@ class EditExerciseActivity : AppCompatActivity() {
         ) {
         var detailList: List<Map.Entry<String, Double>>? = null
 
-        private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
-            val detail = v.tag as Map.Entry<String, Double>
-
-//            parentActivity.session.activeExercise = exercise
-//            val intent = Intent(v.context, EditExerciseActivity::class.java)
-//            v.context.startActivity(intent)
-        }
-        private var btnDeleteDetail: Button? = null
-
-
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -190,11 +179,10 @@ class EditExerciseActivity : AppCompatActivity() {
             return ExerciseDetailsViewHolder(view)
         }
 
-
         override fun onBindViewHolder(holder: ExerciseDetailsViewHolder, position: Int) {
             val detail = getItem(position)
-            holder.name.hint = detail.key
-            holder.value.hint = detail.value.toString()
+            holder.name.setText(detail.key)
+            holder.value.setText(detail.value.toString())
 
             holder.btnDeleteDetail.setOnClickListener{
 //                btnDeleteDetail!!.startAnimation(scaleUp)
@@ -205,11 +193,8 @@ class EditExerciseActivity : AppCompatActivity() {
 
                 saveDialog.setPositiveButton("DELETE") { dialog, which ->
                     Toast.makeText(parentActivity, "DELETE", Toast.LENGTH_SHORT).show()
-
                 }
-                saveDialog.setNegativeButton(android.R.string.no) { dialog, which ->
-                    Toast.makeText(parentActivity, "DO NOT DELETE", Toast.LENGTH_SHORT).show()
-
+                saveDialog.setNegativeButton(android.R.string.no) { _, _ ->
                 }
                 saveDialog.show()
             }

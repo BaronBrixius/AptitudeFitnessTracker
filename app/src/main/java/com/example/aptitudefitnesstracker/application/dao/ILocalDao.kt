@@ -1,7 +1,9 @@
-package com.example.aptitudefitnesstracker.application
+package com.example.aptitudefitnesstracker.application.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.aptitudefitnesstracker.application.data.Exercise
+import com.example.aptitudefitnesstracker.application.data.Routine
 
 @Dao
 interface ILocalDao {

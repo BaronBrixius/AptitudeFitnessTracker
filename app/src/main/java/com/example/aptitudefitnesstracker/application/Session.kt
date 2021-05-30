@@ -3,6 +3,8 @@ package com.example.aptitudefitnesstracker.application
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
+import com.example.aptitudefitnesstracker.application.data.Exercise
+import com.example.aptitudefitnesstracker.application.data.Routine
 import com.example.aptitudefitnesstracker.persistence.firebase.RemoteFirebaseDatabase
 import com.example.aptitudefitnesstracker.persistence.local.LocalRoomDatabase
 import com.google.android.gms.tasks.Task

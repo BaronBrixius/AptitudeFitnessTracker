@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.*
 //import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.aptitudefitnesstracker.application.Exercise
-import com.example.aptitudefitnesstracker.application.ILocalDao
-import com.example.aptitudefitnesstracker.application.Routine
+import com.example.aptitudefitnesstracker.application.data.Exercise
+import com.example.aptitudefitnesstracker.application.dao.ILocalDao
+import com.example.aptitudefitnesstracker.application.data.Routine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

@@ -8,5 +8,5 @@
     android:layout_height="match_parent"
     android:layout_marginHorizontal="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".presentation.RoutineListActivity"
+    tools:context=".presentation.routines.RoutineListActivity"
     tools:listitem="@layout/item_list_routine" />

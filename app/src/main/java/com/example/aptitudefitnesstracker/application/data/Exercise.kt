@@ -1,4 +1,4 @@
-package com.example.aptitudefitnesstracker.application
+package com.example.aptitudefitnesstracker.application.data
 
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE

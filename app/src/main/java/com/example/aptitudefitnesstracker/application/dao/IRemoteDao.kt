@@ -1,6 +1,8 @@
-package com.example.aptitudefitnesstracker.application
+package com.example.aptitudefitnesstracker.application.dao
 
 import androidx.lifecycle.LiveData
+import com.example.aptitudefitnesstracker.application.data.Exercise
+import com.example.aptitudefitnesstracker.application.data.Routine
 
 interface IRemoteDao {
     fun getAllRoutines(): LiveData<List<Routine>>

@@ -14,23 +14,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeWhite">
         <activity
-            android:name=".presentation.SettingsActivity"
+            android:name=".presentation.settings.SettingsActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".presentation.LoginActivity"
+            android:name=".presentation.authentication.LoginActivity"
             android:label="@string/app_name">
         </activity>
         <activity
-            android:name=".presentation.SignupActivity"
+            android:name=".presentation.authentication.SignupActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".presentation.AddRoutineActivity"
+            android:name=".presentation.routines.AddRoutineActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".presentation.EditRoutineActivity"
+            android:name=".presentation.routines.EditRoutineActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".presentation.RoutineListActivity"
+            android:name=".presentation.routines.RoutineListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,12 +38,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.ExerciseListActivity"
+            android:name=".presentation.exercises.ExerciseListActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".presentation.RoutineListActivity" />
+            android:parentActivityName=".presentation.routines.RoutineListActivity" />
         <activity
-            android:name=".presentation.EditExerciseActivity"
+            android:name=".presentation.exercises.EditExerciseActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".presentation.ExerciseListActivity" />
+            android:parentActivityName=".presentation.exercises.ExerciseListActivity" />
     </application>
 </manifest>
