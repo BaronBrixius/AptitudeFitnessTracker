@@ -101,7 +101,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         }
 
-        toolbar.setOnClickListener{
+        toolbar.setOnClickListener {
             intent = Intent(this, EditRoutineActivity::class.java)
 //            var deleteButton:Button = findViewById(R.id.btn_delete)
 //            deleteButton.visibility = View.VISIBLE
@@ -167,7 +167,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         if (session.firebaseMode) {
-           // toolbar.title = "Viewing Online Exercises"
+            // toolbar.title = "Viewing Online Exercises"
             viewOnlineExercisesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
         } else {
 //            toolbar.title = "Personal Exercises"
@@ -198,6 +198,10 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             parentActivity.session.activeExercise = exercise
             val intent = Intent(v.context, EditExerciseActivity::class.java)
             v.context.startActivity(intent)
+        }
+
+        override fun getItemId(position: Int): Long {
+            return getItem(position).id.toLong()
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {

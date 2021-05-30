@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Session
+import java.util.*
+import kotlin.collections.LinkedHashMap
 
 class EditExerciseActivity : AppCompatActivity() {
     private var inputDetailsLayout: RecyclerView? = null
@@ -23,8 +25,6 @@ class EditExerciseActivity : AppCompatActivity() {
     private var btnSave: Button? = null
     private var btnDelete: Button? = null
     private var userId: String? = null
-
-    var detailsList: LinkedHashMap<String, Double>? = null
 
     private val session: Session by lazy { application as Session }
     private lateinit var exercise: Exercise
@@ -37,8 +37,8 @@ class EditExerciseActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_exercise)
         inputName = findViewById<View>(R.id.name) as EditText
         inputDetailsLayout = findViewById(R.id.detail_list)
-        inputDetails = findViewById<EditText>(R.id.detail_name)
-        inputDetailsValue = findViewById<EditText>(R.id.detail_value)
+        inputDetails = findViewById(R.id.detail_name)
+        inputDetailsValue = findViewById(R.id.detail_value)
         inputNotes = findViewById<View>(R.id.Notes) as EditText
         btnSave = findViewById<View>(R.id.btn_save) as Button
         btnDelete = findViewById<View>(R.id.btn_delete) as Button
@@ -68,11 +68,17 @@ class EditExerciseActivity : AppCompatActivity() {
             saveDialog.setMessage("Are you sure you would like to save changes?")
 
             saveDialog.setPositiveButton("Save") { dialog, which ->
-                if (inputName!!.text.toString() != "")
+                if (inputName!!.text.toString() != "") {
                     exercise.name = name
+                }
 
-                if (inputNotes!!.text.toString() != "")
+                val detailsMap: LinkedHashMap<String, Double> = LinkedHashMap()
+                adapter.detailList?.forEach { entry -> detailsMap.put(entry.key, entry.value) }
+                exercise.details = detailsMap
+
+                if (inputNotes!!.text.toString() != "") {
                     exercise.notes = notes
+                }
 
                 session.updateExercise(exercise)
                 finish()
@@ -101,51 +107,56 @@ class EditExerciseActivity : AppCompatActivity() {
         setupRecyclerView()
     }
 
+    private lateinit var adapter : ExerciseDetailsRecyclerViewAdapter
 
     private fun setupRecyclerView() {
         val recyclerView: RecyclerView = findViewById(R.id.detail_list)
-        val adapter = ExerciseDetailsRecyclerViewAdapter(this)
+        adapter = ExerciseDetailsRecyclerViewAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter.submitList(exercise.details.entries.toList())
+        adapter.setList(exercise.details.entries.toList())
+
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
-    val itemTouchHelperCallback = object :
+    private val itemTouchHelperCallback = object :
         ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
+
         override fun onMove(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
             target: RecyclerView.ViewHolder
         ): Boolean {
-            return false
-        }
+            val fromPosition = viewHolder.bindingAdapterPosition
+            val toPosition = target.bindingAdapterPosition
+            val detailList = (recyclerView.adapter as ExerciseDetailsRecyclerViewAdapter).detailList!!
 
-        override fun onMoved(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            fromPos: Int,
-            target: RecyclerView.ViewHolder,
-            toPos: Int,
-            x: Int,
-            y: Int
-        ) {
-            super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y)
+            if (fromPosition < toPosition) {
+                for (i in fromPosition until toPosition) {
+                    Collections.swap(detailList, i, i+1)
+                }
+            } else {
+                for (i in fromPosition downTo toPosition + 1) {
+                    Collections.swap(detailList, i, i-1)
+                }
+            }
+
+            recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
+            return true
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
-            println(
-                viewHolder.absoluteAdapterPosition
-            )
+            //required override, not used
         }
-
     }
 
-    class ExerciseDetailsRecyclerViewAdapter(
-        private val parentActivity: EditExerciseActivity
-    ) :
+    class ExerciseDetailsRecyclerViewAdapter(private val parentActivity: EditExerciseActivity) :
         ListAdapter<Map.Entry<String, Double>, ExerciseDetailsRecyclerViewAdapter.ExerciseDetailsViewHolder>(
             ExerciseDetailComparator()
         ) {
+        var detailList: List<Map.Entry<String, Double>>? = null
+
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
             val detail = v.tag as Map.Entry<String, Double>
 
@@ -177,22 +188,15 @@ class EditExerciseActivity : AppCompatActivity() {
 //            }
         }
 
+        fun setList(detailList: List<MutableMap.MutableEntry<String, Double>>) {
+            submitList(detailList)
+            this.detailList = detailList.toList()
+        }
+
         inner class ExerciseDetailsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val name: EditText = view.findViewById(R.id.detail_name)
             val value: EditText = view.findViewById(R.id.detail_value)
         }
-//
-//        fun SaveDetails(view:View){
-//            var exercise = parentActivity.exercise
-//            var inputDetail: EditText? = null
-//            var inputDetailsValue: EditText? = null
-//            inputDetail = view.findViewById(R.id.detail_name)
-//            inputDetailsValue = view.findViewById(R.id.detail_value)
-//
-//
-//
-//        }
-
 
         class ExerciseDetailComparator : DiffUtil.ItemCallback<Map.Entry<String, Double>>() {
             override fun areItemsTheSame(
