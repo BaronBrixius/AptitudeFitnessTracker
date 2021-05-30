@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.data.Exercise
-import java.util.LinkedHashMap
 
 class ExerciseRecyclerViewAdapter(private val parentActivity: ExerciseListActivity) :
     ListAdapter<Exercise, ExerciseRecyclerViewAdapter.ExerciseViewHolder>(ExerciseComparator()) {
@@ -56,10 +55,10 @@ class ExerciseRecyclerViewAdapter(private val parentActivity: ExerciseListActivi
         }
 
 
-            with(holder.itemView) {
-                tag = exercise
-                setOnClickListener(onClickListener)
-            }
+        with(holder.itemView) {
+            tag = exercise
+            setOnClickListener(onClickListener)
+        }
 
 
     }

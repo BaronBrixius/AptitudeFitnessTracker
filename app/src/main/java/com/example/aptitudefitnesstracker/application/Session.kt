@@ -29,13 +29,13 @@ class Session : Application() {
     }
     private val localDao by lazy { LocalRoomDatabase.getDatabase(this, applicationScope).iDao() }
     private val remoteDao by lazy { RemoteFirebaseDatabase() }
-    var loggedInUser: FirebaseUser? = null
+    private var loggedInUser: FirebaseUser? = null
     var firebaseMode: Boolean = false
     var activeRoutine: Routine? = null
     var activeExercise: Exercise? = null
     private var observers: MutableList<IFirebaseModeObserver> = mutableListOf()
 
-    fun getLocalRoutines(): LiveData<List<Routine>> {
+    private fun getLocalRoutines(): LiveData<List<Routine>> {
         return localDao.getAllRoutines().map {
             it.map { routine ->
                 routine.exercises = localDao.getExercisesInRoutine(routine.id)
@@ -44,7 +44,7 @@ class Session : Application() {
         }
     }
 
-    fun downloadRemoteRoutines(): LiveData<List<Routine>> {
+    private fun downloadRemoteRoutines(): LiveData<List<Routine>> {
         return remoteDao.getAllRoutines()
     }
 
@@ -71,14 +71,7 @@ class Session : Application() {
     fun createExerciseInRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
         exercise.routineId = routine.id
         exercise.position = routine.exercises.value!!.size
-
-        val insertId = localDao.insertExercise(exercise)
-//        activeRoutine?.exercises?.value?.forEach { e ->
-//            if (insertId.toInt() == e.id) {
-//                activeExercise = e
-//                return@forEach
-//            }
-//        }
+        localDao.insertExercise(exercise)
     }
 
     fun insertRoutine(routine: Routine) = applicationScope.launch {
@@ -129,7 +122,7 @@ class Session : Application() {
         }
     }
 
-    fun turnFirebaseModeOff(): Boolean {
+    private fun turnFirebaseModeOff(): Boolean {
         return setFirebaseModeAndNotify(false)
     }
 
@@ -166,15 +159,14 @@ class Session : Application() {
         observers.add(newObserver)
     }
 
-    //think of a better name than "proper" routines
-    fun getProperRoutines(): LiveData<List<Routine>> {
+    fun getRoutines(): LiveData<List<Routine>> {
         return if (firebaseMode)
             downloadRemoteRoutines()
         else
             getLocalRoutines()
     }
 
-    fun getProperExercises(): LiveData<List<Exercise>>? {
+    fun getExercises(): LiveData<List<Exercise>>? {
         return activeRoutine?.exercises
     }
 

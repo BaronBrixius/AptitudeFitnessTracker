@@ -30,7 +30,6 @@ abstract class LocalRoomDatabase : RoomDatabase() {
                     LocalRoomDatabase::class.java,
                     "routine"
                 )
-                    .fallbackToDestructiveMigration()
                     .addCallback(LocalRoomDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
@@ -51,11 +50,25 @@ abstract class LocalRoomDatabase : RoomDatabase() {
         }
 
         suspend fun populateDatabase(localDao: ILocalDao) {
-            // test routines
-            localDao.insertRoutine(Routine("Push"))
-            localDao.insertRoutine(Routine("Pull!"))
-            val exercise = Exercise(0, 1,1, "Exercise", ArrayList(), "")
-            localDao.insertExercise(exercise)
+            // example routines
+            val exampleDetail = Exercise.Detail()
+            exampleDetail.key = "Reps"
+            exampleDetail.value = 5.0
+
+            localDao.insertRoutine(Routine("Monday"))
+            localDao.insertExercise(Exercise(0, 0,1, "Squats", arrayListOf(exampleDetail), ""))
+            localDao.insertExercise(Exercise(0, 0,2, "Bench Press", arrayListOf(exampleDetail), ""))
+            localDao.insertExercise(Exercise(0, 0,2, "Pull-ups", arrayListOf(exampleDetail), ""))
+
+            localDao.insertRoutine(Routine("Wednesday"))
+            localDao.insertExercise(Exercise(0, 0,1, "Deadlift", arrayListOf(exampleDetail), ""))
+            localDao.insertExercise(Exercise(0, 0,2, "Overhead Press", arrayListOf(exampleDetail), ""))
+            localDao.insertExercise(Exercise(0, 0,2, "Inverted Rows", arrayListOf(exampleDetail), ""))
+
+            localDao.insertRoutine(Routine("Friday"))
+            localDao.insertExercise(Exercise(0, 0,1, "Bench Press", arrayListOf(exampleDetail), ""))
+            localDao.insertExercise(Exercise(0, 0,2, "Squats", arrayListOf(exampleDetail), ""))
+            localDao.insertExercise(Exercise(0, 0,2, "Dips", arrayListOf(exampleDetail), ""))
         }
     }
 }

@@ -2,7 +2,6 @@ package com.example.aptitudefitnesstracker.presentation.settings
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -70,7 +69,7 @@ class SettingsActivity : AppCompatActivity() {
             materialDialog.customView!!.findViewById(R.id.radio_group_themes)
         val rb = radioGroup.getChildAt(
             ThemeUtils.getSelectedThemePosition(this@SettingsActivity)
-            ) as RadioButton
+        ) as RadioButton
         rb.isChecked = true
         materialDialog.show()
     }
@@ -91,7 +90,6 @@ class SettingsActivity : AppCompatActivity() {
                 val selectedFontId = radioGroupFont.checkedRadioButtonId
                 val radioFontButton = view.findViewById<RadioButton>(selectedFontId)
                 val fontName = radioFontButton.text.toString()
-                Log.e("PLPLP", fontName)
                 ThemeUtils.saveFontSize(this@SettingsActivity, fontName)
                 recreate()
             }
@@ -100,7 +98,7 @@ class SettingsActivity : AppCompatActivity() {
             materialDialog.customView!!.findViewById(R.id.radio_group_font)
         val rbutton = radioGroupFont.getChildAt(
             ThemeUtils.getSelectedFontPosition(this@SettingsActivity)
-            ) as RadioButton
+        ) as RadioButton
         rbutton.isChecked = true
         materialDialog.show()
     }
@@ -121,7 +119,6 @@ class SettingsActivity : AppCompatActivity() {
                 val selectedFontId = radioGroupFont.checkedRadioButtonId
                 val radioFontButton = view.findViewById<RadioButton>(selectedFontId)
                 val fontFamilyName = radioFontButton.text.toString()
-                Log.e("PLPLP", fontFamilyName)
                 ThemeUtils.saveFontFamily(this@SettingsActivity, fontFamilyName)
                 recreate()
             }
@@ -147,21 +144,10 @@ class SettingsActivity : AppCompatActivity() {
                 .onPositive { dialog, _ ->
                     val emailInput = dialog.findViewById(R.id.email_input) as EditText
                     val email = emailInput.text.toString()
-
-                    session.sendPasswordResetEmail(email).addOnCompleteListener { task ->
-                        if (task.isSuccessful)
-                            displayPopup("Password reset email sent.")
-                        else
-                            displayPopup("Failed to send password reset email.")
-                    }
+                    session.sendPasswordResetEmail(email)
                 }.build()
 
         materialDialog.show()
-    }
-
-    //TODO I can't find a way to make the Toast appear
-    private fun displayPopup(text: String) {
-        Toast.makeText(this@SettingsActivity, text, Toast.LENGTH_LONG).show()
     }
 
     private fun signOut() {
@@ -170,11 +156,10 @@ class SettingsActivity : AppCompatActivity() {
                 this@SettingsActivity,
                 R.string.sign_out_confirmation
             ).onPositive { _, _ ->
-                if(session.userIsLoggedIn()){
+                if (session.userIsLoggedIn()) {
                     session.signOut()
                     finish()
-                }
-                else{
+                } else {
                     val notLoggedIn = AlertDialog.Builder(this)
                     notLoggedIn.setTitle("You are not logged in.")
 

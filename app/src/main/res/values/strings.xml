@@ -2,6 +2,14 @@
     <string name="app_name">Aptitude Fitness Tracker</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="settings">Settings</string>
+    <string name="action_save">Save</string>
+    <string name="name">Name</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="detail_name">Detail</string>
+    <string name="detail_value">Value</string>
+    <string name="delete_routine">Delete Routine</string>
+    <string name="share_routine">Share Routine</string>
 
     <!-- ACCOUNT STRING-->
     <string name="action_sign_in_short">Register</string>
@@ -28,9 +36,6 @@
     <string name="sign_out_confirmation">Sign Out of Aptitude?</string>
     <string name="lbl_forgot_password">Forgot password?</string>
     <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
-    <string name="action_save">Save</string>
-    <string name="name">Name</string>
-    <string name="setting">Setting</string>
     <!-- THEME STRING-->
     <string name="change_theme">Change Theme</string>
     <string name="theme_edit">Change default theme</string>
@@ -50,8 +55,4 @@
     <string name="calibri">Calibri</string>
     <string name="helvetica">Helvetica</string>
     <string name="comic">Comic</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
-    <string name="detail_name">Detail</string>
-    <string name="detail_value">Value</string>
 </resources>

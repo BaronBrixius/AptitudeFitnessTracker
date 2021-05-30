@@ -17,7 +17,7 @@ class RemoteFirebaseDatabase : IRemoteDao {
         val remoteRoutines: MutableLiveData<List<Routine>> = MutableLiveData()
         val mFirebaseDatabase = FirebaseDatabase.getInstance(databaseURL).getReference("routines")
         mFirebaseDatabase.addValueEventListener(object :
-            ValueEventListener {  //use addListenerForSingleValueEvent instead if realtime updates are not needed
+            ValueEventListener {    //use addListenerForSingleValueEvent instead if repeated updates are not needed
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     remoteRoutines.postValue(toRoutines(dataSnapshot))
@@ -25,7 +25,6 @@ class RemoteFirebaseDatabase : IRemoteDao {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                println("failed update")    //todo
             }
         })
 
@@ -61,7 +60,7 @@ class RemoteFirebaseDatabase : IRemoteDao {
         val remoteExercises: MutableLiveData<List<Exercise>> = MutableLiveData()
         val mFirebaseDatabase = FirebaseDatabase.getInstance(databaseURL).getReference("exercises")
         mFirebaseDatabase.addValueEventListener(object :
-            ValueEventListener {  //use addListenerForSingleValueEvent instead if realtime updates are not needed
+            ValueEventListener {    //use addListenerForSingleValueEvent instead if realtime updates are not needed
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     remoteExercises.postValue(toExercises(dataSnapshot))
@@ -69,7 +68,6 @@ class RemoteFirebaseDatabase : IRemoteDao {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                println("failed update")    //todo
             }
         })
         return remoteExercises
@@ -78,12 +76,6 @@ class RemoteFirebaseDatabase : IRemoteDao {
     private fun toExercises(dataSnapshot: DataSnapshot): List<Exercise> {
         val exerciseList: ArrayList<Exercise> = ArrayList()
         dataSnapshot.children.forEach { child ->
-//            val newExercise = Exercise()
-//            newExercise.name = child.child("name").value as String
-//            newExercise.notes = child.child("notes").value as String
-//            val hashMapDetails = child.child("details").value as HashMap<String, Double> //Firebase had a lot of trouble deserializing the LinkedHashMap, so just treating it as a HashMap and moving values over
-//            hashMapDetails.forEach { (key, value) -> newExercise.details[key] = value }
-//            exerciseList.add(newExercise)
             child.getValue(Exercise::class.java)?.let { exerciseList.add(it) }
         }
         return exerciseList

@@ -15,7 +15,6 @@ import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.data.Exercise
 import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Session
-import com.example.aptitudefitnesstracker.presentation.authentication.LoginActivity
 import com.example.aptitudefitnesstracker.presentation.routines.EditRoutineActivity
 import com.example.aptitudefitnesstracker.presentation.settings.SettingsActivity
 import com.example.aptitudefitnesstracker.presentation.settings.ThemeUtils
@@ -85,15 +84,13 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             newExerciseButton.visibility = View.GONE
         }
 
-        newExerciseFAB.setOnClickListener { view ->
+        newExerciseFAB.setOnClickListener {
             newExerciseFABClicked()
         }
 
         newExerciseButton.setOnClickListener {
             session.createExerciseInRoutine(Exercise("New Exercise"), session.activeRoutine!!)
             newExerciseFABClicked()
-//            intent = Intent(this, EditExerciseActivity::class.java)
-//            startActivity(intent)
         }
 
         editRoutineButton.setOnClickListener {
@@ -103,12 +100,12 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
                 downloadDialog.setTitle("Download Routine")
                 downloadDialog.setMessage("Are you sure you would like to download and add this routine to your local list?")
 
-                downloadDialog.setPositiveButton("Download") { dialog, which ->
-                    var routine = session.activeRoutine
+                downloadDialog.setPositiveButton("Download") { _, _ ->
+                    val routine = session.activeRoutine
                     session.saveRemoteRoutineLocally(routine!!)
 
                 }
-                downloadDialog.setNegativeButton(android.R.string.no) { dialog, which ->
+                downloadDialog.setNegativeButton("No") { _, _ ->
                 }
                 downloadDialog.show()
             }else{
@@ -119,7 +116,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         }
         setupRecyclerView()
     }
-
 
     private fun setupRecyclerView() {
         val recyclerView: RecyclerView = findViewById(R.id.item_parent_list_exercise)
@@ -133,7 +129,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             finishAffinity()
         }
 
-        val exerciseList: LiveData<List<Exercise>>? = session.getProperExercises()
+        val exerciseList: LiveData<List<Exercise>>? = session.getExercises()
         exerciseList!!.observe(this, { exercises ->
             exercises?.let { adapter.setList(it) }
         })
@@ -194,10 +190,8 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
 
     private fun setClickable(clicked: Boolean) {
-
         newExerciseButton.isClickable = clicked
         editRoutineButton.isClickable = clicked
-
     }
 
     override fun notify(mode: Boolean) {

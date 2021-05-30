@@ -114,7 +114,7 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
             viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_connect_without_contact_24)
         }
 
-        val routineList: LiveData<List<Routine>> = session.getProperRoutines()
+        val routineList: LiveData<List<Routine>> = session.getRoutines()
         routineList.observe(this, { routines ->
             routines?.let { adapter.setList(it) }
         })

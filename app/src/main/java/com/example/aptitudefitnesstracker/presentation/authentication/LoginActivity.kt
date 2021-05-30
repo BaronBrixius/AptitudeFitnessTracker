@@ -23,14 +23,11 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ThemeUtils.setThemeApp(this) // for set theme
-        ThemeUtils.setAppFont(this) // for set font size
-        ThemeUtils.setAppFontFamily(this) // for set font family
-
-        // set the view now
+        ThemeUtils.setThemeApp(this)
+        ThemeUtils.setAppFont(this)
+        ThemeUtils.setAppFontFamily(this)
         setContentView(R.layout.activity_login)
-//        val toolbar: Toolbar = findViewById<View>(R.id.toolbar) as Toolbar
-//        setSupportActionBar(toolbar)
+
         inputEmail = findViewById<View>(R.id.email) as EditText
         inputPassword = findViewById<View>(R.id.password) as EditText
         progressBar = findViewById<View>(R.id.progressBar) as ProgressBar
@@ -46,12 +43,10 @@ class LoginActivity : AppCompatActivity() {
 
         btnReset!!.setOnClickListener { resetPassword() }
 
-        btnLogin!!.setOnClickListener {
-            loginButonPressed()
-        }
+        btnLogin!!.setOnClickListener { loginButtonPressed() }
     }
 
-    private fun loginButonPressed() {
+    private fun loginButtonPressed() {
         val email = inputEmail!!.text.toString()
         val password = inputPassword!!.text.toString()
 
@@ -64,20 +59,19 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun incorrectEmailPopUp() {
+    private fun incorrectEmailPopUp() {
         Toast.makeText(applicationContext, "Enter email address!", Toast.LENGTH_SHORT).show()
     }
 
-    fun incorrectPasswordPopUp() {
+    private fun incorrectPasswordPopUp() {
         Toast.makeText(applicationContext, "Enter password!", Toast.LENGTH_SHORT).show()
-
     }
 
-    fun displayLoadingCircle() {
+    private fun displayLoadingCircle() {
         progressBar!!.visibility = View.VISIBLE
     }
 
-    fun checkLoginInputs(email: String, password: String): Boolean {
+    private fun checkLoginInputs(email: String, password: String): Boolean {
         if (TextUtils.isEmpty(email)) {
             incorrectEmailPopUp()
             return false

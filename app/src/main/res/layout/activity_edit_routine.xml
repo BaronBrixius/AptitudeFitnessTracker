@@ -73,16 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Share Routine"
-
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btn_download"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Download Routine"
+                android:text="@string/share_routine"
                 android:textStyle="bold" />
 
             <Button
@@ -91,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="#DA0606"
-                android:text="delete routine"
+                android:text="@string/delete_routine"
                 android:textStyle="bold" />
 
         </LinearLayout>

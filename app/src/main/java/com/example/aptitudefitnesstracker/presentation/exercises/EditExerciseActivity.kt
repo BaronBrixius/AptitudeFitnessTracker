@@ -2,16 +2,17 @@ package com.example.aptitudefitnesstracker.presentation.exercises
 
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.application.data.Exercise
 import com.example.aptitudefitnesstracker.application.Session
+import com.example.aptitudefitnesstracker.application.data.Exercise
 import com.example.aptitudefitnesstracker.presentation.settings.ThemeUtils
-import java.util.*
 
 class EditExerciseActivity : AppCompatActivity() {
     private var inputDetailsLayout: RecyclerView? = null
@@ -23,7 +24,7 @@ class EditExerciseActivity : AppCompatActivity() {
     private var btnDelete: Button? = null
     private var btnAddDetail: Button? = null
 
-    private lateinit var adapter : ExerciseDetailsRecyclerViewAdapter
+    private lateinit var adapter: ExerciseDetailsRecyclerViewAdapter
 
     val session: Session by lazy { application as Session }
     private lateinit var exercise: Exercise
@@ -50,7 +51,7 @@ class EditExerciseActivity : AppCompatActivity() {
         inputNotes!!.setText(exercise.notes)
 
         // Save / update the exercise
-        btnSave!!.text = "Save"
+        btnSave!!.text = getString(R.string.action_save)
         btnSave!!.setOnClickListener {
             val name = inputName!!.text.toString()
             val notes = inputNotes!!.text.toString()
@@ -100,7 +101,7 @@ class EditExerciseActivity : AppCompatActivity() {
             deleteDialog.show()
         }
 
-        btnAddDetail!!.setOnClickListener{
+        btnAddDetail!!.setOnClickListener {
             exercise.details.add(Exercise.Detail())
             session.updateExercise(exercise)
             setupRecyclerView()
@@ -116,7 +117,7 @@ class EditExerciseActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter.setList(exercise.details)
 
-        if(session.firebaseMode){
+        if (session.firebaseMode) {
             btnAddDetail!!.visibility = View.GONE
             btnDelete!!.visibility = View.GONE
             btnSave!!.visibility = View.GONE

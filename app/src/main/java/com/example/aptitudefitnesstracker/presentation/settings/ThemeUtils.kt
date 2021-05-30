@@ -2,7 +2,6 @@ package com.example.aptitudefitnesstracker.presentation.settings
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import android.util.Log
 import com.example.aptitudefitnesstracker.R
 
 object ThemeUtils {
@@ -51,7 +50,6 @@ object ThemeUtils {
      * @param themeName - name of theme to save
      */
     fun saveTheme(context: Context?, themeName: String) {
-        Log.e("SAVE_THEME", themeName)
         val mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = mSharedPreferences.edit()
         editor.putString(Constants.DEFAULT_THEME_TEXT, themeName)
@@ -107,7 +105,6 @@ object ThemeUtils {
      * @param fontName - name of font to save
      */
     fun saveFontSize(context: Context?, fontName: String) {
-        Log.e("SAVE_FONT", fontName)
         val mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = mSharedPreferences.edit()
         editor.putString(Constants.DEFAULT_APP_FONT, fontName)
@@ -161,7 +158,6 @@ object ThemeUtils {
      * @param fontFamily - name of font to save
      */
     fun saveFontFamily(context: Context?, fontFamily: String) {
-        Log.e("SAVE_FONT", fontFamily)
         val mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = mSharedPreferences.edit()
         editor.putString(Constants.DEFAULT_APP_FONT_FAMILY, fontFamily)
