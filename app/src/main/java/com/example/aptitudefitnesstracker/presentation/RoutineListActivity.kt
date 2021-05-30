@@ -1,8 +1,6 @@
 package com.example.aptitudefitnesstracker.presentation
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
 import android.view.*
 import android.view.animation.Animation
@@ -11,10 +9,8 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Routine
@@ -32,7 +28,6 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private lateinit var newRoutineFAB: FloatingActionButton
     private lateinit var newRoutineButton: FloatingActionButton
     private lateinit var viewOnlineRoutinesButton: FloatingActionButton
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +85,6 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-
         if (session.firebaseMode) {
             toolbar.title = "Viewing Online Routines"
             viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
@@ -102,15 +96,53 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         val routineList: LiveData<List<Routine>> = session.getProperRoutines()
         routineList.observe(this, { routines ->
-            routines?.let { adapter.submitList(it) }
+            routines?.let { adapter.setList(it) }
         })
+
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallbackThing)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
-    class RoutineRecyclerViewAdapter(
-        private val parentActivity: RoutineListActivity
-    ) :
-        ListAdapter<Routine, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
+    private val itemTouchHelperCallbackThing = object :
+        ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
 
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            val fromPosition = viewHolder.bindingAdapterPosition
+            val toPosition = target.bindingAdapterPosition
+//            val routineList = (recyclerView.adapter as RoutineRecyclerViewAdapter).routineList!!
+//
+//            routineList[fromPosition].position = toPosition
+//            if (fromPosition < toPosition) {
+//                for (i in fromPosition until toPosition) {
+//                    routineList[i + 1].position = i
+//                }
+//            } else {
+//                for (i in fromPosition downTo toPosition + 1) {
+//                    routineList[i - 1].position = i
+//                }
+//            }
+
+            recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
+            return true
+        }
+
+        override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+            super.clearView(recyclerView, viewHolder)
+            (recyclerView.adapter as RoutineRecyclerViewAdapter).saveList()
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
+            //required override, not used
+        }
+    }
+
+    class RoutineRecyclerViewAdapter(private val parentActivity: RoutineListActivity) :
+        ListAdapter<Routine, RoutineRecyclerViewAdapter.RoutineViewHolder>(RoutineComparator()) {
+        var routineList: List<Routine>? = null
 
         private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
             val item = v.tag as Routine
@@ -126,15 +158,10 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
             return RoutineViewHolder(view)
         }
 
-        var int = 1
         override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
             val routine = getItem(position)
-            //holder.bind("id: " + item.id + " name: " + item.name)
-                //fixme placeholder stuff for database testing
             holder.contentView.text = routine.name
-            holder.routineID.text = int.toString()
-            int++
-
+            holder.circle.text = routine.name.first().toString()
 
             with(holder.itemView) {
                 tag = routine
@@ -142,19 +169,18 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
             }
         }
 
+        fun setList(it: List<Routine>) {
+            submitList(it)
+            this.routineList = it.toList()
+        }
+
+        fun saveList() {
+            parentActivity.session.updateRoutines(routineList!!)
+        }
+
         inner class RoutineViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-//            val idView: TextView = view.findViewById(R.id.id_text)
             val contentView: TextView = view.findViewById(R.id.content)
-            val routineID: TextView = view.findViewById(R.id.routine_id)
-            var circle: View? = view.findViewById(R.id.circle)
-
-        //no clue what this is, feel free to use it
-
-
-            /*fun bind(text: String?) {
-                idView.text = text
-            }*/
-
+            var circle: TextView = view.findViewById(R.id.routine_first_letter)
         }
 
         class RoutineComparator : DiffUtil.ItemCallback<Routine>() {

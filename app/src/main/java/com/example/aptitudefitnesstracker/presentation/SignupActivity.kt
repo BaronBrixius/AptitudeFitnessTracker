@@ -51,7 +51,6 @@ class SignupActivity : AppCompatActivity() {
             session.createUser(email, password) { task ->
                 progressBar!!.visibility = View.GONE
                 if (task.isSuccessful) {
-                    startActivity(Intent(this@SignupActivity, RoutineListActivity::class.java))
                     finish()
                 } else {
                     displayPopup("Authentication failed.")

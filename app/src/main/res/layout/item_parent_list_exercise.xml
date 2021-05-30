@@ -7,10 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-
-
     app:layoutManager="LinearLayoutManager"
     tools:context=".presentation.ExerciseListActivity"
-    tools:listitem="@layout/item_list_exercise"
-    android:divider="#f00"
-    android:dividerHeight="10dp"/>
+    tools:listitem="@layout/item_list_exercise"/>
