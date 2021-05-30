@@ -21,10 +21,6 @@ To run this app:
 
 If difficulties are encountered, the official documentation to run an Android app can be found [at this link][runAppsDocumentation].
 
-## Execute
-
-
-
 ## Group 7
 
 Max Anderson ma225bj

@@ -59,55 +59,37 @@ abstract class LocalRoomDatabase : RoomDatabase() {
             exampleDetail.value = 5.0
 
             localDao.insertRoutine(Routine("Monday"))
-            localDao.insertExercise(Exercise(0, 0, 1, "Squats", arrayListOf(exampleDetail), ""))
-            localDao.insertExercise(
-                Exercise(
-                    0,
-                    0,
-                    2,
-                    "Bench Press",
-                    arrayListOf(exampleDetail),
-                    ""
-                )
-            )
-            localDao.insertExercise(Exercise(0, 0, 2, "Pull-ups", arrayListOf(exampleDetail), ""))
+            exampleDetail.key = "Kilos"
+            exampleDetail.value = 70.0
+            localDao.insertExercise(Exercise(0, 1, 1, "Squats", arrayListOf(exampleDetail), ""))
+            exampleDetail.key = "Kilos"
+            exampleDetail.value = 60.0
+            localDao.insertExercise(Exercise(0, 1, 2, "Bench Press", arrayListOf(exampleDetail), ""))
+            exampleDetail.key = "Reps"
+            exampleDetail.value = 5.0
+            localDao.insertExercise(Exercise(0, 1, 2, "Pull-ups", arrayListOf(exampleDetail), ""))
 
             localDao.insertRoutine(Routine("Wednesday"))
-            localDao.insertExercise(Exercise(0, 0, 1, "Deadlift", arrayListOf(exampleDetail), ""))
-            localDao.insertExercise(
-                Exercise(
-                    0,
-                    0,
-                    2,
-                    "Overhead Press",
-                    arrayListOf(exampleDetail),
-                    ""
-                )
-            )
-            localDao.insertExercise(
-                Exercise(
-                    0,
-                    0,
-                    2,
-                    "Inverted Rows",
-                    arrayListOf(exampleDetail),
-                    ""
-                )
-            )
+            exampleDetail.key = "Kilos"
+            exampleDetail.value = 60.0
+            localDao.insertExercise(Exercise(0, 2, 1, "Deadlift", arrayListOf(exampleDetail), ""))
+            exampleDetail.key = "Kilos"
+            exampleDetail.value = 20.0
+            localDao.insertExercise(Exercise(0, 2, 2, "Overhead Press", arrayListOf(exampleDetail), ""))
+            exampleDetail.key = "Kilos"
+            exampleDetail.value = 40.0
+            localDao.insertExercise(Exercise(0, 2, 2, "Inverted Rows", arrayListOf(exampleDetail), ""))
 
             localDao.insertRoutine(Routine("Friday"))
-            localDao.insertExercise(
-                Exercise(
-                    0,
-                    0,
-                    1,
-                    "Bench Press",
-                    arrayListOf(exampleDetail),
-                    ""
-                )
-            )
-            localDao.insertExercise(Exercise(0, 0, 2, "Squats", arrayListOf(exampleDetail), ""))
-            localDao.insertExercise(Exercise(0, 0, 2, "Dips", arrayListOf(exampleDetail), ""))
+            exampleDetail.key = "Kilos"
+            exampleDetail.value = 60.0
+            localDao.insertExercise(Exercise(0, 3, 1, "Bench Press", arrayListOf(exampleDetail), ""))
+            exampleDetail.key = "Kilos"
+            exampleDetail.value = 70.0
+            localDao.insertExercise(Exercise(0, 3, 2, "Squats", arrayListOf(exampleDetail), ""))
+            exampleDetail.key = "Reps"
+            exampleDetail.value = 5.0
+            localDao.insertExercise(Exercise(0, 3, 2, "Dips", arrayListOf(exampleDetail), ""))
         }
     }
 }

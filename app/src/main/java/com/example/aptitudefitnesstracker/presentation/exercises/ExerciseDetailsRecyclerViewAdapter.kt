@@ -43,7 +43,9 @@ class ExerciseDetailsRecyclerViewAdapter(private val parentActivity: EditExercis
         holder.value.setText(detail.value.toString())
 
         holder.name.doAfterTextChanged { text -> detail.key = text.toString() }
-        holder.value.doAfterTextChanged { text -> detail.value = text.toString().toDouble() }
+        holder.value.doAfterTextChanged { text ->
+            val str: String = text.toString()
+            detail.value = if (str.isEmpty()) 0.0 else str.toDouble() }
 
         if (parentActivity.session.firebaseMode) {
             holder.btnDeleteDetail.visibility = View.GONE
