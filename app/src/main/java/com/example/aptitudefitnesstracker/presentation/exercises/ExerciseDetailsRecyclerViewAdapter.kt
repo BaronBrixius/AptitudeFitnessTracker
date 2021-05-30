@@ -45,11 +45,11 @@ class ExerciseDetailsRecyclerViewAdapter(private val parentActivity: EditExercis
         holder.name.doAfterTextChanged { text -> detail.key = text.toString() }
         holder.value.doAfterTextChanged { text -> detail.value = text.toString().toDouble() }
 
-        if(parentActivity.session.firebaseMode){
+        if (parentActivity.session.firebaseMode) {
             holder.btnDeleteDetail.visibility = View.GONE
         }
 
-        holder.btnDeleteDetail.setOnClickListener{
+        holder.btnDeleteDetail.setOnClickListener {
             val saveDialog = AlertDialog.Builder(parentActivity)
             saveDialog.setTitle("Delete Detail?")
 //                btnDeleteDetail!!.startAnimation(scaleUp)
@@ -62,6 +62,7 @@ class ExerciseDetailsRecyclerViewAdapter(private val parentActivity: EditExercis
                 detailList!!.remove(detail)
                 setList(detailList!!)
                 notifyDataSetChanged()
+            }
             deleteDetailDialog.setPositiveButton("DELETE") { dialog, which ->
                 Toast.makeText(parentActivity, "DELETE", Toast.LENGTH_SHORT).show()
             }
@@ -108,15 +109,16 @@ class ExerciseDetailsRecyclerViewAdapter(private val parentActivity: EditExercis
         ): Boolean {
             val fromPosition = viewHolder.bindingAdapterPosition
             val toPosition = target.bindingAdapterPosition
-            val detailList = (recyclerView.adapter as ExerciseDetailsRecyclerViewAdapter).detailList!!
+            val detailList =
+                (recyclerView.adapter as ExerciseDetailsRecyclerViewAdapter).detailList!!
 
             if (fromPosition < toPosition) {
                 for (i in fromPosition until toPosition) {
-                    Collections.swap(detailList, i, i+1)
+                    Collections.swap(detailList, i, i + 1)
                 }
             } else {
                 for (i in fromPosition downTo toPosition + 1) {
-                    Collections.swap(detailList, i, i-1)
+                    Collections.swap(detailList, i, i - 1)
                 }
             }
 
