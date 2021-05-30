@@ -6,6 +6,7 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
@@ -30,10 +31,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
     private lateinit var newExerciseFAB: FloatingActionButton
     private lateinit var newExerciseButton: FloatingActionButton
-    private lateinit var newExerciseFromRoutineButton: FloatingActionButton
-    private lateinit var viewOnlineExercisesButton: FloatingActionButton
     private lateinit var editRoutineButton: FloatingActionButton
-
 
 
     /**
@@ -66,6 +64,8 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
     private var clicked = false
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtils.setThemeApp(this) // for set theme
@@ -76,12 +76,14 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         setSupportActionBar(toolbar)
         toolbar.title = "Exercises in " + session.activeRoutine!!.name
 
-
         newExerciseFAB = findViewById(R.id.newExerciseFAB)
         newExerciseButton = findViewById(R.id.newExerciseButton)
-//        newExerciseFromRoutineButton = findViewById(R.id.newExerciseFromRoutineButton)
-//        viewOnlineExercisesButton = findViewById(R.id.viewOnlineExercisesButton)
         editRoutineButton = findViewById(R.id.editRoutineButton)
+
+        if(session.firebaseMode){
+            editRoutineButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
+            newExerciseButton.visibility = View.GONE
+        }
 
         newExerciseFAB.setOnClickListener { view ->
             newExerciseFABClicked()
@@ -95,16 +97,28 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         }
 
         editRoutineButton.setOnClickListener {
-            intent = Intent(this, EditRoutineActivity::class.java)
-//            var deleteButton:Button = findViewById(R.id.btn_delete)
-//            deleteButton.visibility = View.VISIBLE
-//            deleteButton.isClickable = true
-//            deleteButton.focusable = View.FOCUSABLE
-            startActivity(intent)
+
+            if(session.firebaseMode){
+                val downloadDialog = AlertDialog.Builder(this)
+                downloadDialog.setTitle("Download Routine")
+                downloadDialog.setMessage("Are you sure you would like to download and add this routine to your local list?")
+
+                downloadDialog.setPositiveButton("Download") { dialog, which ->
+                    var routine = session.activeRoutine
+                    session.saveRemoteRoutineLocally(routine!!)
+
+                }
+                downloadDialog.setNegativeButton(android.R.string.no) { dialog, which ->
+                }
+                downloadDialog.show()
+            }else{
+                intent = Intent(this, EditRoutineActivity::class.java)
+                startActivity(intent)
+            }
+
         }
         setupRecyclerView()
     }
-
 
 
     private fun setupRecyclerView() {
@@ -114,10 +128,10 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-            if (session.activeRoutine == null) {
-                finish()
-                finishAffinity()
-            }
+        if (session.activeRoutine == null) {
+            finish()
+            finishAffinity()
+        }
 
         val exerciseList: LiveData<List<Exercise>>? = session.getProperExercises()
         exerciseList!!.observe(this, { exercises ->
@@ -167,25 +181,23 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         if (!clicked) {
 
             newExerciseFAB.startAnimation(rotateOpen)
-            if (!session.firebaseMode) {
-                newExerciseButton.startAnimation(fromBott)
-                editRoutineButton.startAnimation(fromBott)
-            }
+            newExerciseButton.startAnimation(fromBott)
+            editRoutineButton.startAnimation(fromBott)
         } else {
 
             newExerciseFAB.startAnimation(rotateClose)
-            if (!session.firebaseMode) {
-                newExerciseButton.startAnimation(toBott)
-                editRoutineButton.startAnimation(toBott)
-            }
+
+            newExerciseButton.startAnimation(toBott)
+            editRoutineButton.startAnimation(toBott)
+
         }
     }
 
     private fun setClickable(clicked: Boolean) {
-        if (!session.firebaseMode) {
-            newExerciseButton.isClickable = clicked
-            editRoutineButton.isClickable = clicked
-        }
+
+        newExerciseButton.isClickable = clicked
+        editRoutineButton.isClickable = clicked
+
     }
 
     override fun notify(mode: Boolean) {

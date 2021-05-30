@@ -46,6 +46,8 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         newRoutineButton = findViewById(R.id.newRoutineButton)
         viewOnlineRoutinesButton = findViewById(R.id.viewOnlineRoutinesButton)
 
+
+
         //Add new
         findViewById<FloatingActionButton>(R.id.newRoutineFAB).setOnClickListener { view ->
             newRoutineFABClicked()
@@ -64,11 +66,7 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         setupRecyclerView()
 
-        if (session.userIsLoggedIn()) {
-            println("USER LOGGED IN")
-        } else {
-            println("NOT LOGGED IN!")
-        }
+
     }
 
     override fun onResume() {
@@ -77,9 +75,10 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
 
     private fun viewOnlineRoutinesButtonClicked() {
-        if (session.userIsLoggedIn())
+        if (session.userIsLoggedIn()) {
             session.toggleAndGetFirebaseMode()
-        else {
+            newRoutineButton.visibility = View.GONE
+        } else {
 
             val loginRequiredDialog: AlertDialog.Builder = AlertDialog.Builder(this)
             loginRequiredDialog.setTitle("Online Routines")
@@ -106,9 +105,11 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         if (session.firebaseMode) {
             toolbar.title = "Viewing Online Routines"
             viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
+            newRoutineButton.visibility = View.GONE
+
         } else {
             toolbar.title = "Personal Routines"
-            viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
+            viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_connect_without_contact_24)
         }
 
         val routineList: LiveData<List<Routine>> = session.getProperRoutines()
@@ -148,29 +149,38 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
             newRoutineButton.visibility = View.INVISIBLE
             viewOnlineRoutinesButton.visibility = View.INVISIBLE
         }
+
+        if(session.firebaseMode){
+        newRoutineButton.visibility = View.GONE
+        }
+
     }
 
     private fun setAnimation(clicked: Boolean) {
         if (!clicked) {
             newRoutineFAB.startAnimation(rotateOpen)
-            if (!session.firebaseMode) {
+
                 newRoutineButton.startAnimation(fromBott)
                 viewOnlineRoutinesButton.startAnimation(fromBott)
-            }
 
         } else {
             newRoutineFAB.startAnimation(rotateClose)
-            if (!session.firebaseMode) {
+
                 newRoutineButton.startAnimation(toBott)
                 viewOnlineRoutinesButton.startAnimation(toBott)
-            }
+
+        }
+        if(session.firebaseMode){
+            newRoutineButton.visibility = View.GONE
         }
     }
 
     private fun setClickable(clicked: Boolean) {
         viewOnlineRoutinesButton.isClickable = clicked
-        if (!session.firebaseMode)
-            newRoutineButton.isClickable = clicked
+        newRoutineButton.isClickable = clicked
+        if(session.firebaseMode){
+            newRoutineButton.visibility = View.GONE
+        }
     }
 
     private val rotateOpen: Animation by lazy {

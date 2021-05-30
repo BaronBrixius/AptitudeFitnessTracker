@@ -175,10 +175,7 @@ class Session : Application() {
     }
 
     fun getProperExercises(): LiveData<List<Exercise>>? {
-        return if (firebaseMode)
-            downloadRemoteExercises()
-        else
-            activeRoutine?.exercises
+        return activeRoutine?.exercises
     }
 
     fun sendPasswordResetEmail(email: String): Task<Void> {

@@ -45,19 +45,21 @@ class ExerciseRecyclerViewAdapter(private val parentActivity: ExerciseListActivi
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
         val exercise = getItem(position)
         holder.exerciseName.text = exercise.name
+        holder.circle.text = exercise.name.first().toString()
 
         val details: ArrayList<Exercise.Detail> = exercise.details
 
         if (details.isNotEmpty()) {
-            holder.circle.text = exercise.name.first().toString()
             holder.exerciseDetail.text = details.elementAt(0).key
             holder.exerciseDetailValue.text =
                 details.elementAt(0).value.toString()
         }
 
-        with(holder.itemView) {
-            tag = exercise
-            setOnClickListener(onClickListener)
+        if (!parentActivity.session.firebaseMode) {
+            with(holder.itemView) {
+                tag = exercise
+                setOnClickListener(onClickListener)
+            }
         }
 
     }
