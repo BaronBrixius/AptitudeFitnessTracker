@@ -23,9 +23,9 @@ If difficulties are encountered, the official documentation to run an Android ap
 
 ## Group 7
 
-Max Anderson ma225bj
-Ben Anderson ba222kc
-Malek Darwish md222xq
+* Max Anderson ma225bj
+* Ben Anderson ba222kc
+* Malek Darwish md222xq
 
 [runAppsDocumentation]: https://developer.android.com/studio/run/emulator
 [androidStudio]: https://developer.android.com/studio/
