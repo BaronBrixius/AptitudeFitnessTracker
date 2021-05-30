@@ -49,30 +49,12 @@ class SignupActivity : AppCompatActivity() {
             val email = inputEmail!!.text.toString()
             val password = inputPassword!!.text.toString()
             auth.createUserWithEmailAndPassword(email, password)
+            finish()
 
         }
     }
 
-//    private fun signUp() {
-//        val email = inputEmail!!.text.toString()
-//        val password = inputPassword!!.text.toString()
-//
-//
-////        if (checkInputs(email, password)) {
-//
-//
-////            progressBar!!.visibility = View.VISIBLE
-////
-////            session.createUser(email, password) { task ->
-////                progressBar!!.visibility = View.GONE
-////                if (task.isSuccessful) {
-////                    finish()
-////                } else {
-////                    displayPopup("Authentication failed.")
-////                }
-////            }
-////        }
-//    }
+
 
     private fun checkInputs(email: String, password: String): Boolean {
         if (TextUtils.isEmpty(email)) {
