@@ -5,7 +5,16 @@
     android:background="@drawable/customborder"
     android:orientation="horizontal"
     android:layout_margin="5dp">
-
+    <TextView
+        android:id="@+id/exercise_first_letter"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/circle_exercise"
+        android:gravity="center"
+        android:shadowColor="@android:color/white"
+        android:shadowRadius="10.0"
+        android:textColor="@android:color/black" />
     <TextView
         android:id="@+id/exercise_name"
         android:layout_width="200dp"

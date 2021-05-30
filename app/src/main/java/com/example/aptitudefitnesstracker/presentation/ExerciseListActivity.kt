@@ -29,6 +29,8 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private lateinit var newExerciseButton: FloatingActionButton
     private lateinit var newExerciseFromRoutineButton: FloatingActionButton
     private lateinit var viewOnlineExercisesButton: FloatingActionButton
+    private lateinit var editRoutineButton: FloatingActionButton
+
 
 
     /**
@@ -69,13 +71,14 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         setContentView(R.layout.activity_exercise_list)
         val toolbar = findViewById<Toolbar>(R.id.exercise_toolbar)
         setSupportActionBar(toolbar)
-//        toolbar.title = "Exercises in " + session.activeRoutine!!.name
+        toolbar.title = "Exercises in " + session.activeRoutine!!.name
 
 
         newExerciseFAB = findViewById(R.id.newExerciseFAB)
         newExerciseButton = findViewById(R.id.newExerciseButton)
         newExerciseFromRoutineButton = findViewById(R.id.newExerciseFromRoutineButton)
         viewOnlineExercisesButton = findViewById(R.id.viewOnlineExercisesButton)
+        editRoutineButton = findViewById(R.id.editRoutineButton)
 
         newExerciseFAB.setOnClickListener { view ->
             newExerciseFABClicked()
@@ -101,7 +104,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         }
 
-        toolbar.setOnClickListener {
+        editRoutineButton.setOnClickListener {
             intent = Intent(this, EditRoutineActivity::class.java)
 //            var deleteButton:Button = findViewById(R.id.btn_delete)
 //            deleteButton.visibility = View.VISIBLE
@@ -212,7 +215,10 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
             val exercise = getItem(position)
+            holder.circle.text = exercise.name.first().toString()
+
             holder.exerciseName.text = exercise.name
+
 
             val details: LinkedHashMap<String, Double> = exercise.details
 
@@ -242,6 +248,8 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             val exerciseName: TextView = view.findViewById(R.id.exercise_name)
             val exerciseDetail: TextView = view.findViewById(R.id.exercise_detail)
             val exerciseDetailValue: TextView = view.findViewById(R.id.exercise_detailValue)
+            var circle: TextView = view.findViewById(R.id.exercise_first_letter)
+
 
             //no clue what this is, feel free to use it
             /*fun bind(text: String?) {
@@ -290,9 +298,11 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         if (!clicked) {
             newExerciseFromRoutineButton.visibility = View.VISIBLE
 
+
             if (!session.firebaseMode) {
                 viewOnlineExercisesButton.visibility = View.VISIBLE
                 newExerciseButton.visibility = View.VISIBLE
+                editRoutineButton.visibility = View.VISIBLE
             }
         } else {
             newExerciseFromRoutineButton.visibility = View.INVISIBLE
@@ -300,6 +310,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             if (!session.firebaseMode) {
                 viewOnlineExercisesButton.visibility = View.INVISIBLE
                 newExerciseButton.visibility = View.INVISIBLE
+                editRoutineButton.visibility = View.INVISIBLE
             }
         }
     }
@@ -311,6 +322,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             if (!session.firebaseMode) {
                 newExerciseButton.startAnimation(fromBott)
                 viewOnlineExercisesButton.startAnimation(fromBott)
+                editRoutineButton.startAnimation(fromBott)
             }
         } else {
             newExerciseFromRoutineButton.startAnimation(toBott)
@@ -318,6 +330,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
             if (!session.firebaseMode) {
                 viewOnlineExercisesButton.startAnimation(toBott)
                 newExerciseButton.startAnimation(toBott)
+                editRoutineButton.startAnimation(toBott)
             }
         }
     }
@@ -328,6 +341,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         if (!session.firebaseMode) {
             newExerciseButton.isClickable = clicked
             viewOnlineExercisesButton.isClickable = clicked
+            editRoutineButton.isClickable = clicked
         }
     }
 
