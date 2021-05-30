@@ -20,7 +20,7 @@ import java.util.*
 
 class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private val session: Session by lazy {
-       val session = application as Session
+        val session = application as Session
         session.addObserver(this)
         session
     }
@@ -47,21 +47,20 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
             newRoutineFABClicked()
         }
 
-        newRoutineButton.setOnClickListener{
-            val intent = Intent(this, AddRoutineActivity::class.java )
+        newRoutineButton.setOnClickListener {
+            val intent = Intent(this, AddRoutineActivity::class.java)
             startActivity(intent)
         }
 
-        viewOnlineRoutinesButton.setOnClickListener{
+        viewOnlineRoutinesButton.setOnClickListener {
             viewOnlineRoutinesButtonClicked()
         }
 
         setupRecyclerView()
 
-        if (session.userIsLoggedIn()){
+        if (session.userIsLoggedIn()) {
             println("USER LOGGED IN")
-        }
-        else{
+        } else {
             println("NOT LOGGED IN!")
         }
     }
@@ -81,6 +80,7 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private fun setupRecyclerView() {
         val recyclerView: RecyclerView = findViewById(R.id.item_parent_list_routine)
         val adapter = RoutineRecyclerViewAdapter(this)
+        adapter.setHasStableIds(true)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -88,8 +88,7 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         if (session.firebaseMode) {
             toolbar.title = "Viewing Online Routines"
             viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_system_update_24)
-        }
-        else {
+        } else {
             toolbar.title = "Personal Routines"
             viewOnlineRoutinesButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
         }
@@ -113,18 +112,18 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         ): Boolean {
             val fromPosition = viewHolder.bindingAdapterPosition
             val toPosition = target.bindingAdapterPosition
-//            val routineList = (recyclerView.adapter as RoutineRecyclerViewAdapter).routineList!!
-//
-//            routineList[fromPosition].position = toPosition
-//            if (fromPosition < toPosition) {
-//                for (i in fromPosition until toPosition) {
-//                    routineList[i + 1].position = i
-//                }
-//            } else {
-//                for (i in fromPosition downTo toPosition + 1) {
-//                    routineList[i - 1].position = i
-//                }
-//            }
+            val routineList = (recyclerView.adapter as RoutineRecyclerViewAdapter).routineList!!
+
+            routineList[fromPosition].position = toPosition
+            if (fromPosition < toPosition) {
+                for (i in fromPosition until toPosition) {
+                    routineList[i + 1].position = i
+                }
+            } else {
+                for (i in fromPosition downTo toPosition + 1) {
+                    routineList[i - 1].position = i
+                }
+            }
 
             recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
             return true
@@ -150,6 +149,10 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
             parentActivity.session.activeRoutine = item
             val intent = Intent(v.context, ExerciseListActivity::class.java)
             v.context.startActivity(intent)
+        }
+
+        override fun getItemId(position: Int): Long {
+            return getItem(position).id.toLong()
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineViewHolder {
