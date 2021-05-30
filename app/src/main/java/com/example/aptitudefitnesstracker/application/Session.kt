@@ -66,21 +66,17 @@ class Session : Application() {
         localDao.updateExercises(exercises)
     }
 
-    fun createExerciseInRoutine(exercise: Exercise, routine: Routine) {
+    fun createExerciseInRoutine(exercise: Exercise, routine: Routine) = applicationScope.launch {
         exercise.routineId = routine.id
         exercise.position = routine.exercises.value!!.size
 
-        val insertId = insertExercise(exercise)
-        activeRoutine?.exercises?.value?.forEach { e ->
-            if (insertId.toInt() == e.id) {
-                activeExercise = e
-                return
-            }
-        }
-    }
-
-    fun insertExercise(exercise: Exercise) : Long {
-        return localDao.insertExercise(exercise)
+        val insertId = localDao.insertExercise(exercise)
+//        activeRoutine?.exercises?.value?.forEach { e ->
+//            if (insertId.toInt() == e.id) {
+//                activeExercise = e
+//                return@forEach
+//            }
+//        }
     }
 
     fun insertRoutine(routine: Routine) = applicationScope.launch {

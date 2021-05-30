@@ -84,8 +84,8 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         newExerciseButton.setOnClickListener {
             session.createExerciseInRoutine(Exercise("New Exercise"), session.activeRoutine!!)
             newExerciseFABClicked()
-            intent = Intent(this, EditExerciseActivity::class.java)
-            startActivity(intent)
+//            intent = Intent(this, EditExerciseActivity::class.java)
+//            startActivity(intent)
         }
 
         newExerciseFromRoutineButton.setOnClickListener {
@@ -112,7 +112,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         setupRecyclerView()
     }
 
-    val itemTouchHelperCallback = object :
+    private val itemTouchHelperCallback = object :
         ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
 //            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -165,11 +165,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         adapter.setHasStableIds(true)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val mDividerItemDecoration = DividerItemDecoration(
-            recyclerView.context,
-            (recyclerView.layoutManager as LinearLayoutManager).orientation
-        )
-        recyclerView.addItemDecoration(mDividerItemDecoration)
 
         if (session.firebaseMode) {
            // toolbar.title = "Viewing Online Exercises"
