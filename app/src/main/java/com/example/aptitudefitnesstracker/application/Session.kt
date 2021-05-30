@@ -181,14 +181,6 @@ class Session : Application() {
             activeRoutine?.exercises
     }
 
-    fun addFirebaseAuthStateListener(authListener: FirebaseAuth.AuthStateListener) {
-        auth.addAuthStateListener(authListener)
-    }
-
-    fun removeFirebaseAuthStateListener(authListener: FirebaseAuth.AuthStateListener) {
-        auth.removeAuthStateListener(authListener)
-    }
-
     fun sendPasswordResetEmail(email: String): Task<Void> {
         return auth.sendPasswordResetEmail(email)
     }
