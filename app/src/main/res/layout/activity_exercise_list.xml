@@ -74,6 +74,7 @@
             android:clickable="true"
             android:focusable="true"
             android:visibility="invisible"
+            app:maxImageSize="30dp"
             app:layout_constraintBottom_toTopOf="@+id/newExerciseFAB"
             app:layout_constraintEnd_toEndOf="@+id/newExerciseFAB"
             app:srcCompat="@drawable/ic_baseline_fiber_new_24" />
@@ -86,6 +87,7 @@
             android:clickable="true"
             android:focusable="true"
             android:visibility="invisible"
+            app:maxImageSize="35dp"
             app:layout_constraintBottom_toTopOf="@+id/newExerciseButton"
             app:layout_constraintEnd_toEndOf="@+id/newExerciseButton"
             app:srcCompat="@android:drawable/ic_menu_edit" />

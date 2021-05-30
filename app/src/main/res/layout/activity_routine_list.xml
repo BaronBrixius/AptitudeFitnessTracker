@@ -60,6 +60,7 @@
             android:clickable="true"
             android:focusable="true"
             android:visibility="invisible"
+            app:maxImageSize="30dp"
             app:layout_constraintBottom_toTopOf="@+id/newRoutineFAB"
             app:layout_constraintEnd_toEndOf="@+id/newRoutineFAB"
             app:srcCompat="@drawable/ic_baseline_fiber_new_24" />
@@ -72,6 +73,7 @@
             android:clickable="true"
             android:focusable="true"
             android:visibility="invisible"
+            app:maxImageSize="35dp"
             app:layout_constraintBottom_toTopOf="@+id/newRoutineButton"
             app:layout_constraintEnd_toEndOf="@+id/newRoutineButton"
             app:srcCompat="@drawable/ic_baseline_connect_without_contact_24" />

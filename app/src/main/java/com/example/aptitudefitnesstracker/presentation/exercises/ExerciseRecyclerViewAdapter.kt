@@ -55,12 +55,12 @@ class ExerciseRecyclerViewAdapter(private val parentActivity: ExerciseListActivi
                 details.elementAt(0).value.toString()
         }
 
-        if (!parentActivity.session.firebaseMode) {
+
             with(holder.itemView) {
                 tag = exercise
                 setOnClickListener(onClickListener)
             }
-        }
+
 
     }
 

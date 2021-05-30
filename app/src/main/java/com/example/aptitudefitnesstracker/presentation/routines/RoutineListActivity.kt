@@ -46,7 +46,9 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
         newRoutineButton = findViewById(R.id.newRoutineButton)
         viewOnlineRoutinesButton = findViewById(R.id.viewOnlineRoutinesButton)
 
-
+        if(session.firebaseMode){
+            newRoutineButton.visibility = View.GONE
+        }
 
         //Add new
         findViewById<FloatingActionButton>(R.id.newRoutineFAB).setOnClickListener { view ->
@@ -77,7 +79,7 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private fun viewOnlineRoutinesButtonClicked() {
         if (session.userIsLoggedIn()) {
             session.toggleAndGetFirebaseMode()
-            newRoutineButton.visibility = View.GONE
+//            newRoutineButton.visibility = View.GONE
         } else {
 
             val loginRequiredDialog: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -142,45 +144,64 @@ class RoutineListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
 
     private fun setVisibility(clicked: Boolean) {
-        if (!clicked) {
-            newRoutineButton.visibility = View.VISIBLE
-            viewOnlineRoutinesButton.visibility = View.VISIBLE
-        } else {
-            newRoutineButton.visibility = View.INVISIBLE
-            viewOnlineRoutinesButton.visibility = View.INVISIBLE
-        }
 
         if(session.firebaseMode){
-        newRoutineButton.visibility = View.GONE
+            newRoutineButton.visibility = View.INVISIBLE
+            if (!clicked) {
+                viewOnlineRoutinesButton.visibility = View.VISIBLE
+            } else {
+                viewOnlineRoutinesButton.visibility = View.INVISIBLE
+            }
         }
+        else {
+            if (!clicked) {
+                newRoutineButton.visibility = View.VISIBLE
+                viewOnlineRoutinesButton.visibility = View.VISIBLE
+            } else {
+                newRoutineButton.visibility = View.INVISIBLE
+                viewOnlineRoutinesButton.visibility = View.INVISIBLE
+            }
+        }
+
 
     }
 
     private fun setAnimation(clicked: Boolean) {
-        if (!clicked) {
-            newRoutineFAB.startAnimation(rotateOpen)
 
-                newRoutineButton.startAnimation(fromBott)
+        if(session.firebaseMode){
+            newRoutineButton.visibility = View.INVISIBLE
+
+            if (!clicked) {
+                newRoutineFAB.startAnimation(rotateOpen)
                 viewOnlineRoutinesButton.startAnimation(fromBott)
 
-        } else {
-            newRoutineFAB.startAnimation(rotateClose)
-
+            } else {
+                newRoutineFAB.startAnimation(rotateClose)
+                viewOnlineRoutinesButton.startAnimation(toBott)
+            }
+        }else{
+            if (!clicked) {
+                newRoutineFAB.startAnimation(rotateOpen)
+                newRoutineButton.startAnimation(fromBott)
+                viewOnlineRoutinesButton.startAnimation(fromBott)
+            } else {
+                newRoutineFAB.startAnimation(rotateClose)
                 newRoutineButton.startAnimation(toBott)
                 viewOnlineRoutinesButton.startAnimation(toBott)
-
-        }
-        if(session.firebaseMode){
-            newRoutineButton.visibility = View.GONE
+            }
         }
     }
 
     private fun setClickable(clicked: Boolean) {
-        viewOnlineRoutinesButton.isClickable = clicked
-        newRoutineButton.isClickable = clicked
         if(session.firebaseMode){
             newRoutineButton.visibility = View.GONE
+            viewOnlineRoutinesButton.isClickable = clicked
+        }else{
+            viewOnlineRoutinesButton.isClickable = clicked
+            newRoutineButton.isClickable = clicked
         }
+
+
     }
 
     private val rotateOpen: Animation by lazy {
