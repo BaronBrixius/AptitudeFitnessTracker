@@ -35,7 +35,8 @@ class RemoteFirebaseDatabase : IRemoteDao {
         val routineList: ArrayList<Routine> = ArrayList()
         dataSnapshot.children.forEach { child ->
             child.getValue(Routine::class.java)?.let {
-                val exerciseList = MutableLiveData<List<Exercise>>()    //exercise LiveData has to be reconstructed from Firebase format
+                val exerciseList =
+                    MutableLiveData<List<Exercise>>()    //exercise LiveData has to be reconstructed from Firebase format
                 exerciseList.value = toExercises(child.child("exercises"))
                 it.exercises = exerciseList
                 routineList.add(it)

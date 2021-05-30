@@ -13,6 +13,7 @@ import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.authentication.LoginActivity
 import com.example.aptitudefitnesstracker.presentation.settings.ThemeUtils
 
+// Combine this with AddRoutineActivity if we have extra time
 class EditRoutineActivity : AppCompatActivity() {
     private val session: Session by lazy { application as Session }
     private var txtDetails: TextView? = null

@@ -12,9 +12,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.*
 import com.example.aptitudefitnesstracker.R
-import com.example.aptitudefitnesstracker.application.data.Exercise
 import com.example.aptitudefitnesstracker.application.IFirebaseModeObserver
 import com.example.aptitudefitnesstracker.application.Session
+import com.example.aptitudefitnesstracker.application.data.Exercise
 import com.example.aptitudefitnesstracker.presentation.routines.EditRoutineActivity
 import com.example.aptitudefitnesstracker.presentation.settings.SettingsActivity
 import com.example.aptitudefitnesstracker.presentation.settings.ThemeUtils
@@ -64,7 +64,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     private var clicked = false
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtils.setThemeApp(this) // for set theme
@@ -79,7 +78,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         newExerciseButton = findViewById(R.id.newExerciseButton)
         editRoutineButton = findViewById(R.id.editRoutineButton)
 
-        if(session.firebaseMode){
+        if (session.firebaseMode) {
             editRoutineButton.setImageResource(R.drawable.ic_baseline_cloud_download_24)
             newExerciseButton.visibility = View.GONE
         }
@@ -95,7 +94,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         editRoutineButton.setOnClickListener {
 
-            if(session.firebaseMode){
+            if (session.firebaseMode) {
                 val downloadDialog = AlertDialog.Builder(this)
                 downloadDialog.setTitle("Download Routine")
                 downloadDialog.setMessage("Are you sure you would like to download and add this routine to your local list?")
@@ -108,7 +107,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
                 downloadDialog.setNegativeButton("No") { _, _ ->
                 }
                 downloadDialog.show()
-            }else{
+            } else {
                 intent = Intent(this, EditRoutineActivity::class.java)
                 startActivity(intent)
             }

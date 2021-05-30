@@ -1,11 +1,13 @@
 package com.example.aptitudefitnesstracker.persistence.local
 
 import android.content.Context
-import androidx.room.*
-//import androidx.room.migration.AutoMigrationSpec
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.aptitudefitnesstracker.application.data.Exercise
 import com.example.aptitudefitnesstracker.application.dao.ILocalDao
+import com.example.aptitudefitnesstracker.application.data.Exercise
 import com.example.aptitudefitnesstracker.application.data.Routine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -39,7 +41,8 @@ abstract class LocalRoomDatabase : RoomDatabase() {
         }
     }
 
-    private class LocalRoomDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
+    private class LocalRoomDatabaseCallback(private val scope: CoroutineScope) :
+        RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
             INSTANCE?.let { database ->
@@ -56,19 +59,55 @@ abstract class LocalRoomDatabase : RoomDatabase() {
             exampleDetail.value = 5.0
 
             localDao.insertRoutine(Routine("Monday"))
-            localDao.insertExercise(Exercise(0, 0,1, "Squats", arrayListOf(exampleDetail), ""))
-            localDao.insertExercise(Exercise(0, 0,2, "Bench Press", arrayListOf(exampleDetail), ""))
-            localDao.insertExercise(Exercise(0, 0,2, "Pull-ups", arrayListOf(exampleDetail), ""))
+            localDao.insertExercise(Exercise(0, 0, 1, "Squats", arrayListOf(exampleDetail), ""))
+            localDao.insertExercise(
+                Exercise(
+                    0,
+                    0,
+                    2,
+                    "Bench Press",
+                    arrayListOf(exampleDetail),
+                    ""
+                )
+            )
+            localDao.insertExercise(Exercise(0, 0, 2, "Pull-ups", arrayListOf(exampleDetail), ""))
 
             localDao.insertRoutine(Routine("Wednesday"))
-            localDao.insertExercise(Exercise(0, 0,1, "Deadlift", arrayListOf(exampleDetail), ""))
-            localDao.insertExercise(Exercise(0, 0,2, "Overhead Press", arrayListOf(exampleDetail), ""))
-            localDao.insertExercise(Exercise(0, 0,2, "Inverted Rows", arrayListOf(exampleDetail), ""))
+            localDao.insertExercise(Exercise(0, 0, 1, "Deadlift", arrayListOf(exampleDetail), ""))
+            localDao.insertExercise(
+                Exercise(
+                    0,
+                    0,
+                    2,
+                    "Overhead Press",
+                    arrayListOf(exampleDetail),
+                    ""
+                )
+            )
+            localDao.insertExercise(
+                Exercise(
+                    0,
+                    0,
+                    2,
+                    "Inverted Rows",
+                    arrayListOf(exampleDetail),
+                    ""
+                )
+            )
 
             localDao.insertRoutine(Routine("Friday"))
-            localDao.insertExercise(Exercise(0, 0,1, "Bench Press", arrayListOf(exampleDetail), ""))
-            localDao.insertExercise(Exercise(0, 0,2, "Squats", arrayListOf(exampleDetail), ""))
-            localDao.insertExercise(Exercise(0, 0,2, "Dips", arrayListOf(exampleDetail), ""))
+            localDao.insertExercise(
+                Exercise(
+                    0,
+                    0,
+                    1,
+                    "Bench Press",
+                    arrayListOf(exampleDetail),
+                    ""
+                )
+            )
+            localDao.insertExercise(Exercise(0, 0, 2, "Squats", arrayListOf(exampleDetail), ""))
+            localDao.insertExercise(Exercise(0, 0, 2, "Dips", arrayListOf(exampleDetail), ""))
         }
     }
 }

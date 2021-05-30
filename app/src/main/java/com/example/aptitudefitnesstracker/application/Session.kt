@@ -86,7 +86,7 @@ class Session : Application() {
         localDao.deleteExercise(exercise)
     }
 
-     fun share(routine: Routine) = applicationScope.launch {
+    fun share(routine: Routine) = applicationScope.launch {
         if (userIsLoggedIn()) {
             remoteDao.insertRoutine(routine)
         }
@@ -174,7 +174,12 @@ class Session : Application() {
         return auth.sendPasswordResetEmail(email)
     }
 
-    fun createUser(email: String, password: String, onCompleteListener: (Task<AuthResult>) -> Unit) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener)
+    fun createUser(
+        email: String,
+        password: String,
+        onCompleteListener: (Task<AuthResult>) -> Unit
+    ) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(onCompleteListener)
     }
 }
