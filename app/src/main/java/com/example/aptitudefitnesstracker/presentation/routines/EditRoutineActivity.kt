@@ -43,11 +43,22 @@ class EditRoutineActivity : AppCompatActivity() {
         btnDelete = findViewById<View>(R.id.btn_delete) as Button
         btnShare = findViewById<View>(R.id.btn_share) as Button
         btnDownload = findViewById<View>(R.id.btn_download) as Button
-
-
         var routine = session.activeRoutine
+        inputName!!.setText(routine!!.name)
 
-        inputName!!.hint = routine!!.name
+
+        println(session.firebaseMode)
+
+        if(session.firebaseMode){
+            btnDelete!!.visibility = View.GONE
+            btnShare!!.visibility = View.GONE
+        } else {
+            btnDownload!!.visibility = View.GONE
+
+        }
+
+
+
 
         // Save / update the user
         btnSave!!.setOnClickListener {
