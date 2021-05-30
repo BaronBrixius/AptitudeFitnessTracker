@@ -12,14 +12,15 @@ import com.google.firebase.database.Exclude
 data class Routine(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    @Exclude    // local id isn't needed for Firebase shares
+    @Exclude @set:Exclude @get:Exclude    // local id isn't needed for Firebase shares
     var id: Int,
-    @Exclude    // users can't re-order online stuff so no need to track it, just default to alphabetical
+    @Exclude @set:Exclude @get:Exclude    // users can't re-order online stuff so no need to track it, just default to alphabetical
     @ColumnInfo(name = "position", defaultValue = "99")
     var position: Int,
     @ColumnInfo(name = "name")
     var name: String,
-    @Ignore @Exclude    //convenience reference, don't want to persist it in either database like this
+    @Ignore
+    @Exclude @set:Exclude @get:Exclude    //convenience reference, don't want to persist it in either database like this
     var exercises: LiveData<List<Exercise>>
 ) {
     constructor() : this(0, 99,"", MutableLiveData<List<Exercise>>())

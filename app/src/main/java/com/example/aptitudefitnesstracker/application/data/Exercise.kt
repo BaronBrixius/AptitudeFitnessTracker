@@ -16,12 +16,12 @@ import com.google.firebase.database.Exclude
 data class Exercise(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    @Exclude    //local id isn't needed for Firebase shares
+    @Exclude @set:Exclude @get:Exclude    //local id isn't needed for Firebase shares
     var id: Int,
-    @Exclude    // JSON keeps track of the routine for each exercise so Firebase doesn't need this
+    @Exclude @set:Exclude @get:Exclude    // JSON keeps track of the routine for each exercise so Firebase doesn't need this
     @ColumnInfo(name = "routineId", index = true)
     var routineId: Int,
-    @Exclude    // users can't re-order online stuff so no need to track it, just default to alphabetical
+    @Exclude @set:Exclude @get:Exclude    // users can't re-order online stuff so no need to track it, just default to alphabetical
     @ColumnInfo(name = "position", defaultValue = "99")
     var position: Int,
     @ColumnInfo(name = "name", defaultValue = "")

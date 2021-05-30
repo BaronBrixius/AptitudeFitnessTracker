@@ -8,21 +8,6 @@ class Converters {
     companion object {
         @TypeConverter
         @JvmStatic
-        fun fromList(list: List<String>): String {
-            return list.joinToString(", ")
-        }
-
-        @TypeConverter
-        @JvmStatic
-        fun toList(string: String?): List<String> {
-            if (string != null) {
-                return string.split(", ")
-            }
-            return ArrayList()
-        }
-
-        @TypeConverter
-        @JvmStatic
         fun fromMap(map: LinkedHashMap<String,Double>): String {
             return Gson().toJson(map)
         }
