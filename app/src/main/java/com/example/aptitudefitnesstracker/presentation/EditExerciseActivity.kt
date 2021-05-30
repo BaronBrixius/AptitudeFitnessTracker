@@ -1,7 +1,6 @@
 package com.example.aptitudefitnesstracker.presentation
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +23,8 @@ class EditExerciseActivity : AppCompatActivity() {
     private var btnSave: Button? = null
     private var btnDelete: Button? = null
     private var userId: String? = null
+
+    var detailsList: LinkedHashMap<String, Double>? = null
 
     private val session: Session by lazy { application as Session }
     private lateinit var exercise: Exercise
@@ -158,14 +159,17 @@ class EditExerciseActivity : AppCompatActivity() {
             viewType: Int
         ): ExerciseDetailsViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.details_content, parent, false)
+                .inflate(R.layout.item_exercise_details_content, parent, false)
+            val holder = ExerciseDetailsViewHolder(view)
+
+
             return ExerciseDetailsViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: ExerciseDetailsViewHolder, position: Int) {
             val detail = getItem(position)
-            holder.name.text = detail.key
-            holder.value.text = detail.value.toString()
+            holder.name.hint = detail.key
+            holder.value.hint = detail.value.toString()
 
 //            with(holder.itemView) {
 //                tag = detail
@@ -174,9 +178,21 @@ class EditExerciseActivity : AppCompatActivity() {
         }
 
         inner class ExerciseDetailsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val name: TextView = view.findViewById(R.id.detail_name)
-            val value: TextView = view.findViewById(R.id.detail_value)
+            val name: EditText = view.findViewById(R.id.detail_name)
+            val value: EditText = view.findViewById(R.id.detail_value)
         }
+//
+//        fun SaveDetails(view:View){
+//            var exercise = parentActivity.exercise
+//            var inputDetail: EditText? = null
+//            var inputDetailsValue: EditText? = null
+//            inputDetail = view.findViewById(R.id.detail_name)
+//            inputDetailsValue = view.findViewById(R.id.detail_value)
+//
+//
+//
+//        }
+
 
         class ExerciseDetailComparator : DiffUtil.ItemCallback<Map.Entry<String, Double>>() {
             override fun areItemsTheSame(

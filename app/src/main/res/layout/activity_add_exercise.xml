@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+
     tools:context=".presentation.EditExerciseActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -20,59 +21,76 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarAlwaysDrawVerticalTrack="false">
+        android:layout_marginTop="70dp"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:orientation="vertical">
+            android:layout_margin="10dp"
+            android:hint="@string/name"
+            android:inputType="textCapWords"
+            android:maxLines="1"
+            tools:visibility="visible" />
 
-            <EditText
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="@string/name"
-                android:inputType="textCapWords"
-                android:maxLines="1"
-                tools:visibility="visible" />
+        <EditText
+            android:id="@+id/Notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="Notes"
+            android:inputType="textCapWords"
+            android:maxLines="1" />
+    </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/detail_list"
-                android:layout_width="match_parent"
-                android:layout_height="124dp"
-                android:layout_marginHorizontal="10dp"
-                tools:listitem="@layout/details_content" />
-
-            <EditText
-                android:id="@+id/Notes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="Notes"
-                android:inputType="textCapWords"
-                android:maxLines="1" />
+    <FrameLayout
+        android:layout_marginTop="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:scrollbarAlwaysDrawVerticalTrack="false">
 
 
-            <Button
-                android:id="@+id/btn_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/action_save"
-                android:textStyle="bold" />
-            <Button
-                android:id="@+id/btn_delete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="delete exercise"
-                android:background="@color/red"
-                android:textStyle="bold" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/detail_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            tools:listitem="@layout/item_exercise_details_content" />
 
-        </LinearLayout>
-    </ScrollView>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="550dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_save"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shadowColor="#C81010"
+            android:background="#DA0606"
+            android:text="delete exercise"
+            android:textStyle="bold" />
+
+
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
