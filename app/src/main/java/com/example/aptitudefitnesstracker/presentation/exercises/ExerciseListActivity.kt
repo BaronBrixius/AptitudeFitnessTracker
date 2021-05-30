@@ -74,7 +74,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         setContentView(R.layout.activity_exercise_list)
         val toolbar = findViewById<Toolbar>(R.id.exercise_toolbar)
         setSupportActionBar(toolbar)
-        toolbar.title = "Exercises in " + session.activeRoutine!!.name
+//        toolbar.title = "Exercises in " + session.activeRoutine!!.name
 
 
         newExerciseFAB = findViewById(R.id.newExerciseFAB)

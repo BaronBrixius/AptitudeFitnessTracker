@@ -17,7 +17,7 @@ interface ILocalDao {
     fun getAllExercises(): LiveData<List<Exercise>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRoutine(routine: Routine)
+    suspend fun insertRoutine(routine: Routine): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertExercise(exercise: Exercise) : Long

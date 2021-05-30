@@ -93,12 +93,9 @@ class Session : Application() {
         localDao.deleteExercise(exercise)
     }
 
-    suspend fun share(routine: Routine): Boolean {
-        return if (userIsLoggedIn()) {
+     fun share(routine: Routine) = applicationScope.launch {
+        if (userIsLoggedIn()) {
             remoteDao.insertRoutine(routine)
-            true
-        } else {
-            false
         }
     }
 
@@ -108,6 +105,15 @@ class Session : Application() {
             true
         } else {
             false
+        }
+    }
+
+    fun saveRemoteRoutineLocally(routine: Routine) = applicationScope.launch {
+        val newRoutineId: Long = localDao.insertRoutine(routine)
+        val exerciseList = routine.exercises.value
+        exerciseList!!.forEach {
+            it.routineId = newRoutineId.toInt()
+            localDao.insertExercise(it)
         }
     }
 
