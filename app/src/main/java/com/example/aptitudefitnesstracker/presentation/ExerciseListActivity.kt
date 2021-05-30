@@ -237,6 +237,7 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
                 tag = exercise
                 setOnClickListener(onClickListener)
             }
+
         }
 
         fun setList(it: List<Exercise>) {

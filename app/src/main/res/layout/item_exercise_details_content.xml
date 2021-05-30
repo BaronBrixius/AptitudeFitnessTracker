@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="60dp">
 
     <EditText
         android:id="@+id/detail_name"
@@ -19,4 +19,18 @@
         android:hint="@string/detail_value"
         android:inputType="numberSigned|numberDecimal"
         android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/delete_Detail"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/plus"
+        android:gravity="center"
+        android:shadowColor="@android:color/white"
+        android:shadowRadius="10.0"
+        android:text="+"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
 </LinearLayout>
