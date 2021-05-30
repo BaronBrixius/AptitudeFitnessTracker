@@ -1,22 +1,17 @@
 package com.example.aptitudefitnesstracker.presentation.exercises
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.*
-import androidx.recyclerview.widget.ListAdapter
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.data.Exercise
 import com.example.aptitudefitnesstracker.application.Session
 import com.example.aptitudefitnesstracker.presentation.settings.ThemeUtils
 import java.util.*
-import kotlin.collections.LinkedHashMap
-import kotlin.random.Random
 
 class EditExerciseActivity : AppCompatActivity() {
     private var inputDetailsLayout: RecyclerView? = null
@@ -28,7 +23,7 @@ class EditExerciseActivity : AppCompatActivity() {
     private var btnDelete: Button? = null
     private var btnAddDetail: Button? = null
 
-    private var userId: String? = null
+    private lateinit var adapter : ExerciseDetailsRecyclerViewAdapter
 
     private val session: Session by lazy { application as Session }
     private lateinit var exercise: Exercise
@@ -117,116 +112,11 @@ class EditExerciseActivity : AppCompatActivity() {
         setupRecyclerView()
     }
 
-    private lateinit var adapter : ExerciseDetailsRecyclerViewAdapter
-
     private fun setupRecyclerView() {
         val recyclerView: RecyclerView = findViewById(R.id.detail_list)
         adapter = ExerciseDetailsRecyclerViewAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter.setList(exercise.details)
-
-        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
-    }
-
-    private val itemTouchHelperCallback = object :
-        ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
-
-        override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder
-        ): Boolean {
-            val fromPosition = viewHolder.bindingAdapterPosition
-            val toPosition = target.bindingAdapterPosition
-            val detailList = (recyclerView.adapter as ExerciseDetailsRecyclerViewAdapter).detailList!!
-
-            if (fromPosition < toPosition) {
-                for (i in fromPosition until toPosition) {
-                    Collections.swap(detailList, i, i+1)
-                }
-            } else {
-                for (i in fromPosition downTo toPosition + 1) {
-                    Collections.swap(detailList, i, i-1)
-                }
-            }
-
-            recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
-            return true
-        }
-
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
-            //required override, not used
-        }
-    }
-
-    class ExerciseDetailsRecyclerViewAdapter(private val parentActivity: EditExerciseActivity) :
-        ListAdapter<Exercise.Detail, ExerciseDetailsRecyclerViewAdapter.ExerciseDetailsViewHolder>(
-            ExerciseDetailComparator()
-        ) {
-        var detailList: ArrayList<Exercise.Detail>? = null
-
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
-        ): ExerciseDetailsViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_exercise_details_content, parent, false)
-            return ExerciseDetailsViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: ExerciseDetailsViewHolder, position: Int) {
-            val detail = getItem(position)
-            holder.name.setText(detail.key)
-            holder.value.setText(detail.value.toString())
-
-            holder.btnDeleteDetail.setOnClickListener{
-//                btnDeleteDetail!!.startAnimation(scaleUp)
-
-                val saveDialog = AlertDialog.Builder(parentActivity)
-                saveDialog.setTitle("Delete Detail?")
-//                saveDialog.setMessage("Are you sure you would like to delete the detail?")
-
-                saveDialog.setPositiveButton("DELETE") { dialog, which ->
-                    Toast.makeText(parentActivity, "DELETE", Toast.LENGTH_SHORT).show()
-                }
-                saveDialog.setNegativeButton(android.R.string.no) { _, _ ->
-                }
-                saveDialog.show()
-            }
-
-//            with(holder.itemView) {
-//                tag = detail
-//                setOnClickListener(onClickListener)
-//            }
-        }
-
-        fun setList(detailList: ArrayList<Exercise.Detail>) {
-            submitList(detailList)
-            this.detailList = detailList
-        }
-
-        inner class ExerciseDetailsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val name: EditText = view.findViewById(R.id.detail_name)
-            val value: EditText = view.findViewById(R.id.detail_value)
-            val btnDeleteDetail:Button = view.findViewById(R.id.delete_Detail)
-        }
-
-        class ExerciseDetailComparator : DiffUtil.ItemCallback<Exercise.Detail>() {
-            override fun areItemsTheSame(
-                oldItem: Exercise.Detail,
-                newItem: Exercise.Detail
-            ): Boolean {
-                return oldItem === newItem
-            }
-
-            override fun areContentsTheSame(
-                oldItem: Exercise.Detail,
-                newItem: Exercise.Detail
-            ): Boolean {
-                return oldItem.key == newItem.key && oldItem.value == newItem.value
-            }
-        }
     }
 }
