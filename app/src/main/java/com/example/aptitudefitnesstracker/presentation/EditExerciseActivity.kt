@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +15,9 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.aptitudefitnesstracker.R
 import com.example.aptitudefitnesstracker.application.Exercise
 import com.example.aptitudefitnesstracker.application.Session
+import java.util.*
+import kotlin.collections.LinkedHashMap
+import kotlin.random.Random
 
 class EditExerciseActivity : AppCompatActivity() {
     private var inputDetailsLayout: RecyclerView? = null
@@ -22,6 +27,8 @@ class EditExerciseActivity : AppCompatActivity() {
     private var inputDetailsValue: EditText? = null
     private var btnSave: Button? = null
     private var btnDelete: Button? = null
+    private var btnAddDetail: Button? = null
+
     private var userId: String? = null
 
     var detailsList: LinkedHashMap<String, Double>? = null
@@ -42,6 +49,8 @@ class EditExerciseActivity : AppCompatActivity() {
         inputNotes = findViewById<View>(R.id.Notes) as EditText
         btnSave = findViewById<View>(R.id.btn_save) as Button
         btnDelete = findViewById<View>(R.id.btn_delete) as Button
+        btnAddDetail = findViewById<View>(R.id.btn_add_detail) as Button
+
 
 
         findViewById<Toolbar>(R.id.toolbar).title = "Edit Exercise"
@@ -98,6 +107,13 @@ class EditExerciseActivity : AppCompatActivity() {
             }
             deleteDialog.show()
         }
+
+        btnAddDetail!!.setOnClickListener{
+            exercise.details[Random.nextInt().toString()] = Random.nextDouble(0.0,10.0)
+            session.updateExercise(exercise)
+            setupRecyclerView()
+        }
+
         setupRecyclerView()
     }
 
@@ -153,6 +169,8 @@ class EditExerciseActivity : AppCompatActivity() {
 //            val intent = Intent(v.context, EditExerciseActivity::class.java)
 //            v.context.startActivity(intent)
         }
+        private var btnDeleteDetail: Button? = null
+
 
         override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -160,16 +178,32 @@ class EditExerciseActivity : AppCompatActivity() {
         ): ExerciseDetailsViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_exercise_details_content, parent, false)
-            val holder = ExerciseDetailsViewHolder(view)
-
-
             return ExerciseDetailsViewHolder(view)
         }
+
 
         override fun onBindViewHolder(holder: ExerciseDetailsViewHolder, position: Int) {
             val detail = getItem(position)
             holder.name.hint = detail.key
             holder.value.hint = detail.value.toString()
+
+            holder.btnDeleteDetail.setOnClickListener{
+//                btnDeleteDetail!!.startAnimation(scaleUp)
+
+                val saveDialog = AlertDialog.Builder(parentActivity)
+                saveDialog.setTitle("Delete Detail?")
+//                saveDialog.setMessage("Are you sure you would like to delete the detail?")
+
+                saveDialog.setPositiveButton("DELETE") { dialog, which ->
+                    Toast.makeText(parentActivity, "DELETE", Toast.LENGTH_SHORT).show()
+
+                }
+                saveDialog.setNegativeButton(android.R.string.no) { dialog, which ->
+                    Toast.makeText(parentActivity, "DO NOT DELETE", Toast.LENGTH_SHORT).show()
+
+                }
+                saveDialog.show()
+            }
 
 //            with(holder.itemView) {
 //                tag = detail
@@ -180,19 +214,8 @@ class EditExerciseActivity : AppCompatActivity() {
         inner class ExerciseDetailsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val name: EditText = view.findViewById(R.id.detail_name)
             val value: EditText = view.findViewById(R.id.detail_value)
+            val btnDeleteDetail:Button = view.findViewById(R.id.delete_Detail)
         }
-//
-//        fun SaveDetails(view:View){
-//            var exercise = parentActivity.exercise
-//            var inputDetail: EditText? = null
-//            var inputDetailsValue: EditText? = null
-//            inputDetail = view.findViewById(R.id.detail_name)
-//            inputDetailsValue = view.findViewById(R.id.detail_value)
-//
-//
-//
-//        }
-
 
         class ExerciseDetailComparator : DiffUtil.ItemCallback<Map.Entry<String, Double>>() {
             override fun areItemsTheSame(

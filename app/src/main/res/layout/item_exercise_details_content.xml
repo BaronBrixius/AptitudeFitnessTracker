@@ -20,17 +20,14 @@
         android:inputType="numberSigned|numberDecimal"
         android:textAlignment="center"/>
 
-    <TextView
+    <Button
         android:id="@+id/delete_Detail"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:background="@drawable/plus"
+        android:background="@android:drawable/ic_menu_delete"
         android:gravity="center"
-        android:shadowColor="@android:color/white"
-        android:shadowRadius="10.0"
-        android:text="+"
-        android:textColor="@android:color/black"
+        android:clickable="true"
+        android:focusable="true"
         android:textSize="18sp" />
 
 </LinearLayout>
