@@ -47,15 +47,18 @@ class EditRoutineActivity : AppCompatActivity() {
         inputName!!.setText(routine!!.name)
 
 
-        println(session.firebaseMode)
+//        println(session.firebaseMode)
 
-        if(session.firebaseMode){
-            btnDelete!!.visibility = View.GONE
-            btnShare!!.visibility = View.GONE
-        } else {
-            btnDownload!!.visibility = View.GONE
-
-        }
+//        if(session.firebaseMode){
+//            btnDelete!!.visibility = View.GONE
+//            btnShare!!.visibility = View.GONE
+//            btnSave!!.visibility = View.GONE
+//
+//
+//        } else {
+//            btnDownload!!.visibility = View.GONE
+//
+//        }
 
 
 
@@ -89,11 +92,8 @@ class EditRoutineActivity : AppCompatActivity() {
 
             }
             saveDialog.setNegativeButton(android.R.string.no) { dialog, which ->
-                finish()
             }
             saveDialog.show()
-            btnDelete!!.visibility = View.INVISIBLE
-
         }
 
         btnShare!!.setOnClickListener{
@@ -107,25 +107,21 @@ class EditRoutineActivity : AppCompatActivity() {
 
                 loginRequiredDialog.setPositiveButton("Login") { dialog, which ->
                     if (routine != null) {
-                        session.deleteRoutine(routine)
+                        session.share(routine)
                     }
-                    finish()
                     intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
-
                 }
                 loginRequiredDialog.setNegativeButton(android.R.string.no) { dialog, which ->
-                    finish()
                 }
                 loginRequiredDialog.show()
             }
 
         }
 
-        btnDelete!!.setOnClickListener{
+        btnDownload!!.setOnClickListener{
             session.saveRemoteRoutineLocally(routine)
         }
-
 
         toggleButton()
     }

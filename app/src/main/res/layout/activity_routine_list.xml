@@ -74,7 +74,7 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/newRoutineButton"
             app:layout_constraintEnd_toEndOf="@+id/newRoutineButton"
-            app:srcCompat="@drawable/ic_baseline_cloud_download_24" />
+            app:srcCompat="@drawable/ic_baseline_connect_without_contact_24" />
 
 
 

@@ -42,7 +42,10 @@ class RoutineRecyclerViewAdapter(private val parentActivity: RoutineListActivity
     override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
         val routine = getItem(position)
         holder.contentView.text = routine.name
+
+
         holder.circle.text = routine.name.first().toString()
+
 
         with(holder.itemView) {
             tag = routine
