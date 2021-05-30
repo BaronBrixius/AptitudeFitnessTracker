@@ -11,11 +11,11 @@ object Constants {
     /* Constants which is used for Change Font Size */
     const val DEFAULT_APP_FONT = "DefaultFont"
     const val DEFAULT_FONT = "Normal"
-    const val VERY_SMALL_FONT = "VerySmall"
+    const val VERY_SMALL_FONT = "Very Small"
     const val SMALL_FONT = "Small"
     const val NORMAL_FONT = "Normal"
     const val BIG_FONT = "Big"
-    const val VERY_BIG_FONT = "VeryBig"
+    const val VERY_BIG_FONT = "Very Big"
 
     /* Constants which is used for Change Font Family */
     const val DEFAULT_APP_FONT_FAMILY = "DefaultFontFamily"

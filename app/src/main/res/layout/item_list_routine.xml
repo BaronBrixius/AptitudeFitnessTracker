@@ -16,7 +16,6 @@
         android:gravity="center"
         android:shadowColor="@android:color/white"
         android:shadowRadius="10.0"
-        android:text="X"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
@@ -26,7 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:text="Routine Name"
-        android:textAlignment="textStart" />
+        android:textAlignment="textStart"
+        android:textSize="25sp"/>
 
 
 </LinearLayout>

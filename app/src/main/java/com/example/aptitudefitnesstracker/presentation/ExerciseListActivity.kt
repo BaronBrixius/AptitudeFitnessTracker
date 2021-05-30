@@ -6,11 +6,9 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.ListAdapter
 import com.example.aptitudefitnesstracker.R
@@ -84,17 +82,10 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         }
 
         newExerciseButton.setOnClickListener {
-            var exercise = Exercise()
-            exercise.name = "New Exercise"
-            exercise.routineId = session.activeRoutine?.id!!
-//            exercise.details.put("Sets", Random.nextDouble(10.0))
-            session.insertExercise(exercise)
-            session.activeExercise = exercise
+            session.createExerciseInRoutine(Exercise("New Exercise"), session.activeRoutine!!)
             newExerciseFABClicked()
-
             intent = Intent(this, EditExerciseActivity::class.java)
             startActivity(intent)
-
         }
 
         newExerciseFromRoutineButton.setOnClickListener {
@@ -159,7 +150,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
             //required override, not used
         }
-
     }
 
     private fun viewOnlineExercisesButtonClicked() {
@@ -170,9 +160,9 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
     }
 
     private fun setupRecyclerView() {
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         val recyclerView: RecyclerView = findViewById(R.id.item_parent_list_exercise)
         val adapter = ExerciseRecyclerViewAdapter(this)
+        adapter.setHasStableIds(true)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         val mDividerItemDecoration = DividerItemDecoration(
@@ -246,10 +236,6 @@ class ExerciseListActivity : AppCompatActivity(), IFirebaseModeObserver {
 
         fun saveList() {
             parentActivity.session.updateExercises(exerciseList!!)
-        }
-
-        fun swipeItem(viewHolder: RecyclerView.ViewHolder, position: Int) {
-            parentActivity.session.deleteExercise(getItem(position))
         }
 
         inner class ExerciseViewHolder(view: View) : RecyclerView.ViewHolder(view) {

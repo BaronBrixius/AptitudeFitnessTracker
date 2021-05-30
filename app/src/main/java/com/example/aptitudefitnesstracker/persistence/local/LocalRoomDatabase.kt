@@ -11,13 +11,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    version = 3,
+    version = 4,
     entities = [Routine::class, Exercise::class],
     exportSchema = true,
-//    autoMigrations = [
-//        AutoMigration(from = 1, to = 2, spec = LocalRoomDatabase.AutoMigrationSpec1To2::class),
-//        AutoMigration(from = 2, to = 3)
-//    ]
 )
 @TypeConverters(Converters::class)
 abstract class LocalRoomDatabase : RoomDatabase() {
@@ -34,6 +30,7 @@ abstract class LocalRoomDatabase : RoomDatabase() {
                     LocalRoomDatabase::class.java,
                     "routine"
                 )
+                    .fallbackToDestructiveMigration()
                     .addCallback(LocalRoomDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
@@ -63,8 +60,4 @@ abstract class LocalRoomDatabase : RoomDatabase() {
             localDao.insertExercise(exercise)
         }
     }
-
-    // Migration Specs
-//    @DeleteColumn(tableName = "exercises", columnName = "tags") // cut the tags feature due to manpower, what a shame
-//    class AutoMigrationSpec1To2 : AutoMigrationSpec
 }
